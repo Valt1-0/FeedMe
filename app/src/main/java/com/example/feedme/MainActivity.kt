@@ -10,18 +10,26 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.lifecycleScope
+import com.example.feedme.SplashScreen.SplashScreen
 import com.example.feedme.ui.theme.FeedMeTheme
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             FeedMeTheme {
+                SplashScreen(applicationContext)
                 // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-                    Greeting("Android")
-                }
+//                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
+//                    Greeting("Android")
+//                }
             }
+        }
+        lifecycleScope.launch {
+            delay(3000)
         }
     }
 }
