@@ -3,6 +3,8 @@ package com.example.feedme
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -39,11 +41,10 @@ class SplashScreenActivity : ComponentActivity() {
 //                }
             //}
         }
-        lifecycleScope.launch {
-            delay(6000)
-            startActivity(Intent(this@SplashScreenActivity, MainActivity::class.java))
+        Handler(Looper.getMainLooper()).postDelayed({
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
-        }
+        }, 6000) // Wait for 6 seconds before launching the MainActivity
     }
 }
 
