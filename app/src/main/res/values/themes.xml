@@ -2,9 +2,5 @@
 <resources>
 
     <style name="Theme.FeedMe" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/white</item>*
-        <item name="android:navigationBarColor">@color/white</item>
-    </style>
-    <style name="Theme.FeedMeSplash" parent="android:Theme.Material.Light.NoActionBar">
     </style>
 </resources>
