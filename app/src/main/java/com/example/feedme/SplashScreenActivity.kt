@@ -15,15 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.lifecycleScope
 import coil.ImageLoader
 import coil.compose.rememberAsyncImagePainter
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import coil.size.Size
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.example.feedme.network.CheckNetworkConnexion
 
 
 class SplashScreenActivity : ComponentActivity() {
@@ -42,10 +40,16 @@ class SplashScreenActivity : ComponentActivity() {
             //}
         }
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
+            if (CheckNetworkConnexion().isConnectedToInternet(this)) {
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            }else
+            {
+               //spash
+            }
         }, 6000) // Wait for 6 seconds before launching the MainActivity
     }
+
 }
 
 @Composable
@@ -79,4 +83,7 @@ fun Content(imageLoader: ImageLoader) {
             modifier = Modifier.fillMaxSize()
         )
     }
+
 }
+
+
