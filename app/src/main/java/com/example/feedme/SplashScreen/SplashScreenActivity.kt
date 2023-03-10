@@ -1,33 +1,35 @@
-package com.example.feedme
+package com.example.feedme.SplashScreen
 
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.LinearProgressIndicator
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.lifecycleScope
 import coil.ImageLoader
 import coil.compose.rememberAsyncImagePainter
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import coil.size.Size
+import com.example.feedme.MainActivity
+import com.example.feedme.R
+import com.example.feedme.Snackbar
 import com.example.feedme.network.CheckNetworkConnexion
 import com.example.feedme.ui.theme.FeedMeTheme
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -36,29 +38,26 @@ class SplashScreenActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            FeedMeTheme() {
+            FeedMeTheme {
                 MainContent()
-            }
-            //   FeedMeTheme {
+                if (CheckNetworkConnexion().isConnectedToInternet(this)) {
+                    val coroutineScope = rememberCoroutineScope()
+                    LaunchedEffect(key1 = Unit)
+                    {
+                        coroutineScope.launch(Dispatchers.Main) {
+                            delay(5000)
+                            startActivity(Intent(applicationContext, MainActivity::class.java))
+                            finish()
+                        }
 
-            // A surface container using the 'background' color from the theme
-//                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-//                    Greeting("Android")
-//                }
-            //}
-        }
-        Handler(Looper.getMainLooper()).postDelayed({
-            if (CheckNetworkConnexion().isConnectedToInternet(this)) {
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
-            }else
-            {
-               //spash
+                    }
+                } else {
+                    Snackbar()
+                }
             }
-        }, 6000) // Wait for 6 seconds before launching the MainActivity
+        }
     }
 }
-
 
 
 @Composable
@@ -99,9 +98,5 @@ fun Content(imageLoader: ImageLoader) {
                 modifier = Modifier.size(250.dp)
             )
         }
-
     }
-
 }
-
-

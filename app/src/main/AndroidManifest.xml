@@ -16,7 +16,7 @@
         android:theme="@style/Theme.FeedMe"
         tools:targetApi="31">
         <activity
-            android:name=".SplashScreenActivity"
+            android:name=".SplashScreen.SplashScreenActivity"
             android:exported="true"
             android:theme="@style/Theme.FeedMe">
             <intent-filter>
