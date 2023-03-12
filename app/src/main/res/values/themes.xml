@@ -3,4 +3,10 @@
 
     <style name="Theme.FeedMe" parent="android:Theme.Material.Light.NoActionBar">
     </style>
+
+    <style name="Theme.Onboarding" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+
 </resources>

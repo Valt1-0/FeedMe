@@ -18,14 +18,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             FeedMeTheme {
-          
                 // A surface container using the 'background' color from the theme
-               Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-                  Text(text = "Hello word ! ")
-               }
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colors.background
+                ) {
+                    Text(text = "Hello word ! ")
+                }
             }
         }
-       
+
     }
 }
 

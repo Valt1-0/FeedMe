@@ -25,6 +25,7 @@ import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import coil.size.Size
 import com.example.feedme.MainActivity
+import com.example.feedme.OnboardingActivity
 import com.example.feedme.R
 import com.example.feedme.Snackbar
 import com.example.feedme.network.CheckNetworkConnexion
@@ -46,7 +47,12 @@ class SplashScreenActivity : ComponentActivity() {
                     {
                         coroutineScope.launch(Dispatchers.Main) {
                             delay(5000)
-                            startActivity(Intent(applicationContext, MainActivity::class.java))
+                            startActivity(
+                                Intent(
+                                    applicationContext,
+                                    OnboardingActivity::class.java
+                                )
+                            )
                             finish()
                         }
 
@@ -78,12 +84,13 @@ fun MainContent() {
 @Composable
 fun Content(imageLoader: ImageLoader) {
     Surface(color = colors.primary) {
-        LinearProgressIndicator(Modifier.fillMaxWidth(), color = colors.primaryVariant)
+        LinearProgressIndicator(Modifier.fillMaxWidth(), color = colors.secondary)
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
             Image(
                 painter = rememberAsyncImagePainter(
                     ImageRequest.Builder(LocalContext.current)
