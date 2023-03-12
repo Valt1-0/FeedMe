@@ -1,4 +1,4 @@
-package com.example.feedme
+package com.example.feedme.Onboarding
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.BorderStroke
@@ -19,15 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.feedme.R
 import com.example.feedme.ui.theme.BottomCardShape
 import com.example.feedme.ui.theme.Poppins
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
@@ -44,9 +42,7 @@ fun OnboardingScreen(
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             HorizontalPager(pageCount = onboardingItems.size, state = pagerState) { page ->
                 Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(onboardingItems[page].backgroundColor),
+                    modifier = Modifier.background(onboardingItems[page].backgroundColor).fillMaxHeight(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Top
                 ) {
@@ -56,18 +52,15 @@ fun OnboardingScreen(
                         contentDescription = onboardingItems[page].title,
                         modifier = Modifier.fillMaxWidth()
                     )
-
-
                 }
             }
-
         }
 
         Box(modifier = Modifier.align(Alignment.BottomCenter)) {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(340.dp),
+                    .height(350.dp),
                 backgroundColor = colors.secondary,
                 elevation = 0.dp,
                 shape = BottomCardShape.large
@@ -101,8 +94,6 @@ fun OnboardingScreen(
                             fontSize = 17.sp,
                             fontWeight = FontWeight.ExtraLight
                         )
-
-
                     }
                     Box(
                         modifier = Modifier
@@ -177,7 +168,6 @@ fun OnboardingScreen(
                     }
                 }
             }
-
         }
     }
 }

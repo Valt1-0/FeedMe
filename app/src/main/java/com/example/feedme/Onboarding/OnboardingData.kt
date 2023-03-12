@@ -1,14 +1,8 @@
-package com.example.feedme
+package com.example.feedme.Onboarding
 
-import android.content.Context
-import android.content.Context.MODE_PRIVATE
-import androidx.annotation.DrawableRes
-import android.content.SharedPreferences
 import androidx.compose.ui.graphics.Color
-import com.example.feedme.ui.theme.Black
+import com.example.feedme.R
 import com.example.feedme.ui.theme.Primary
-import com.example.feedme.ui.theme.White
-import com.example.feedme.ui.theme.WhiteGrey
 
 data class OnboardingItem(
     val title: String,

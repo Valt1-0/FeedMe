@@ -8,6 +8,7 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.graphics.Color.Companion.White
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -93,8 +94,60 @@ fun OnBoardingTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Compos
     val systemUiController = rememberSystemUiController()
 //    val useDarkIcons = !isSystemInDarkTheme()
 
+    systemUiController.setStatusBarColor(
+        color = Color.Black,
+    )
     systemUiController.setNavigationBarColor(
         color = colors.secondary,
+    )
+
+    MaterialTheme(
+        colors = colors,
+        typography = Typography,
+        shapes = Shapes
+
+    )
+    {
+        // Définir la couleur de texte en fonction du thème actuel
+        val textColor = if (darkTheme) colors.primary else colors.primary
+
+        // Utiliser la couleur de texte pour tous les Text()
+        CompositionLocalProvider(LocalContentColor provides textColor) {
+            content()
+        }
+
+    }
+}
+
+
+@SuppressLint("ConflictingOnColor")
+private val MainDarkColorPalette = darkColors(
+    primary = Primary,
+    onPrimary = Black,
+)
+
+@SuppressLint("ConflictingOnColor")
+private val MainLightColorPalette = lightColors(
+    primary = Primary,
+    onPrimary = White,
+)
+
+@Composable
+fun MainTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+    val colors = if (darkTheme) {
+        MainDarkColorPalette
+    } else {
+        MainLightColorPalette
+    }
+
+    val systemUiController = rememberSystemUiController()
+//    val useDarkIcons = !isSystemInDarkTheme()
+
+    systemUiController.setStatusBarColor(
+        color = Color.Black,
+    )
+    systemUiController.setNavigationBarColor(
+        color = colors.onPrimary,
     )
 
     MaterialTheme(

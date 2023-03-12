@@ -3,27 +3,63 @@ package com.example.feedme
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import com.example.feedme.ui.theme.FeedMeTheme
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import com.example.feedme.ui.theme.MainTheme
+import androidx.navigation.compose.rememberNavController
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            FeedMeTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Text(text = "Hello word ! ")
+            MainTheme {
+                val navController = rememberNavController()
+
+                Scaffold(
+                    bottomBar = {
+                        BottomNavigation {
+                            BottomNavigationItem(
+                                selected = navController.currentDestination?.route == "accueil",
+                                onClick = { navController.navigate("accueil") },
+                                icon = { Icon(Icons.Default.Home, contentDescription = "Accueil") },
+                                label = { Text("Accueil") },
+                                selectedContentColor = Color.Gray,
+                                unselectedContentColor = Color.White,
+
+                            )
+                            BottomNavigationItem(
+                                selected = navController.currentDestination?.route == "parcourir",
+                                onClick = { navController.navigate("parcourir") },
+                                icon = {
+                                    Icon(
+                                        Icons.Default.Search,
+                                        contentDescription = "Parcourir"
+                                    )
+                                },
+                                label = { Text("Parcourir") },
+                                selectedContentColor = Color.Gray,
+                                unselectedContentColor = Color.White,
+                            )
+                        }
+                    }
+                ) { innerPadding ->
+                    Column(modifier = Modifier.padding(innerPadding)) {
+                        NavHost(navController, startDestination = "accueil") {
+                            composable("accueil") { AccueilScreen() }
+                            composable("parcourir") { ParcourirScreen() }
+                        }
+                    }
                 }
             }
         }
@@ -31,3 +67,25 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Preview
+@Composable
+fun SearchBar(onSearch: (String) -> Unit = {}) {
+    var query = remember { mutableStateOf("") }
+
+    Row(modifier = Modifier.fillMaxWidth()) {
+
+        IconButton(onClick = { }) {
+            Icon(Icons.Filled.Search, contentDescription = "Rechercher")
+        }
+    }
+}
+
+@Composable
+fun AccueilScreen() {
+    Text(text = "Accueil")
+}
+
+@Composable
+fun ParcourirScreen() {
+    Text(text = "Parcourir")
+}

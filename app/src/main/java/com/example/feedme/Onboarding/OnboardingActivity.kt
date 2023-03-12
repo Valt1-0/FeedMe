@@ -1,4 +1,4 @@
-package com.example.feedme
+package com.example.feedme.Onboarding
 
 import android.content.Context
 import android.content.Intent
@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
-import com.example.feedme.ui.theme.FeedMeTheme
+import com.example.feedme.MainActivity
 import com.example.feedme.ui.theme.OnBoardingTheme
 
 class OnboardingActivity : ComponentActivity() {

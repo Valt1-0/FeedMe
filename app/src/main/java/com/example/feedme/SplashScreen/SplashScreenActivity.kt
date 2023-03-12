@@ -24,8 +24,7 @@ import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import coil.size.Size
-import com.example.feedme.MainActivity
-import com.example.feedme.OnboardingActivity
+import com.example.feedme.Onboarding.OnboardingActivity
 import com.example.feedme.R
 import com.example.feedme.Snackbar
 import com.example.feedme.network.CheckNetworkConnexion
