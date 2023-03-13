@@ -33,8 +33,7 @@ FOOD_2_FORK_API_KEY="votre-clé-api"
 
 ## Dépendances
 
--   <img alt="Kotlin" src="https://img.shields.io/badge/Kotlin-0095D5?&style=for-the-badge&logo=kotlin&logoColor=white" />
-[Kotlin](https://kotlinlang.org/) - Langage de programmation utilisé pour le développement de l'application
+-   <img alt="Kotlin" src="https://img.shields.io/badge/Kotlin-0095D5?&style=for-the-badge&logo=kotlin&logoColor=white" />[Kotlin](https://kotlinlang.org/) - Langage de programmation utilisé pour le développement de l'application
 - [Jetpack Compose](https://developer.android.com/jetpack/compose) - Bibliothèque d'interface utilisateur pour Android
 - [Retrofit](https://square.github.io/retrofit/) - Bibliothèque HTTP pour Android
 - [Glide](https://github.com/bumptech/glide) - Bibliothèque de chargement et de mise en cache d'images pour Android
