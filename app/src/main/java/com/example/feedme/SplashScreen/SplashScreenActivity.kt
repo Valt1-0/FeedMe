@@ -45,7 +45,7 @@ class SplashScreenActivity : ComponentActivity() {
                     LaunchedEffect(key1 = Unit)
                     {
                         coroutineScope.launch(Dispatchers.Main) {
-                            delay(5000)
+                            //delay(5000)
                             startActivity(
                                 Intent(
                                     applicationContext,
