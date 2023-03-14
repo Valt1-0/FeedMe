@@ -3,37 +3,23 @@ package com.example.feedme
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.material.MaterialTheme.colors
+import androidx.compose.material.icons.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.clearCompositionErrors
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusState
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.feedme.ui.theme.MainTheme
 import androidx.navigation.compose.rememberNavController
-import com.example.feedme.ui.theme.BottomCardShape
-import com.example.feedme.ui.theme.InputShape
+import com.example.feedme.Components.RecipeCard
+import com.example.feedme.Components.SearchBar
+import java.lang.Math.round
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +27,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             MainTheme {
                 val navController = rememberNavController()
-
                 Scaffold(
                     bottomBar = {
                         BottomNavigation {
@@ -83,55 +68,17 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Preview
-@Composable
-fun SearchBar() {
-    val query = remember { mutableStateOf("") }
 
+
+@Composable
+fun AccueilScreen() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 10.dp, bottom = 10.dp),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            TextField(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp),
-                value = query.value,
-                onValueChange = { query.value = it },
-                placeholder = { Text(text = "Recettes ...") },
-                singleLine = true,
-                leadingIcon = {Icon(Icons.Default.Search,contentDescription = "Recherche", modifier = Modifier.size(35.dp))},
-                trailingIcon =  {
-                    IconButton(onClick = { query.value = "" }) {Icon(Icons.Default.Clear, contentDescription = "Clear")}
-                    },
-                shape = InputShape.large,
-                colors = TextFieldDefaults.textFieldColors(backgroundColor = colors.primaryVariant, focusedIndicatorColor = Color.Transparent, unfocusedIndicatorColor = Color.Transparent, disabledIndicatorColor = Color.Transparent),
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Done,
-                ),
-
-            )
-        }
+        SearchBar()
+        RecipeCard()
     }
-
-//        LazyColumn {
-//            itemsIndexed(
-//                items = recipes
-//            ) { index, recipe ->
-//                RecipeCard(recipe = recipe, onClick = {})
-//            }
-//        }
-
-}
-
-@Composable
-fun AccueilScreen() {
-    SearchBar()
 }
 
 @Composable

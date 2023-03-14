@@ -150,7 +150,8 @@ fun MainTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable (
         color = Color.Black,
     )
     systemUiController.setNavigationBarColor(
-        color = colors.onPrimary,
+        color = colors.primary,
+        darkIcons = false
     )
 
     MaterialTheme(
