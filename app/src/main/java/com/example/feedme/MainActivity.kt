@@ -83,6 +83,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Preview
 @Composable
 fun SearchBar() {
     val query = remember { mutableStateOf("") }
@@ -94,21 +95,21 @@ fun SearchBar() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(all = 3.dp),
+                .padding(top = 10.dp, bottom = 10.dp),
             horizontalArrangement = Arrangement.Center
         ) {
             TextField(
-                modifier = Modifier.background(color = colors.primaryVariant),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp),
                 value = query.value,
                 onValueChange = { query.value = it },
                 placeholder = { Text(text = "Recettes ...") },
-                maxLines = 1,
-                leadingIcon = {Icon(Icons.Default.Search,contentDescription = "Recherche")},
+                singleLine = true,
+                leadingIcon = {Icon(Icons.Default.Search,contentDescription = "Recherche", modifier = Modifier.size(35.dp))},
                 trailingIcon =  {
                     IconButton(onClick = { query.value = "" }) {Icon(Icons.Default.Clear, contentDescription = "Clear")}
                     },
                 shape = InputShape.large,
-
+                colors = TextFieldDefaults.textFieldColors(backgroundColor = colors.primaryVariant, focusedIndicatorColor = Color.Transparent, unfocusedIndicatorColor = Color.Transparent, disabledIndicatorColor = Color.Transparent),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Done,

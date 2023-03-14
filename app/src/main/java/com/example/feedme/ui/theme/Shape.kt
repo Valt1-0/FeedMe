@@ -15,5 +15,5 @@ val BottomCardShape = Shapes(
 )
 
 val InputShape = Shapes(
-    large = RoundedCornerShape(40)
+    large = RoundedCornerShape(80)
 )
