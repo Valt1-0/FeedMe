@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.feedme.ui.theme.MainTheme
@@ -77,6 +78,8 @@ fun AccueilScreen() {
             .fillMaxWidth()
     ) {
         SearchBar()
+
+        Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
         RecipeCard()
     }
 }

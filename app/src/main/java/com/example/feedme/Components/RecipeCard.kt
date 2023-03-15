@@ -1,21 +1,19 @@
 package com.example.feedme.Components
 
-import android.content.Intent
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -28,17 +26,19 @@ import kotlin.math.roundToInt
 @Preview
 @Composable
 fun RecipeCard() {
-    Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
     Card(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp, horizontal = 10.dp).clickable(onClick = {
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp, horizontal = 10.dp)
+            .clickable(onClick = {
 
-            // Onclick => Page Perso de la recette
+                // Onclick => Page Perso de la recette
 
 //                    val intent = Intent(context, DetailActivity::class.java)
 //                    intent.putExtra("itemId", itemId)
 //                    context.startActivity(intent)
 
-        }),
+            }),
     ) {
         Column(
             modifier = Modifier
@@ -54,7 +54,8 @@ fun RecipeCard() {
                 contentScale = ContentScale.Crop
             )
             Text(
-                text = "Nom du restaurant",
+                text = "Pizza Potato Skins",
+                modifier = Modifier.padding(top = 5.dp),
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp
             )
@@ -74,24 +75,29 @@ fun RecipeCard() {
                     contentDescription = "Ajouter/Retirer des favoris",
                     // isFavorite.value => Favoris value true/false Couleur
                     tint = if (true) Color.Yellow else Color.Transparent,
-                    modifier = Modifier.size(18.dp).clickable {
+                    modifier = Modifier
+                        .size(18.dp)
+                        .clickable {
 
-                        // Onclick change Favorite value
+                            // Onclick change Favorite value
 
 //                        isFavorite.value = !isFavorite.value
 //                        item.isFavorite = isFavorite.value
 //                        viewModel.toggleFavorite(item)
-                    }
+                        }
                 )
                 Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = ConvertRating(16f).toString(),
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
-                )
+                Surface(modifier = Modifier.width(40.dp), shape = RoundedCornerShape(100), color = Color(0xFFEEEEEE)) {
+                    Text(
+                        color = Color.Black,
+                        text = ConvertRating(16f).toString(),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp
+                    )
+                }
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    text = "Livraison gratuite",
+                    text = "TEST",
                     fontSize = 14.sp,
                     color = Color.Green
                 )
@@ -99,7 +105,6 @@ fun RecipeCard() {
         }
     }
 }
-
 
 
 fun ConvertRating(rating: Float): Float {

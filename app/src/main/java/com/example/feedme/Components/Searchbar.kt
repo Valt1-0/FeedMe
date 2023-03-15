@@ -10,11 +10,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.feedme.ui.theme.InputShape
 
 @Preview
@@ -33,9 +38,7 @@ fun SearchBar() {
             horizontalArrangement = Arrangement.Center
         ) {
             TextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 15.dp),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 15.dp).height(48.dp),
                 value = query.value,
                 onValueChange = { query.value = it },
                 placeholder = { Text(text = "Recettes ...") },
@@ -44,13 +47,13 @@ fun SearchBar() {
                     Icon(
                         Icons.Default.Search,
                         contentDescription = "Recherche",
-                        modifier = Modifier.size(35.dp),
+                        modifier = Modifier.size(33.dp),
                         tint = Color.Black
                     )
                 },
                 trailingIcon = {
                     IconButton(onClick = { query.value = "" }) {
-                        Icon(Icons.Default.Clear, contentDescription = "Clear", tint = Color.Black)
+                        Icon(Icons.Default.Clear, contentDescription = "Clear", tint = Color.Black, modifier = Modifier.size(20.dp))
                     }
                 },
                 shape = InputShape.large,
@@ -58,12 +61,17 @@ fun SearchBar() {
                     backgroundColor = MaterialTheme.colors.primaryVariant,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent
-                ),
+                    disabledIndicatorColor = Color.Transparent,
+                    disabledTextColor = Color.Transparent,
+
+                    ),
                 keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.None,
+                    autoCorrect = true,
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Done,
                 ),
+                textStyle = TextStyle.Default.copy(fontSize = 15.sp, fontWeight = FontWeight.Bold)
             )
         }
     }
