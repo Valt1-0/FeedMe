@@ -38,7 +38,7 @@ fun SearchBar() {
             horizontalArrangement = Arrangement.Center
         ) {
             TextField(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 15.dp).height(48.dp),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 15.dp).height(50.dp),
                 value = query.value,
                 onValueChange = { query.value = it },
                 placeholder = { Text(text = "Recettes ...") },
@@ -67,11 +67,11 @@ fun SearchBar() {
                     ),
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.None,
-                    autoCorrect = true,
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Done,
                 ),
                 textStyle = TextStyle.Default.copy(fontSize = 15.sp, fontWeight = FontWeight.Bold)
+
             )
         }
     }

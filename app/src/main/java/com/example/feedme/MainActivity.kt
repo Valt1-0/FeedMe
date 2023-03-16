@@ -8,6 +8,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.ManageSearch
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -45,7 +46,7 @@ class MainActivity : ComponentActivity() {
                                 onClick = { navController.navigate("parcourir") },
                                 icon = {
                                     Icon(
-                                        Icons.Default.Search,
+                                        Icons.Default.ManageSearch,
                                         contentDescription = "Parcourir"
                                     )
                                 },
