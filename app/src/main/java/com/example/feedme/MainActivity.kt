@@ -5,11 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.icons.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.ManageSearch
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,7 +18,6 @@ import com.example.feedme.ui.theme.MainTheme
 import androidx.navigation.compose.rememberNavController
 import com.example.feedme.Components.RecipeCard
 import com.example.feedme.Components.SearchBar
-import java.lang.Math.round
 
 
 class MainActivity : ComponentActivity() {
@@ -79,7 +76,8 @@ fun AccueilScreen() {
             .fillMaxWidth()
     ) {
         SearchBar()
-
+        Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
+        Favorites()
         Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
         RecipeCard()
     }
