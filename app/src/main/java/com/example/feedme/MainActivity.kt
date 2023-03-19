@@ -10,6 +10,7 @@ import com.example.feedme.ui.theme.MainTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+
 @ExperimentalCoroutinesApi
 @ExperimentalMaterialApi
 @AndroidEntryPoint
@@ -27,6 +28,7 @@ class MainActivity : ComponentActivity() {
 //        viewModel.SearchRecipe("beef", 1, this@MainActivity)
 
         setContent {
+
             MainTheme  {
                 // A surface container using the 'background' color from the theme
 
@@ -51,6 +53,7 @@ class MainActivity : ComponentActivity() {
 
             }
         }
+
     }
     @Composable
     fun MyApp(content: @Composable ()->Unit) {
@@ -167,5 +170,3 @@ class MainActivity : ComponentActivity() {
 //
 //    }
 }
-
-

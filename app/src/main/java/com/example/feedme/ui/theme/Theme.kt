@@ -9,6 +9,8 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.LightGray
+
 import androidx.compose.ui.graphics.Color.Companion.White
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 

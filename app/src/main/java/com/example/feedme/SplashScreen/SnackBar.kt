@@ -1,3 +1,4 @@
+
 package com.example.feedme.SplashScreen
 
 
@@ -46,3 +47,4 @@ fun Snackbar() {
         }
     }
 }
+
