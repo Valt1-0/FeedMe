@@ -29,6 +29,7 @@ import com.example.feedme.R
 import com.example.feedme.network.CheckNetworkConnexion
 import com.example.feedme.ui.theme.FeedMeTheme
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 
 import kotlinx.coroutines.launch
 
@@ -44,7 +45,7 @@ class SplashScreenActivity : ComponentActivity() {
                     LaunchedEffect(key1 = Unit)
                     {
                         coroutineScope.launch(Dispatchers.Main) {
-                            //delay(5000)
+                            delay(5000)
                             startActivity(
                                 Intent(
                                     applicationContext,
