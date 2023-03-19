@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name=".BaseApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -37,8 +38,13 @@
         </activity>
         <activity
             android:name=".MainActivity"
+            android:theme= "@style/Theme.MainTheme"
             android:exported="true"
             android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
+
+
+
+

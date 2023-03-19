@@ -26,11 +26,10 @@ import coil.request.ImageRequest
 import coil.size.Size
 import com.example.feedme.Onboarding.OnboardingActivity
 import com.example.feedme.R
-import com.example.feedme.Snackbar
 import com.example.feedme.network.CheckNetworkConnexion
 import com.example.feedme.ui.theme.FeedMeTheme
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
+
 import kotlinx.coroutines.launch
 
 
@@ -105,4 +104,7 @@ fun Content(imageLoader: ImageLoader) {
             )
         }
     }
+
 }
+
+

@@ -1,7 +1,12 @@
-package com.example.feedme
+
+package com.example.feedme.SplashScreen
+
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.Icon
+import androidx.compose.material.Snackbar
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
@@ -42,3 +47,4 @@ fun Snackbar() {
         }
     }
 }
+
