@@ -1,5 +1,6 @@
 package com.example.feedme.ui.components.viewModel
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -84,6 +86,13 @@ fun AccueilScreen(viewModel:HomeViewModel) {
         SearchBar(onSearch = ::onQueryChanged, viewModel = viewModel )
 
         Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
+        if (result.isLoading) {
+                Log.d("TAG", "MainContent: in the loading")
+                Box(modifier = Modifier
+                    .fillMaxSize()) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
+            }
         LazyColumn {
             itemsIndexed(items = viewModel.recipe.value.data) { index, recipe ->
 
