@@ -12,7 +12,7 @@ class Favorite @Inject constructor(
     )
     {
         try {
-            val recipeFavorite = RecipeFavorite(0,id)
+            val recipeFavorite = RecipeFavorite(id)
             favoriteDao.insert(recipeFavorite)
         }catch (e: Exception){
 

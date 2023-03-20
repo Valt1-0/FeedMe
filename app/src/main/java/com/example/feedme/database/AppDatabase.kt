@@ -9,7 +9,7 @@ import com.example.feedme.util.Constants
 import com.example.feedme.util.Converters
 
 
-@Database(entities = [Recipe::class, RecipeFavorite::class ], version = 15)
+@Database(entities = [Recipe::class, RecipeFavorite::class ], version = 16)
 @TypeConverters(Converters::class)
 abstract class AppDatabase: RoomDatabase() {
 

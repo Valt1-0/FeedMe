@@ -2,10 +2,15 @@ buildscript {
     ext {
         compose_ui_version = '1.4.0-beta02'
         room_version = '2.5.0'
+        kotlin_version = '1.8.0'
     }
     dependencies{
         classpath 'com.google.dagger:hilt-android-gradle-plugin:2.39'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
+    }
+    repositories {
+        mavenCentral()
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 

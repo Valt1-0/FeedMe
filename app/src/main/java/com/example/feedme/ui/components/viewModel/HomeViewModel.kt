@@ -97,7 +97,7 @@ class HomeViewModel @Inject constructor(private val mainRepository: MainReposito
 
      fun addToFavorite(id:Int)= viewModelScope.launch{
 
-        val recipeFavorite = RecipeFavorite(0,id)
+        val recipeFavorite = RecipeFavorite(id)
         favoriteDao.insert(recipeFavorite)
     }
 
