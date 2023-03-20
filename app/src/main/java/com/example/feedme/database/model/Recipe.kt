@@ -1,4 +1,4 @@
-package com.example.feedme.domain
+package com.example.feedme.database.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

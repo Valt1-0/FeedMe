@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.feedme.domain.Recipe
+import com.example.feedme.database.model.Recipe
 import com.example.feedme.domain.RecipeWithFavorite
 import com.example.feedme.util.Constants.RECIPE_PER_PAGE
 

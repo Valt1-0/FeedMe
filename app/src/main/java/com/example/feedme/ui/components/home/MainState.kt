@@ -1,4 +1,4 @@
-package com.example.feedme.ui.components
+package com.example.feedme.ui.components.home
 
 import com.example.feedme.domain.RecipeWithFavorite
 

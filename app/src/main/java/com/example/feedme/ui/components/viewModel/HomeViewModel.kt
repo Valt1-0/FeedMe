@@ -9,7 +9,7 @@ import com.example.feedme.database.RecipeDao
 import com.example.feedme.domain.RecipeFavorite
 import com.example.feedme.domain.RecipeWithFavorite
 import com.example.feedme.ui.components.MainRepository
-import com.example.feedme.ui.components.MainState
+import com.example.feedme.ui.components.home.MainState
 import com.example.feedme.util.Constants.RECIPE_PER_PAGE
 import com.example.feedme.util.RecipeDtoMapper
 import com.example.feedme.util.Resource

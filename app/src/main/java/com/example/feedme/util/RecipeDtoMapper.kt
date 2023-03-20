@@ -1,6 +1,6 @@
 package com.example.feedme.util
 
-import com.example.feedme.domain.Recipe
+import com.example.feedme.database.model.Recipe
 import com.example.feedme.network.model.RecipeDto
 import java.util.*
 

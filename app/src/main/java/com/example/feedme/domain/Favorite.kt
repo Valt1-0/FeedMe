@@ -3,7 +3,7 @@ package com.example.feedme.domain
 import com.example.feedme.database.FavoriteDao
 import javax.inject.Inject
 
-class Favorite@Inject constructor(
+class Favorite @Inject constructor(
                private val favoriteDao: FavoriteDao
 ) {
 

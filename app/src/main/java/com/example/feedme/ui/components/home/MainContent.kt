@@ -1,4 +1,4 @@
-package com.example.feedme.ui.components.viewModel
+package com.example.feedme.ui.components.home
 
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -13,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,6 +23,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.feedme.ui.components.RecipeCard
 import com.example.feedme.ui.components.SearchBar
+import com.example.feedme.ui.components.viewModel.HomeViewModel
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -73,7 +73,7 @@ fun MainContent(viewModel: HomeViewModel = hiltViewModel()) {
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun AccueilScreen(viewModel:HomeViewModel) {
+fun AccueilScreen(viewModel: HomeViewModel) {
     val query: MutableState<String> = remember { mutableStateOf("beef") }
     val result = viewModel.recipe.value
     var currentPage : MutableState<Int> = remember { mutableStateOf(1) }
@@ -83,16 +83,17 @@ fun AccueilScreen(viewModel:HomeViewModel) {
         modifier = Modifier
             .fillMaxWidth()
     ) {
+        if (result.isLoading) {
+            Log.d("TAG", "MainContent: in the loading")
+
+                LinearProgressIndicator(Modifier.fillMaxWidth(), color = MaterialTheme.colors.onPrimary)
+
+        }
+
         SearchBar(onSearch = ::onQueryChanged, viewModel = viewModel )
 
         Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
-        if (result.isLoading) {
-                Log.d("TAG", "MainContent: in the loading")
-                Box(modifier = Modifier
-                    .fillMaxSize()) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                }
-            }
+
         LazyColumn {
             itemsIndexed(items = viewModel.recipe.value.data) { index, recipe ->
 

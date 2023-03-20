@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
+import com.example.feedme.ui.components.home.MainContent
 import com.example.feedme.ui.theme.MainTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -33,7 +34,7 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
 
                     MyApp {
-                      com.example.feedme.ui.components.viewModel.MainContent()
+                      MainContent()
                     }
 //                    viewModel.observeSearchMeal().observe(this, Observer<List<Recipe>> { t ->
 //                        if (t == null) {
