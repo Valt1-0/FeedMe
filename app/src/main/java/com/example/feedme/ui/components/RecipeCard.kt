@@ -27,19 +27,22 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.feedme.R
-import com.example.feedme.domain.Recipe
+import com.example.feedme.domain.RecipeWithFavorite
+import com.example.feedme.ui.components.viewModel.HomeViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 @Composable
-fun RecipeCard(recipe:Recipe) {
+fun RecipeCard(recipe:RecipeWithFavorite,
+                OnFavoriteClick: (Int,HomeViewModel) -> Unit,
+                viewModel: HomeViewModel) {
 
-    val favorite = remember { mutableStateOf(false) }
+    val favorite = remember { mutableStateOf(recipe.favorite) }
     val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
     println("DateRecipe : " + recipe.dateUpdated.toString())
 println("recipe.dateUpdated : " + sdf.format(recipe.dateUpdated))
-
+    println("recipe.favorite" + recipe.favorite.toString())
 
 
     val longDateAdded = recipe.dateAdded
@@ -97,9 +100,11 @@ println("recipe.dateUpdated : " + sdf.format(recipe.dateUpdated))
                         .align(Alignment.TopEnd)
                         .padding(top = 8.dp, end = 8.dp)
                         .clickable(onClick = {
+
                             favorite.value = !favorite.value
 
-                            // ADD BDD
+                            OnFavoriteClick(recipe.id,viewModel)
+
                         })
 
 

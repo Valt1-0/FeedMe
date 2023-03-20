@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.feedme.domain.Recipe
+import com.example.feedme.domain.RecipeWithFavorite
 import com.example.feedme.util.Constants.RECIPE_PER_PAGE
 
 
@@ -35,16 +36,17 @@ interface RecipeDao {
      * Ex: page = 3 retrieves recipes from 60-90
      */
     @Query("""
-        SELECT * FROM recipes  
-        WHERE title LIKE '%' || :query || '%'
-        OR ingredients LIKE '%' || :query || '%' 
-        ORDER BY id DESC LIMIT :pageSize OFFSET ((:page - 1) * :pageSize)
+        SELECT recipes.*, CASE WHEN recipes_favorite.recipe_id IS NOT NULL THEN 1 ELSE 0 END AS favorite FROM recipes 
+         LEFT JOIN recipes_favorite ON recipes.id = recipes_favorite.recipe_id
+        WHERE recipes.title LIKE '%' || :query || '%'
+        OR recipes.ingredients LIKE '%' || :query || '%' 
+        ORDER BY recipes.id DESC LIMIT :pageSize OFFSET ((:page - 1) * :pageSize)
         """)
       fun searchRecipes(
         query: String,
         page: Int,
         pageSize: Int = RECIPE_PER_PAGE
-    ): List<Recipe>
+    ): List<RecipeWithFavorite>
 
     /**
      * Same as 'searchRecipes' function, but no query.

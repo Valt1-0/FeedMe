@@ -96,7 +96,7 @@ fun AccueilScreen(viewModel:HomeViewModel) {
         LazyColumn {
             itemsIndexed(items = viewModel.recipe.value.data) { index, recipe ->
 
-                RecipeCard(recipe)
+                RecipeCard(recipe = recipe,OnFavoriteClick= ::onFavoriteClick, viewModel = viewModel)
                 if ((index + 1) >= (currentPage.value * 30) && !viewModel.recipe.value.isLoading) {
                     currentPage.value = currentPage.value + 1
                     viewModel.searchRecipe(query.value, currentPage.value)
@@ -109,6 +109,10 @@ fun AccueilScreen(viewModel:HomeViewModel) {
 
 }
 
+fun onFavoriteClick(id:Int, viewModel : HomeViewModel)
+{
+    viewModel.addToFavorite(id)
+}
 fun onQueryChanged(query: String,viewModel : HomeViewModel)
 {
 

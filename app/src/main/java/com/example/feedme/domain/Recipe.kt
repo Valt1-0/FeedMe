@@ -23,5 +23,6 @@ class Recipe (
 
     var dateAdded: Date?,
 
-    var dateUpdated: Date?,
+    var dateUpdated: Date?
+
 )

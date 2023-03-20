@@ -13,7 +13,8 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-object RecipeModules {
+object
+RecipeModules {
 
     @Singleton
     @Provides

@@ -4,8 +4,10 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.feedme.database.FavoriteDao
 import com.example.feedme.database.RecipeDao
-import com.example.feedme.domain.Recipe
+import com.example.feedme.domain.RecipeFavorite
+import com.example.feedme.domain.RecipeWithFavorite
 import com.example.feedme.ui.components.MainRepository
 import com.example.feedme.ui.components.MainState
 import com.example.feedme.util.Constants.RECIPE_PER_PAGE
@@ -21,7 +23,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val mainRepository: MainRepository,
                                         private val recipeDtoMapper: RecipeDtoMapper,
-                                        private val recipeDao: RecipeDao
+                                        private val recipeDao: RecipeDao,
+                                        private  val favoriteDao: FavoriteDao
 ) : ViewModel() {
     var recipe: MutableState<MainState> = mutableStateOf(MainState())
 
@@ -41,7 +44,7 @@ class HomeViewModel @Inject constructor(private val mainRepository: MainReposito
                     is Resource.Success->{
                         println(result.data?.results?.let { recipeDtoMapper.toRecipeList(it).toString() }.toString())
                         result.data?.results?.let {
-                            var current = ArrayList<Recipe>(recipe.value.data)
+                            var current = ArrayList<RecipeWithFavorite>(recipe.value.data)
 
                             println("recipe.value.data.size " + recipe.value.data.size.toString())
                             if (page == 1) {
@@ -70,6 +73,7 @@ class HomeViewModel @Inject constructor(private val mainRepository: MainReposito
                                         pageSize = RECIPE_PER_PAGE
                                     )
                                 }
+                                println(dbResult[0].favorite.toString())
                                 println("Size db : " + dbResult.size.toString())
                                 current.addAll(dbResult)
                                 // println("current.size "+current.size.toString())
@@ -89,6 +93,12 @@ class HomeViewModel @Inject constructor(private val mainRepository: MainReposito
 
 
 
+    }
+
+     fun addToFavorite(id:Int)= viewModelScope.launch{
+
+        val recipeFavorite = RecipeFavorite(0,id)
+        favoriteDao.insert(recipeFavorite)
     }
 
 //    fun SearchRecipe(search:String,page:Int, context: MainActivity)
