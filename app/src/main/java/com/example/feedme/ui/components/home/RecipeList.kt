@@ -9,15 +9,11 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.*
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.ManageSearch
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -29,8 +25,8 @@ import com.example.feedme.ui.components.viewModel.HomeViewModel
 @OptIn(ExperimentalFoundationApi::class)
 
 @Composable
-fun MainContent(viewModel: HomeViewModel = hiltViewModel()) {
-
+fun MainContent(viewModel: HomeViewModel) {
+//println("****** *** **** Size : " + viewModel.recipe.value.data.size)
    // viewModel.searchRecipe("beef",1)
     val navController = rememberNavController()
     Scaffold(
@@ -75,30 +71,32 @@ fun MainContent(viewModel: HomeViewModel = hiltViewModel()) {
 @Composable
 fun AccueilScreen(viewModel: HomeViewModel) {
     val query: MutableState<String> = remember { mutableStateOf("beef") }
-    val result = viewModel.recipe.value
+    val recipes : MutableState<MainState> = viewModel.recipe
     var currentPage : MutableState<Int> = remember { mutableStateOf(1) }
+
 
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
     ) {
-        if (result.isLoading) {
+        if (recipes.value.isLoading) {
             Log.d("TAG", "MainContent: in the loading")
 
-                LinearProgressIndicator(Modifier.fillMaxWidth(), color = MaterialTheme.colors.onPrimary)
+                LinearProgressIndicator(Modifier.fillMaxWidth(), color = Color.Black)
 
         }
+
 
         SearchBar(onSearch = ::onQueryChanged, viewModel = viewModel )
 
         Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
 
         LazyColumn {
-            itemsIndexed(items = viewModel.recipe.value.data) { index, recipe ->
+            itemsIndexed(items = recipes.value.data) { index, recipe ->
 
                 RecipeCard(recipe = recipe,OnFavoriteClick= ::onFavoriteClick, viewModel = viewModel)
-                if ((index + 1) >= (currentPage.value * 30) && !viewModel.recipe.value.isLoading) {
+                if ((index + 1) >= (currentPage.value * 30) && !recipes.value.isLoading) {
                     currentPage.value = currentPage.value + 1
                     viewModel.searchRecipe(query.value, currentPage.value)
                 }

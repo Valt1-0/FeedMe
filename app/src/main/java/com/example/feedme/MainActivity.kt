@@ -5,11 +5,22 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.feedme.navigation.Screen
+import com.example.feedme.ui.components.OnBoarding
 import com.example.feedme.ui.components.home.MainContent
+import com.example.feedme.ui.components.viewModel.HomeViewModel
+import com.example.feedme.ui.theme.FeedMeTheme
 import com.example.feedme.ui.theme.MainTheme
+import com.example.feedme.ui.theme.OnBoardingTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 
 
 @ExperimentalCoroutinesApi
@@ -34,7 +45,29 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
 
                     MyApp {
-                      MainContent()
+//                        val isLoading = remember { mutableStateOf(true) }
+//                        val isFirst = remember { mutableStateOf(true) }
+//                        val coroutineScope = rememberCoroutineScope()
+//                        if (isLoading.value && isFirst.value)
+//                        {
+//                            SplashScreen()
+//                            isFirst.value = false
+//                        LaunchedEffect(key1 = Unit)
+//                        {
+//                            coroutineScope.launch(Dispatchers.Main) {
+//                                delay(5000)
+//                                isLoading.value = false
+//                            }
+//                        }}
+//                        if (isLoading.value) {
+//                            // Affiche un splashscreen
+//                            Surface(color = Color.Black) {
+//                                // Ajoutez ici votre logo ou une image de chargement
+//                            }
+//                        } else {
+//                            MainContent()
+//                        }
+                        MainActivityUI()
                     }
 //                    viewModel.observeSearchMeal().observe(this, Observer<List<Recipe>> { t ->
 //                        if (t == null) {
@@ -53,6 +86,43 @@ class MainActivity : ComponentActivity() {
 
 
             }
+        }
+
+    }
+
+    @Composable
+    fun MainActivityUI() {
+        val navController = rememberNavController()
+        val viewModel: HomeViewModel = viewModel()
+        LaunchedEffect(key1 = true) {
+            delay(5000)
+            navController.navigate(Screen.OnBarding.route)
+        }
+
+        NavHost(
+            navController = navController,
+            startDestination = Screen.SplashScreen.route
+        ) {
+            composable(Screen.SplashScreen.route) {
+//                val factory = HiltViewModelFactory(LocalContext.current, it)
+//                val viewModel: HomeViewModel = viewModel(factory = factory)
+                FeedMeTheme {
+                    SplashScreen(viewModel)
+                }
+            }
+            composable(Screen.RecipeList.route) {
+//                val factory = HiltViewModelFactory(LocalContext.current, it)
+//                val viewModel: HomeViewModel = viewModel(factory = factory)
+
+                    MainContent(viewModel = viewModel)
+
+            }
+            composable(Screen.OnBarding.route) {
+                OnBoardingTheme() {
+                    OnBoarding(navigateToRecipeList = navController::navigate)
+                }
+            }
+            // Ajouter d'autres destinations de navigation ici
         }
 
     }

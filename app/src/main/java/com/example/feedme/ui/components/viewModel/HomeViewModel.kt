@@ -73,11 +73,11 @@ class HomeViewModel @Inject constructor(private val mainRepository: MainReposito
                                         pageSize = RECIPE_PER_PAGE
                                     )
                                 }
-                                println(dbResult[0].favorite.toString())
+
                                 println("Size db : " + dbResult.size.toString())
                                 current.addAll(dbResult)
                                 // println("current.size "+current.size.toString())
-                                recipe.value = MainState(data = current.toList())
+                                recipe.value = MainState(data = current.toList(), isLoading = false)
                             }
                         }
                     }

@@ -77,11 +77,11 @@ fun MainContent() {
         }
         .build()
 
-    Content(imageLoader)
+    Content1(imageLoader)
 }
 
 @Composable
-fun Content(imageLoader: ImageLoader) {
+fun Content1(imageLoader: ImageLoader) {
     Surface(color = colors.primary) {
         LinearProgressIndicator(Modifier.fillMaxWidth(), color = colors.secondary)
         Column(
