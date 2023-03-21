@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun Snackbar() {
+fun Snackbar(reloadActivity: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize(),
 
@@ -25,7 +25,9 @@ fun Snackbar() {
     ) {
         Snackbar(
             action = {
-                Button(onClick = { }) {
+                Button(onClick = {
+                    reloadActivity.invoke()
+                }) {
                     Text(text = "Réessayer")
                 }
             },
