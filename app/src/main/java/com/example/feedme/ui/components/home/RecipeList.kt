@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.feedme.FavoritesList
 import com.example.feedme.ui.components.RecipeCard
 import com.example.feedme.ui.components.SearchBar
 import com.example.feedme.ui.components.viewModel.HomeViewModel
@@ -92,7 +93,28 @@ fun AccueilScreen(viewModel: HomeViewModel) {
 
         Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
 
-        LazyColumn {
+
+
+
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+           item {
+        //            LazyRow(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .background(Color.Transparent)
+//                    .padding(horizontal = 16.dp, vertical = 8.dp)
+//
+//
+//                //horizontalArrangement = Arrangement.spacedBy(16.dp),
+//            ) {
+//                itemsIndexed(items = recipes.value.data) { index, recipe ->
+//                    RecipeCard(recipe,::test ,viewModel)
+//                }
+//            }
+               FavoritesList(recipes = recipes.value.data, viewModel = viewModel)
+               Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
+            }
+
             itemsIndexed(items = recipes.value.data) { index, recipe ->
 
                 RecipeCard(recipe = recipe,OnFavoriteClick= ::onFavoriteClick, viewModel = viewModel)
@@ -103,6 +125,7 @@ fun AccueilScreen(viewModel: HomeViewModel) {
             }
 
         }
+
     }
 
 

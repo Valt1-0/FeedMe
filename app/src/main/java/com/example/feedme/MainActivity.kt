@@ -132,8 +132,10 @@ class MainActivity : ComponentActivity() {
             composable(Screen.RecipeList.route) {
 //                val factory = HiltViewModelFactory(LocalContext.current, it)
 //                val viewModel: HomeViewModel = viewModel(factory = factory)
+                    MainTheme() {
+                        MainContent(viewModel = viewModel)
+                    }
 
-                    MainContent(viewModel = viewModel)
 
             }
             composable(Screen.OnBarding.route) {
