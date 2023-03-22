@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 @Entity(tableName = "recipes")
-class Recipe (
+class Recipe(
     @PrimaryKey(autoGenerate = false)
     var id: Int,
 
@@ -23,6 +23,6 @@ class Recipe (
 
     var dateAdded: Date?,
 
-    var dateUpdated: Date?
+    var dateUpdated: Date?,
 
-)
+    )

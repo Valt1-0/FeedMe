@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.FeedMe" parent="android:Theme.Material.Light.NoActionBar">
-    </style>
+    <style name="Theme.FeedMe" parent="android:Theme.Material.Light.NoActionBar"></style>
 
-    <style name="Theme.Onboarding" parent="android:Theme.Material.Light.NoActionBar">
-    </style>
+    <style name="Theme.Onboarding" parent="android:Theme.Material.Light.NoActionBar"></style>
 
-    <style name="Theme.MainTheme" parent="android:Theme.Material.Light.NoActionBar">
-    </style>
+    <style name="Theme.MainTheme" parent="android:Theme.Material.Light.NoActionBar"></style>
 
 
 </resources>

@@ -34,14 +34,16 @@ import java.util.*
 
 
 @Composable
-fun RecipeCard(recipe:RecipeWithFavorite,
-                OnFavoriteClick: (Int,HomeViewModel) -> Unit,
-                viewModel: HomeViewModel) {
+fun RecipeCard(
+    recipe: RecipeWithFavorite,
+    OnFavoriteClick: (Int, HomeViewModel) -> Unit,
+    viewModel: HomeViewModel,
+) {
 
     val favorite = remember { mutableStateOf(recipe.favorite) }
     val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
     println("DateRecipe : " + recipe.dateUpdated.toString())
-println("recipe.dateUpdated : " + sdf.format(recipe.dateUpdated))
+    println("recipe.dateUpdated : " + sdf.format(recipe.dateUpdated))
     println("recipe.favorite" + recipe.favorite.toString())
 
 
@@ -103,7 +105,7 @@ println("recipe.dateUpdated : " + sdf.format(recipe.dateUpdated))
 
                             favorite.value = !favorite.value
 
-                            OnFavoriteClick(recipe.id,viewModel)
+                            OnFavoriteClick(recipe.id, viewModel)
 
                         })
 
@@ -112,7 +114,7 @@ println("recipe.dateUpdated : " + sdf.format(recipe.dateUpdated))
             }
             Text(
                 // Nom recette plus publisher
-                text = recipe.title + " - " + recipe.publisher ,
+                text = recipe.title + " - " + recipe.publisher,
                 modifier = Modifier.padding(top = 5.dp),
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp

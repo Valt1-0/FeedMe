@@ -1,4 +1,5 @@
 package com.example.feedme.util
+
 object Constants {
     const val RECIPE_PER_PAGE = 30
 

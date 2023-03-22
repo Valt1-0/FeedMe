@@ -46,10 +46,10 @@ class MainActivity : ComponentActivity() {
 
         setContent {
 
-            MainTheme  {
+            MainTheme {
                 // A surface container using the 'background' color from the theme
 
-                    MyApp {
+                MyApp {
 //                        val isLoading = remember { mutableStateOf(true) }
 //                        val isFirst = remember { mutableStateOf(true) }
 //                        val coroutineScope = rememberCoroutineScope()
@@ -72,8 +72,8 @@ class MainActivity : ComponentActivity() {
 //                        } else {
 //                            MainContent()
 //                        }
-                        MainActivityUI()
-                    }
+                    MainActivityUI()
+                }
 //                    viewModel.observeSearchMeal().observe(this, Observer<List<Recipe>> { t ->
 //                        if (t == null) {
 //                            Toast.makeText(this, "No such a meal", Toast.LENGTH_SHORT).show()
@@ -82,12 +82,12 @@ class MainActivity : ComponentActivity() {
 //                        }
 //                    })
                 //    val searchResults by viewModel.observeSearchMeal().observeAsState(emptyList())
-                   // RecipeListScreen()
-                    //   val recipesState by viewModel.observeSearchMeal().collectAsState(initial = emptyList())
-                    //  val recipes: List<Recipe> by  viewModel.SearchRecipeLiveData.observeAsState(initial = emptyList())
+                // RecipeListScreen()
+                //   val recipesState by viewModel.observeSearchMeal().collectAsState(initial = emptyList())
+                //  val recipes: List<Recipe> by  viewModel.SearchRecipeLiveData.observeAsState(initial = emptyList())
 
 
-                    //  RecipeListScreen(viewModel.SearchRecipeLiveData.observeAsState(initial = emptyList()).value, ::onChangeScrollPosition)
+                //  RecipeListScreen(viewModel.SearchRecipeLiveData.observeAsState(initial = emptyList()).value, ::onChangeScrollPosition)
 
 
             }
@@ -105,7 +105,6 @@ class MainActivity : ComponentActivity() {
 //        }
 
 
-
         NavHost(
             navController = navController,
             startDestination = Screen.SplashScreen.route
@@ -119,7 +118,7 @@ class MainActivity : ComponentActivity() {
                         val coroutineScope = rememberCoroutineScope()
                         LaunchedEffect(key1 = Unit)
                         {
-                            viewModel.searchRecipe("beef",1)
+                            viewModel.searchRecipe("beef", 1)
                             delay(5000)
                             navController.navigate(Screen.OnBarding.route)
                         }
@@ -133,7 +132,7 @@ class MainActivity : ComponentActivity() {
 //                val factory = HiltViewModelFactory(LocalContext.current, it)
 //                val viewModel: HomeViewModel = viewModel(factory = factory)
 
-                    MainContent(viewModel = viewModel)
+                MainContent(viewModel = viewModel)
 
             }
             composable(Screen.OnBarding.route) {
@@ -145,8 +144,9 @@ class MainActivity : ComponentActivity() {
         }
 
     }
+
     @Composable
-    fun MyApp(content: @Composable ()->Unit) {
+    fun MyApp(content: @Composable () -> Unit) {
         content()
     }
 

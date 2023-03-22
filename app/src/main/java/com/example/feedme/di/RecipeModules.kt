@@ -28,4 +28,4 @@ RecipeModules {
     fun provideMainRepository(recipeService: RecipeService): MainRepository {
         return MainRepository(recipeService = recipeService)
     }
-    }
+}

@@ -43,7 +43,7 @@ fun FavoritesList() {
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             items(favorites) { recipe ->
-              //  RecipeCard()
+                //  RecipeCard()
             }
         }
     }

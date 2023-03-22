@@ -4,7 +4,7 @@ buildscript {
         room_version = '2.5.0'
         kotlin_version = '1.8.0'
     }
-    dependencies{
+    dependencies {
         classpath 'com.google.dagger:hilt-android-gradle-plugin:2.39'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 

@@ -7,14 +7,16 @@ import com.example.feedme.util.Resource
 import javax.inject.Inject
 
 
-class MainRepository  @Inject constructor(private val recipeService:RecipeService) {
+class MainRepository @Inject constructor(private val recipeService: RecipeService) {
 
-    suspend fun getQueryItems(q:String, page:Int): Resource<RecipeSearchResponse> {
+    suspend fun getQueryItems(q: String, page: Int): Resource<RecipeSearchResponse> {
         return try {
-            val result = recipeService.searchRecipes(query = q, token = Constants.AUTH_TOKEN, page = page)
+            val result =
+                recipeService.searchRecipes(query = q, token = Constants.AUTH_TOKEN, page = page)
 
             Resource.Success(data = result)
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Resource.Error(message = e.message.toString())
         }
-}}
+    }
+}

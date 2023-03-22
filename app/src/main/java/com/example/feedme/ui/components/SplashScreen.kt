@@ -21,8 +21,7 @@ import coil.size.Size
 import com.example.feedme.ui.components.viewModel.HomeViewModel
 
 @Composable
-fun SplashScreen(viewModel: HomeViewModel)
-{
+fun SplashScreen(viewModel: HomeViewModel) {
 
 //    LaunchedEffect(true) {
 //        viewModel.searchRecipe("beef",1)
