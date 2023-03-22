@@ -2,11 +2,22 @@ package com.example.feedme.database
 
 import androidx.room.*
 import com.example.feedme.domain.RecipeFavorite
+import com.example.feedme.domain.RecipeWithFavorite
 
 @Dao
 interface FavoriteDao {
-    @Query("SELECT * FROM recipes_favorite")
-    suspend fun getAll(): List<RecipeFavorite>
+    @Query("""SELECT recipes.*, CASE WHEN recipes_favorite.recipe_id IS NOT NULL THEN 1 ELSE 0 END AS favorite  FROM recipes_favorite 
+                INNER JOIN recipes ON recipes_favorite.recipe_id = recipes.id
+             ORDER BY recipes.id DESC LIMIT 20 OFFSET ((:page - 1) * 20)""")
+    suspend fun searchFavorites(page : Int): List<RecipeWithFavorite>
+
+
+    @Query("""SELECT recipes.*, CASE WHEN recipes_favorite.recipe_id IS NOT NULL THEN 1 ELSE 0 END AS favorite  FROM recipes_favorite 
+                INNER JOIN recipes ON recipes_favorite.recipe_id = recipes.id
+                 WHERE recipes.title LIKE '%' || :query || '%'
+                    OR recipes.ingredients LIKE '%' || :query || '%'
+             ORDER BY recipes.id DESC LIMIT 20 OFFSET ((:page - 1) * 20)""")
+    suspend fun searchFavoritesWithQuery(query: String,page : Int): List<RecipeWithFavorite>
 
     @Query("SELECT COUNT(*) FROM recipes_favorite WHERE recipe_id = :recipeId")
     suspend fun countFavorite(recipeId: Int): Int
@@ -19,4 +30,7 @@ interface FavoriteDao {
 
     @Query("SELECT EXISTS(SELECT 1 FROM recipes_favorite WHERE recipe_id = :recipeId LIMIT 1)")
     suspend fun isFavorite(recipeId: Int): Boolean
+
+
+
 }
