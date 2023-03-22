@@ -28,7 +28,7 @@ import com.example.feedme.ui.components.viewModel.HomeViewModel
 @Composable
 fun MainContent(viewModel: HomeViewModel) {
 //println("****** *** **** Size : " + viewModel.recipe.value.data.size)
-   // viewModel.searchRecipe("beef",1)
+    // viewModel.searchRecipe("beef",1)
     val navController = rememberNavController()
     Scaffold(
         bottomBar = {
@@ -72,8 +72,8 @@ fun MainContent(viewModel: HomeViewModel) {
 @Composable
 fun AccueilScreen(viewModel: HomeViewModel) {
     val query: MutableState<String> = remember { mutableStateOf("beef") }
-    val recipes : MutableState<MainState> = viewModel.recipe
-    var currentPage : MutableState<Int> = remember { mutableStateOf(1) }
+    val recipes: MutableState<MainState> = viewModel.recipe
+    var currentPage: MutableState<Int> = remember { mutableStateOf(1) }
 
 
 
@@ -84,12 +84,12 @@ fun AccueilScreen(viewModel: HomeViewModel) {
         if (recipes.value.isLoading) {
             Log.d("TAG", "MainContent: in the loading")
 
-                LinearProgressIndicator(Modifier.fillMaxWidth(), color = Color.Black)
+            LinearProgressIndicator(Modifier.fillMaxWidth(), color = Color.Black)
 
         }
 
 
-        SearchBar(onSearch = ::onQueryChanged, viewModel = viewModel )
+        SearchBar(onSearch = ::onQueryChanged, viewModel = viewModel)
 
         Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
 
@@ -117,7 +117,11 @@ fun AccueilScreen(viewModel: HomeViewModel) {
 
             itemsIndexed(items = recipes.value.data) { index, recipe ->
 
-                RecipeCard(recipe = recipe,OnFavoriteClick= ::onFavoriteClick, viewModel = viewModel)
+                RecipeCard(
+                    recipe = recipe,
+                    OnFavoriteClick = ::onFavoriteClick,
+                    viewModel = viewModel
+                )
                 if ((index + 1) >= (currentPage.value * 30) && !recipes.value.isLoading) {
                     currentPage.value = currentPage.value + 1
                     viewModel.searchRecipe(query.value, currentPage.value)
@@ -131,15 +135,15 @@ fun AccueilScreen(viewModel: HomeViewModel) {
 
 }
 
-fun onFavoriteClick(id:Int, viewModel : HomeViewModel)
-{
+fun onFavoriteClick(id: Int, viewModel: HomeViewModel) {
     viewModel.addToFavorite(id)
 }
-fun onQueryChanged(query: String,viewModel : HomeViewModel)
-{
 
-    viewModel.searchRecipe(query,1)
+fun onQueryChanged(query: String, viewModel: HomeViewModel) {
+
+    viewModel.searchRecipe(query, 1)
 }
+
 @Composable
 fun ParcourirScreen() {
     Text(text = "Parcourir")

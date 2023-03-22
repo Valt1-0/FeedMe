@@ -29,8 +29,8 @@ import com.example.feedme.ui.theme.InputShape
 @ExperimentalComposeUiApi
 @Composable
 fun SearchBar(
-    onSearch: (String,HomeViewModel) -> Unit,
-    viewModel: HomeViewModel
+    onSearch: (String, HomeViewModel) -> Unit,
+    viewModel: HomeViewModel,
 ) {
     val query = remember { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
@@ -46,7 +46,10 @@ fun SearchBar(
             horizontalArrangement = Arrangement.Center
         ) {
             TextField(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 15.dp).height(50.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 15.dp)
+                    .height(50.dp),
                 value = query.value,
                 onValueChange = { query.value = it },
                 placeholder = { Text(text = "Recettes ...") },
@@ -61,7 +64,12 @@ fun SearchBar(
                 },
                 trailingIcon = {
                     IconButton(onClick = { query.value = "" }) {
-                        Icon(Icons.Default.Clear, contentDescription = "Clear", tint = Color.Black, modifier = Modifier.size(20.dp))
+                        Icon(
+                            Icons.Default.Clear,
+                            contentDescription = "Clear",
+                            tint = Color.Black,
+                            modifier = Modifier.size(20.dp)
+                        )
                     }
                 },
                 shape = InputShape.large,
@@ -80,7 +88,7 @@ fun SearchBar(
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = {
-                        onSearch(query.value,viewModel)
+                        onSearch(query.value, viewModel)
 //              focusManager.clearFocus(forcedClear = true) // close keyboard
                         keyboardController?.hideSoftwareKeyboard() // another way to close keyboard
                     },

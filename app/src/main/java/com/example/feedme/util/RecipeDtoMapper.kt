@@ -14,8 +14,8 @@ class RecipeDtoMapper : EntityMapper<RecipeDto, Recipe> {
             featuredImage = entity.featuredImage,
             rating = entity.rating,
             sourceUrl = entity.sourceUrl,
-           // description = entity.description,
-          //  cookingInstructions = entity.cookingInstructions,
+            // description = entity.description,
+            //  cookingInstructions = entity.cookingInstructions,
             ingredients = convertIngredientListToString(entity.ingredients),
             dateAdded = convertLongToDate(entity.longDateAdded),
             dateUpdated = convertLongToDate(entity.longDateUpdated)
@@ -38,7 +38,7 @@ class RecipeDtoMapper : EntityMapper<RecipeDto, Recipe> {
 
     private fun convertIngredientListToString(ingredients: List<String>): String {
         val ingredientsString = StringBuilder()
-        for(ingredient in ingredients){
+        for (ingredient in ingredients) {
             ingredientsString.append("$ingredient,")
         }
         return ingredientsString.toString()

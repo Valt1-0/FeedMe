@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 @Entity(tableName = "recipes_favorite")
-class RecipeFavorite (
+class RecipeFavorite(
 
     @PrimaryKey(autoGenerate = false)
     var recipe_id: Int,

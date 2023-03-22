@@ -11,7 +11,7 @@ import com.example.feedme.navigation.Screen
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun OnBoarding(navigateToRecipeList : (String) -> Unit){
+fun OnBoarding(navigateToRecipeList: (String) -> Unit) {
     var display = false
     val PREFS_NAME = "OnboardPREF"
     val PREF_KEY_ONBOARDING_COMPLETE = "onboardingComplete"
@@ -35,6 +35,6 @@ fun OnBoarding(navigateToRecipeList : (String) -> Unit){
         prefs.edit().putBoolean(PREF_KEY_ONBOARDING_COMPLETE, true).apply()
         navigateToRecipeList(Screen.RecipeList.route)
 
-}
+    }
 
 }

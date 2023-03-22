@@ -1,6 +1,7 @@
 # FeedMe WORK IN PROGRESS
 
-Cette application a été développée en utilisant Kotlin et Jetpack Compose. Elle permet de rechercher des recettes alimentaires à partir de l'API Food2Fork.
+Cette application a été développée en utilisant Kotlin et Jetpack Compose. Elle permet de rechercher
+des recettes alimentaires à partir de l'API Food2Fork.
 
 ## Fonctionnalités
 
@@ -29,15 +30,20 @@ git clone https://github.com/Valt1-0/FeedMe.git
 FOOD_2_FORK_API_KEY="votre-clé-api"
 ```
 
-4. Ouvrir le projet dans Android Studio et exécuter l'application sur un émulateur ou un appareil Android
+4. Ouvrir le projet dans Android Studio et exécuter l'application sur un émulateur ou un appareil
+   Android
 
 ## Dépendances
 
 <!-- -   <img alt="Kotlin" src="https://img.shields.io/badge/Kotlin-0095D5?&style=for-the-badge&logo=kotlin&logoColor=white" /> -->
-- [Kotlin](https://kotlinlang.org/) - Langage de programmation utilisé pour le développement de l'application
-- [Jetpack Compose](https://developer.android.com/jetpack/compose) - Bibliothèque d'interface utilisateur pour Android
+
+- [Kotlin](https://kotlinlang.org/) - Langage de programmation utilisé pour le développement de
+  l'application
+- [Jetpack Compose](https://developer.android.com/jetpack/compose) - Bibliothèque d'interface
+  utilisateur pour Android
 - [Retrofit](https://square.github.io/retrofit/) - Bibliothèque HTTP pour Android
-- [Glide](https://github.com/bumptech/glide) - Bibliothèque de chargement et de mise en cache d'images pour Android
+- [Glide](https://github.com/bumptech/glide) - Bibliothèque de chargement et de mise en cache
+  d'images pour Android
 
 ## Licence
 
