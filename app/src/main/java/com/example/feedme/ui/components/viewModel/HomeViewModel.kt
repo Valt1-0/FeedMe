@@ -8,6 +8,7 @@ import com.example.feedme.database.FavoriteDao
 import com.example.feedme.database.RecipeDao
 import com.example.feedme.domain.RecipeFavorite
 import com.example.feedme.domain.RecipeWithFavorite
+import com.example.feedme.network.CheckNetworkConnexion
 import com.example.feedme.ui.components.MainRepository
 import com.example.feedme.ui.components.home.MainState
 import com.example.feedme.util.Constants.RECIPE_PER_PAGE
@@ -26,9 +27,14 @@ class HomeViewModel @Inject constructor(
     private val recipeDtoMapper: RecipeDtoMapper,
     private val recipeDao: RecipeDao,
     private val favoriteDao: FavoriteDao,
+    private val CheckNetworkConnexion: CheckNetworkConnexion
 ) : ViewModel() {
     var recipe: MutableState<MainState> = mutableStateOf(MainState())
 
+
+    fun isNetworkAvailable(): Boolean {
+        return CheckNetworkConnexion.isConnectedToInternet()
+    }
 
     fun searchRecipe(q: String, page: Int) = viewModelScope.launch {
         recipe.value = MainState(isLoading = true, data = recipe.value.data)

@@ -9,14 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.feedme.SplashScreen.Snackbar
 import com.example.feedme.navigation.Screen
-import com.example.feedme.network.CheckNetworkConnexion
 import com.example.feedme.ui.components.OnBoarding
 import com.example.feedme.ui.components.home.MainContent
 import com.example.feedme.ui.components.viewModel.HomeViewModel
@@ -115,7 +113,7 @@ class MainActivity : ComponentActivity() {
 //                val viewModel: HomeViewModel = viewModel(factory = factory)
                 FeedMeTheme {
                     SplashScreen(viewModel)
-                    if (CheckNetworkConnexion().isConnectedToInternet(LocalContext.current)) {
+                    if (viewModel.isNetworkAvailable()) {
                         val coroutineScope = rememberCoroutineScope()
                         LaunchedEffect(key1 = Unit)
                         {

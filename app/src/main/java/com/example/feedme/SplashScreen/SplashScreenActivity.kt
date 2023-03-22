@@ -26,11 +26,9 @@ import coil.request.ImageRequest
 import coil.size.Size
 import com.example.feedme.Onboarding.OnboardingActivity
 import com.example.feedme.R
-import com.example.feedme.network.CheckNetworkConnexion
 import com.example.feedme.ui.theme.FeedMeTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-
 import kotlinx.coroutines.launch
 
 
@@ -40,7 +38,7 @@ class SplashScreenActivity : ComponentActivity() {
         setContent {
             FeedMeTheme {
                 MainContent()
-                if (CheckNetworkConnexion().isConnectedToInternet(this)) {
+                if (true) {
                     val coroutineScope = rememberCoroutineScope()
                     LaunchedEffect(key1 = Unit)
                     {

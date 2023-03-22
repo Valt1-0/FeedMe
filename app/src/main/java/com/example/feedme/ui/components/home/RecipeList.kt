@@ -1,6 +1,7 @@
 package com.example.feedme.ui.components.home
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -74,8 +76,14 @@ fun AccueilScreen(viewModel: HomeViewModel) {
     val query: MutableState<String> = remember { mutableStateOf("beef") }
     val recipes: MutableState<MainState> = viewModel.recipe
     var currentPage: MutableState<Int> = remember { mutableStateOf(1) }
+    val isNetworkAvailable = viewModel.isNetworkAvailable()
 
-
+    if (isNetworkAvailable) {
+        // afficher le contenu de l'interface
+    } else {
+        // afficher un toast pour informer l'utilisateur qu'il n'y a pas de connexion
+        Toast.makeText(LocalContext.current, "Pas de connexion internet", Toast.LENGTH_SHORT).show()
+    }
 
     Column(
         modifier = Modifier
