@@ -7,7 +7,6 @@ import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -24,9 +23,10 @@ import com.example.feedme.ui.components.viewModel.HomeViewModel
 @Composable
 fun SplashScreen(viewModel: HomeViewModel)
 {
-    LaunchedEffect(true) {
-        viewModel.searchRecipe("beef",1)
-    }
+
+//    LaunchedEffect(true) {
+//        viewModel.searchRecipe("beef",1)
+//    }
 
     val imageLoader = ImageLoader.Builder(LocalContext.current)
         .components {

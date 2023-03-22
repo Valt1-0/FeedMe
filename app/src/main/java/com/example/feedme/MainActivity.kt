@@ -1,17 +1,22 @@
 package com.example.feedme
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.feedme.SplashScreen.Snackbar
 import com.example.feedme.navigation.Screen
+import com.example.feedme.network.CheckNetworkConnexion
 import com.example.feedme.ui.components.OnBoarding
 import com.example.feedme.ui.components.home.MainContent
 import com.example.feedme.ui.components.viewModel.HomeViewModel
@@ -94,10 +99,12 @@ class MainActivity : ComponentActivity() {
     fun MainActivityUI() {
         val navController = rememberNavController()
         val viewModel: HomeViewModel = viewModel()
-        LaunchedEffect(key1 = true) {
-            delay(5000)
-            navController.navigate(Screen.OnBarding.route)
-        }
+//        LaunchedEffect(key1 = true) {
+//            delay(5000)
+//            navController.navigate(Screen.OnBarding.route)
+//        }
+
+
 
         NavHost(
             navController = navController,
@@ -108,6 +115,18 @@ class MainActivity : ComponentActivity() {
 //                val viewModel: HomeViewModel = viewModel(factory = factory)
                 FeedMeTheme {
                     SplashScreen(viewModel)
+                    if (CheckNetworkConnexion().isConnectedToInternet(LocalContext.current)) {
+                        val coroutineScope = rememberCoroutineScope()
+                        LaunchedEffect(key1 = Unit)
+                        {
+                            viewModel.searchRecipe("beef",1)
+                            delay(5000)
+                            navController.navigate(Screen.OnBarding.route)
+                        }
+                    } else {
+                        Snackbar { reloadActivity() }
+                    }
+
                 }
             }
             composable(Screen.RecipeList.route) {
@@ -129,6 +148,13 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun MyApp(content: @Composable ()->Unit) {
         content()
+    }
+
+    private fun reloadActivity() {
+        val intent = Intent(applicationContext, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        finish()
     }
 //    @Composable
 //    fun MyScreen(viewModel: HomeViewModel, context: Context) {
