@@ -10,5 +10,5 @@ sealed class Screen(
 
     object RecipeDetails : Screen("recipeDetails")
 
-    object OnBarding : Screen("onBoarding")
+    object OnBoarding : Screen("onBoarding")
 }

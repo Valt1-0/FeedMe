@@ -98,6 +98,7 @@ fun OnBoardingTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Compos
     )
     systemUiController.setNavigationBarColor(
         color = colors.secondary,
+        darkIcons = false
     )
 
     MaterialTheme(

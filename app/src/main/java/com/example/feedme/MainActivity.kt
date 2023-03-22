@@ -99,7 +99,7 @@ class MainActivity : ComponentActivity() {
         val viewModel: HomeViewModel = viewModel()
 //        LaunchedEffect(key1 = true) {
 //            delay(5000)
-//            navController.navigate(Screen.OnBarding.route)
+//            navController.navigate(Screen.OnBoarding.route)
 //        }
 
 
@@ -119,7 +119,7 @@ class MainActivity : ComponentActivity() {
                         {
                             viewModel.searchRecipe("beef",1)
                             delay(5000)
-                            navController.navigate(Screen.OnBarding.route)
+                            navController.navigate(Screen.OnBoarding.route)
                         }
                     } else {
                         Snackbar { reloadActivity() }
@@ -136,7 +136,7 @@ class MainActivity : ComponentActivity() {
 
 
             }
-            composable(Screen.OnBarding.route) {
+            composable(Screen.OnBoarding.route) {
                 OnBoardingTheme() {
                     OnBoarding(navigateToRecipeList = navController::navigate)
                 }

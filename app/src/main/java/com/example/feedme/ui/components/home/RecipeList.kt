@@ -40,7 +40,6 @@ fun MainContent(viewModel: HomeViewModel) {
                     onClick = { navController.navigate("accueil") },
                     icon = { Icon(Icons.Default.Home, contentDescription = "Accueil") },
                     label = { Text("Accueil") },
-                    selectedContentColor = Color.Gray,
                     unselectedContentColor = Color.White,
 
                     )
@@ -54,7 +53,6 @@ fun MainContent(viewModel: HomeViewModel) {
                         )
                     },
                     label = { Text("Parcourir") },
-                    selectedContentColor = Color.Gray,
                     unselectedContentColor = Color.White,
                 )
             }
@@ -92,7 +90,7 @@ fun AccueilScreen(viewModel: HomeViewModel) {
         if (recipes.value.isLoading) {
             Log.d("TAG", "MainContent: in the loading")
 
-            LinearProgressIndicator(Modifier.fillMaxWidth(), color = Color.Black)
+            LinearProgressIndicator(Modifier.fillMaxWidth(), color = MaterialTheme.colors.primary)
 
         }
 
