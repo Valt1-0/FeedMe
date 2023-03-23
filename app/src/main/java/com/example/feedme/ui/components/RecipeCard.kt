@@ -31,7 +31,14 @@ import com.example.feedme.domain.RecipeWithFavorite
 import com.example.feedme.ui.components.viewModel.HomeViewModel
 import java.text.SimpleDateFormat
 import java.util.*
-
+import androidx.compose.animation.core.*
+import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.interaction.Interaction
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 
 @Composable
 fun RecipeCard(
@@ -92,24 +99,19 @@ fun RecipeCard(
                     contentScale = ContentScale.Crop
                 )
                 Icon(
-                    // isFavorite.value => Favoris value true/false Icon
+                    // favorite.value => Favoris value true/false Icon
                     imageVector = if (favorite.value) Icons.Filled.Star else Icons.TwoTone.Star,
                     contentDescription = "Ajouter/Retirer des favoris",
-                    // isFavorite.value => Favoris value true/false Couleur
-                    tint = Color.White,
+                    // favorite.value => Favoris value true/false Couleur
+                    tint = if (favorite.value) Color.Yellow else Color.White,
                     modifier = Modifier
                         .size(40.dp)
                         .align(Alignment.TopEnd)
                         .padding(top = 8.dp, end = 8.dp)
                         .clickable(onClick = {
-
                             favorite.value = !favorite.value
-
                             OnFavoriteClick(recipe.id, viewModel)
-
-                        })
-
-
+                        }),
                 )
             }
             Text(
