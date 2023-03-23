@@ -19,8 +19,8 @@ interface FavoriteDao {
              ORDER BY recipes.id DESC LIMIT 20 OFFSET ((:page - 1) * 20)""")
     suspend fun searchFavoritesWithQuery(query: String,page : Int): List<RecipeWithFavorite>
 
-    @Query("SELECT COUNT(*) FROM recipes_favorite WHERE recipe_id = :recipeId")
-    suspend fun countFavorite(recipeId: Int): Int
+    @Query("SELECT COUNT(*) FROM recipes_favorite")
+    suspend fun countFavorite(): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(recipeFavorite: RecipeFavorite)

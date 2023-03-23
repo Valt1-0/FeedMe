@@ -42,6 +42,7 @@ class SearchRecipes( private val query: String,
 
                             withContext(Dispatchers.IO) {
                                 //  recipeDao.deleteAllRecipes()
+                                println("SIZE FETCH API " + recipeDtoMapper.toRecipeList(it).size)
                                 recipeDao.insertRecipes(recipeDtoMapper.toRecipeList(it))
 
                                var dbResult =  SearchFromDatabase()
@@ -83,12 +84,11 @@ return recipe
         //Recherche dans la base de données
         val dbResult = if (query.isBlank()) {
             recipeDao.searchRecipes(
-                query = query,
                 page = page,
                 pageSize = Constants.RECIPE_PER_PAGE
             )
         } else {
-            recipeDao.searchRecipes(
+            recipeDao.searchRecipesWithQuery(
                 query = query,
                 page = page,
                 pageSize = Constants.RECIPE_PER_PAGE

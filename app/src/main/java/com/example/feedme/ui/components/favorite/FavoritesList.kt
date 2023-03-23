@@ -12,11 +12,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feedme.domain.RecipeWithFavorite
 import com.example.feedme.ui.components.RecipeCard
-import com.example.feedme.ui.components.viewModel.HomeViewModel
 
 
 @Composable
-fun FavoritesList(recipes : List<RecipeWithFavorite>,viewModel: HomeViewModel) {
+fun FavoritesList(recipes : List<RecipeWithFavorite>, OnFavoriteClick : (Int,Boolean) -> Unit) {
     val favorites = listOf("recette1", "recette2", "recette3", "recette4", "recette5")
 
 
@@ -45,13 +44,10 @@ fun FavoritesList(recipes : List<RecipeWithFavorite>,viewModel: HomeViewModel) {
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             itemsIndexed(recipes) { index, recipe ->
-               RecipeCard(recipe,::test ,viewModel)
+               RecipeCard(recipe,OnFavoriteClick)
             }
         }
     }
 
 
 }
-
-fun test(id:Int, viewModel : HomeViewModel)
-{}

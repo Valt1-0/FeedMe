@@ -22,6 +22,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.feedme.FavoritesList
 import com.example.feedme.ui.components.RecipeCard
 import com.example.feedme.ui.components.SearchBar
+import com.example.feedme.ui.components.favorite.FavoriteEventTrigger
 import com.example.feedme.ui.components.viewModel.HomeViewModel
 
 
@@ -71,9 +72,19 @@ fun MainContent(viewModel: HomeViewModel) {
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AccueilScreen(viewModel: HomeViewModel) {
-    val query: MutableState<String> = remember { mutableStateOf("beef") }
-    val recipes: MutableState<MainState> = viewModel.recipe
-    var currentPage: MutableState<Int> = remember { mutableStateOf(1) }
+    var query =  viewModel.query.value
+
+    val page = viewModel.page.value
+
+//LaunchedEffect(viewModel.query.value)
+//{
+//    query = viewModel.query.value
+//}
+
+    var recipes: MutableState<MainState> =  remember { viewModel.recipe }
+
+
+    //var currentPage: MutableState<Int> = remember { mutableStateOf(1) }
     val isNetworkAvailable = viewModel.isNetworkAvailable()
 
     if (isNetworkAvailable) {
@@ -95,7 +106,8 @@ fun AccueilScreen(viewModel: HomeViewModel) {
         }
 
 
-        SearchBar(onSearch = ::onQueryChanged, viewModel = viewModel)
+        SearchBar(query = query ,onSearch = {viewModel.onEventTrigger(FavoriteEventTrigger.SearchEvent)},
+            onQueryChange=viewModel::onQueryChange)
 
         Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
 
@@ -117,7 +129,7 @@ fun AccueilScreen(viewModel: HomeViewModel) {
 //                    RecipeCard(recipe,::test ,viewModel)
 //                }
 //            }
-               FavoritesList(recipes = recipes.value.data, viewModel = viewModel)
+               FavoritesList(recipes = recipes.value.data.filter { it.favorite },viewModel::addOrDeleteToFavorite)
                Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
             }
 
@@ -125,12 +137,10 @@ fun AccueilScreen(viewModel: HomeViewModel) {
 
                 RecipeCard(
                     recipe = recipe,
-                    OnFavoriteClick = ::onFavoriteClick,
-                    viewModel = viewModel
+                    OnFavoriteClick = viewModel::addOrDeleteToFavorite
                 )
-                if ((index + 1) >= (currentPage.value * 30) && !recipes.value.isLoading) {
-                    currentPage.value = currentPage.value + 1
-                    viewModel.searchRecipe(query.value, currentPage.value)
+                if ((index + 1) >= (page * 30) && !recipes.value.isLoading) {
+                  viewModel.onEventTrigger(FavoriteEventTrigger.NextPageEvent)
                 }
             }
 
@@ -141,14 +151,9 @@ fun AccueilScreen(viewModel: HomeViewModel) {
 
 }
 
-fun onFavoriteClick(id: Int, viewModel: HomeViewModel) {
-    viewModel.addToFavorite(id)
-}
 
-fun onQueryChanged(query: String, viewModel: HomeViewModel) {
 
-    viewModel.searchRecipe(query, 1)
-}
+
 
 @Composable
 fun ParcourirScreen() {

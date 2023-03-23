@@ -28,7 +28,6 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.feedme.R
 import com.example.feedme.domain.RecipeWithFavorite
-import com.example.feedme.ui.components.viewModel.HomeViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -36,8 +35,7 @@ import java.util.*
 @Composable
 fun RecipeCard(
     recipe: RecipeWithFavorite,
-    OnFavoriteClick: (Int, HomeViewModel) -> Unit,
-    viewModel: HomeViewModel,
+    OnFavoriteClick: (Int,Boolean) -> Unit
 ) {
 
     val favorite = remember { mutableStateOf(recipe.favorite) }
@@ -105,7 +103,8 @@ fun RecipeCard(
 
                             favorite.value = !favorite.value
 
-                            OnFavoriteClick(recipe.id, viewModel)
+                            OnFavoriteClick(recipe.id,favorite.value)
+                           // OnFavoriteClick(recipe.id, viewModel)
 
                         })
 
