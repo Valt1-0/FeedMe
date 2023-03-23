@@ -14,8 +14,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.twotone.Star
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,7 +36,7 @@ fun RecipeCard(
     OnFavoriteClick: (Int,Boolean) -> Unit
 ) {
 
-    val favorite = remember { mutableStateOf(recipe.favorite) }
+    var favorite = recipe.favorite
     val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
     println("DateRecipe : " + recipe.dateUpdated.toString())
     println("recipe.dateUpdated : " + sdf.format(recipe.dateUpdated))
@@ -91,7 +89,7 @@ fun RecipeCard(
                 )
                 Icon(
                     // isFavorite.value => Favoris value true/false Icon
-                    imageVector = if (favorite.value) Icons.Filled.Star else Icons.TwoTone.Star,
+                    imageVector = if (favorite) Icons.Filled.Star else Icons.TwoTone.Star,
                     contentDescription = "Ajouter/Retirer des favoris",
                     // isFavorite.value => Favoris value true/false Couleur
                     tint = Color.White,
@@ -101,9 +99,9 @@ fun RecipeCard(
                         .padding(top = 8.dp, end = 8.dp)
                         .clickable(onClick = {
 
-                            favorite.value = !favorite.value
+                            favorite = !favorite
 
-                            OnFavoriteClick(recipe.id,favorite.value)
+                            OnFavoriteClick(recipe.id,favorite)
                            // OnFavoriteClick(recipe.id, viewModel)
 
                         })
