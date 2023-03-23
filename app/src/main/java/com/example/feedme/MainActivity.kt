@@ -135,9 +135,8 @@ class MainActivity : ComponentActivity() {
                     MainTheme() {
                         MainContent(viewModel = viewModel)
                     }
-
-
             }
+
             composable(Screen.OnBoarding.route) {
                 OnBoardingTheme() {
                     OnBoarding(navigateToRecipeList = navController::navigate)

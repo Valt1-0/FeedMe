@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.material.icons.*
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.ManageSearch
 import androidx.compose.runtime.*
@@ -56,6 +57,18 @@ fun MainContent(viewModel: HomeViewModel) {
                     label = { Text("Parcourir") },
                     unselectedContentColor = Color.White,
                 )
+                BottomNavigationItem(
+                    selected = navController.currentDestination?.route == "favoris",
+                    onClick = { navController.navigate("favoris") },
+                    icon = {
+                        Icon(
+                            Icons.Default.Favorite ,
+                            contentDescription = "favoris"
+                        )
+                    },
+                    label = { Text("Favoris") },
+                    unselectedContentColor = Color.White,
+                )
             }
         }
     ) { innerPadding ->
@@ -63,6 +76,7 @@ fun MainContent(viewModel: HomeViewModel) {
             NavHost(navController, startDestination = "accueil") {
                 composable("accueil") { AccueilScreen(viewModel) }
                 composable("parcourir") { ParcourirScreen() }
+                composable("favoris") { ParcourirScreen() }
             }
         }
     }
