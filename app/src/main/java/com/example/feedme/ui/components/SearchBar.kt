@@ -9,8 +9,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,16 +21,15 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.feedme.ui.components.viewModel.HomeViewModel
 import com.example.feedme.ui.theme.InputShape
 
 @ExperimentalComposeUiApi
 @Composable
 fun SearchBar(
-    onSearch: (String, HomeViewModel) -> Unit,
-    viewModel: HomeViewModel,
+    query : String,
+    onQueryChange: (String) -> Unit,
+    onSearch: () -> Unit,
 ) {
-    val query = remember { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
     Column(
@@ -50,8 +47,8 @@ fun SearchBar(
                     .fillMaxWidth()
                     .padding(horizontal = 15.dp)
                     .height(50.dp),
-                value = query.value,
-                onValueChange = { query.value = it },
+                value = query,
+                onValueChange = { onQueryChange(it)},
                 placeholder = { Text(text = "Recettes ...") },
                 singleLine = true,
                 leadingIcon = {
@@ -63,7 +60,7 @@ fun SearchBar(
                     )
                 },
                 trailingIcon = {
-                    IconButton(onClick = { query.value = "" }) {
+                    IconButton(onClick = { onQueryChange("") }) {
                         Icon(
                             Icons.Default.Clear,
                             contentDescription = "Clear",
@@ -88,7 +85,7 @@ fun SearchBar(
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = {
-                        onSearch(query.value, viewModel)
+                        onSearch()
 //              focusManager.clearFocus(forcedClear = true) // close keyboard
                         keyboardController?.hideSoftwareKeyboard() // another way to close keyboard
                     },

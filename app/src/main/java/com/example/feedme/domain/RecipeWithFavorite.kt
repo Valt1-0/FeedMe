@@ -12,5 +12,5 @@ data class RecipeWithFavorite(
     val ingredients: String,
     val dateAdded: Date?,
     val dateUpdated: Date?,
-    val favorite: Boolean,
+    var favorite: Boolean,
 )

@@ -1,9 +1,11 @@
 package com.example.feedme.ui.components.viewModel
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.feedme.action.FavoriteAction
 import com.example.feedme.action.SearchRecipes
 import com.example.feedme.database.FavoriteDao
 import com.example.feedme.database.RecipeDao
@@ -11,6 +13,7 @@ import com.example.feedme.domain.RecipeFavorite
 import com.example.feedme.domain.RecipeWithFavorite
 import com.example.feedme.network.CheckNetworkConnexion
 import com.example.feedme.ui.components.MainRepository
+import com.example.feedme.ui.components.favorite.FavoriteEventTrigger
 import com.example.feedme.ui.components.home.MainState
 import com.example.feedme.util.RecipeDtoMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,26 +29,29 @@ class HomeViewModel @Inject constructor(
     private val favoriteDao: FavoriteDao,
     private val CheckNetworkConnexion: CheckNetworkConnexion
 ) : ViewModel() {
-    var recipe: MutableState<MainState> = mutableStateOf(MainState())
 
+    var recipe: MutableState<MainState> = mutableStateOf(MainState())
+    val query: MutableState<String> = mutableStateOf("")
+    //Valeur par défaut 1 (offset)
+    val page:MutableState<Int> = mutableStateOf(1)
 
     fun isNetworkAvailable(): Boolean {
         return CheckNetworkConnexion.isConnectedToInternet()
     }
 
-    fun search(q: String, page: Int)  = viewModelScope.launch {
+    private fun search()  = viewModelScope.launch {
         recipe.value = MainState(isLoading = true, data = recipe.value.data)
         try {
-            var current = ArrayList<RecipeWithFavorite>(recipe.value.data)
+          //  var current = ArrayList<RecipeWithFavorite>(recipe.value.data)
 
             println("recipe.value.data.size " + recipe.value.data.size.toString())
-            if (page == 1) {
-                current.removeAll(recipe.value.data.toSet())
-            }
+        //    if (page == 1) {
+         //       current.removeAll(recipe.value.data.toSet())
+         //   }
 
             var result = SearchRecipes(
-                q,
-                page,
+                query.value,
+                page.value,
                 isNetworkAvailable(),
                 recipeDtoMapper,
                 mainRepository,
@@ -59,8 +65,9 @@ class HomeViewModel @Inject constructor(
             }
             else
             {
-                current.addAll(result.data)
-                recipe.value = MainState(data = current.toList(), isLoading = false)
+                appendSearch(result.data)
+               // current.addAll(result.data)
+              //  recipe.value = MainState(data = current.toList(), isLoading = false)
             }
         }catch (e: Exception) {
             println("error" + e.message.toString())
@@ -68,9 +75,83 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun addOrDeleteToFavorite(id: Int,status: Boolean) = viewModelScope.launch {
+        recipe.value = MainState(data = recipe.value.data, isLoading = true, error = recipe.value.error)
+        val recipeFavorite = RecipeFavorite(id)
+
+        if (status)
+            favoriteDao.insert(recipeFavorite)
+        else
+            FavoriteAction(favoriteDao).deleteFavorite(recipeFavorite)
+
+        recipe.value.data.find { it.id == id }?.favorite = status
+        recipe.value = MainState(data = recipe.value.data, isLoading = false, error = recipe.value.error)
+
+    }
+
+
+
+     fun onEventTrigger(eventTrigger: FavoriteEventTrigger)
+    {
+        try {
+            when (eventTrigger) {
+                is FavoriteEventTrigger.SearchEvent -> {
+                    newSearch()
+                }
+                is FavoriteEventTrigger.NextPageEvent -> {
+                    nextPage()
+                }
+            }
+        }
+        catch (ex : Exception){
+            Log.d("TAG", "Erreur on EventTrigger Favorite")
+        }
+    }
+    private fun nextPage() {
+        recipe.value = MainState(isLoading = true, data = recipe.value.data)
+        setPage(page.value + 1)
+        if(page.value > 1) {
+            viewModelScope.launch {
+                try {
+                    val resultDb = SearchRecipes(query= query.value,page=page.value, isConnectedToInternet = isNetworkAvailable(),recipeDtoMapper = recipeDtoMapper,mainRepository= mainRepository,recipeDao=recipeDao ).Search()
+
+                    if (resultDb.data.isNullOrEmpty())
+                        MainState(error = "Aucun résultat")
+                    else
+                        appendSearch(resultDb.data)
+                }catch (e: Exception) {
+                    println("error" + e.message.toString())
+                    recipe.value = MainState(error = "Something went wrong")
+                }
+            }
+        }
+    }
+
+    private fun newSearch() {
+        recipe.value = MainState(isLoading = true)
+        setPage(1)
+        search()
+    }
+
+
+     fun onQueryChange(query:String) {
+        setQuery(query)
+    }
+    private fun setQuery(query: String) {
+        this.query.value = query
+    }
+    private fun setPage(page : Int){
+        this.page.value = page
+    }
+
+    private fun appendSearch(recipes : List<RecipeWithFavorite>) {
+        var current = ArrayList<RecipeWithFavorite>(recipe.value.data)
+        current.addAll(recipes)
+        this.recipe.value = MainState(data = current.toList(), isLoading = false)
+    }
     fun searchRecipe(q: String, page: Int) = viewModelScope.launch {
 
-        search(q,page)
+      //  search(q,page)
 //
 //        recipe.value = MainState(isLoading = true, data = recipe.value.data)
 //
@@ -104,13 +185,13 @@ class HomeViewModel @Inject constructor(
 //
 //                            //Recherche dans la base de données
 //                            val dbResult = if (q.isBlank()) {
-//                                recipeDao.searchRecipes(
+//                                recipeDao.searchRecipesWithQuery(
 //                                    query = q,
 //                                    page = page,
 //                                    pageSize = RECIPE_PER_PAGE
 //                                )
 //                            } else {
-//                                recipeDao.searchRecipes(
+//                                recipeDao.searchRecipesWithQuery(
 //                                    query = q,
 //                                    page = page,
 //                                    pageSize = RECIPE_PER_PAGE
@@ -134,11 +215,7 @@ class HomeViewModel @Inject constructor(
 
     }
 
-    fun addToFavorite(id: Int) = viewModelScope.launch {
 
-        val recipeFavorite = RecipeFavorite(id)
-        favoriteDao.insert(recipeFavorite)
-    }
 
 
 

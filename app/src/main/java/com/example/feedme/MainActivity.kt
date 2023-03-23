@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.feedme.SplashScreen.Snackbar
 import com.example.feedme.navigation.Screen
 import com.example.feedme.ui.components.OnBoarding
+import com.example.feedme.ui.components.favorite.FavoriteEventTrigger
 import com.example.feedme.ui.components.home.MainContent
 import com.example.feedme.ui.components.viewModel.HomeViewModel
 import com.example.feedme.ui.theme.FeedMeTheme
@@ -117,7 +118,8 @@ class MainActivity : ComponentActivity() {
                         val coroutineScope = rememberCoroutineScope()
                         LaunchedEffect(key1 = Unit)
                         {
-                            viewModel.searchRecipe("beef",1)
+                            viewModel.onEventTrigger(FavoriteEventTrigger.SearchEvent)
+                           // viewModel.searchRecipe("beef",1)
                             delay(5000)
                             navController.navigate(Screen.OnBoarding.route)
                         }

@@ -44,14 +44,27 @@ interface RecipeDao {
         ORDER BY recipes.id DESC LIMIT :pageSize OFFSET ((:page - 1) * :pageSize)
         """
     )
-    fun searchRecipes(
+    fun searchRecipesWithQuery(
         query: String,
         page: Int,
         pageSize: Int = RECIPE_PER_PAGE,
     ): List<RecipeWithFavorite>
 
+    @Query(
+        """
+        SELECT recipes.*, CASE WHEN recipes_favorite.recipe_id IS NOT NULL THEN 1 ELSE 0 END AS favorite FROM recipes 
+         LEFT JOIN recipes_favorite ON recipes.id = recipes_favorite.recipe_id
+        ORDER BY recipes.id DESC LIMIT :pageSize OFFSET ((:page - 1) * :pageSize)
+        """
+    )
+    fun searchRecipes(
+        page: Int,
+        pageSize: Int = RECIPE_PER_PAGE,
+    ): List<RecipeWithFavorite>
+
+
     /**
-     * Same as 'searchRecipes' function, but no query.
+     * Same as 'searchRecipesWithQuery' function, but no query.
      */
 //    @Query("""
 //        SELECT * FROM recipes
