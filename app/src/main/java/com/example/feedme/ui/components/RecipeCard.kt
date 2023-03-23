@@ -51,6 +51,7 @@ fun RecipeCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
+            .size(width = 380.dp, height = 230.dp)
             .background(Color.White)
             .padding(vertical = 4.dp, horizontal = 10.dp)
             .clickable(onClick = {
@@ -90,11 +91,11 @@ fun RecipeCard(
                     contentScale = ContentScale.Crop
                 )
                 Icon(
-                    // isFavorite.value => Favoris value true/false Icon
+                    // favorite.value => Favoris value true/false Icon
                     imageVector = if (favorite.value) Icons.Filled.Star else Icons.TwoTone.Star,
                     contentDescription = "Ajouter/Retirer des favoris",
-                    // isFavorite.value => Favoris value true/false Couleur
-                    tint = Color.White,
+                    // favorite.value => Favoris value true/false Couleur
+                    tint = Color.Yellow,
                     modifier = Modifier
                         .size(40.dp)
                         .align(Alignment.TopEnd)

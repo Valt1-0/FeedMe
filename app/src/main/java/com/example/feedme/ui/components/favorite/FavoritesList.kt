@@ -40,7 +40,7 @@ fun FavoritesList(recipes : List<RecipeWithFavorite>, OnFavoriteClick : (Int,Boo
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(250.dp),
+                .size(width = 380.dp, height = 230.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             itemsIndexed(recipes) { index, recipe ->
@@ -48,6 +48,4 @@ fun FavoritesList(recipes : List<RecipeWithFavorite>, OnFavoriteClick : (Int,Boo
             }
         }
     }
-
-
 }
