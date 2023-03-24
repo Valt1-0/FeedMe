@@ -158,7 +158,6 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
                         viewModel::addOrDeleteToFavorite,
                         navigateToFavoriteList
                     )
-                    Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
                 }
 
                 itemsIndexed(items = recipes.value.data) { index, recipe ->

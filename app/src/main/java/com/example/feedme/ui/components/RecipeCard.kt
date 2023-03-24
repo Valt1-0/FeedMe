@@ -136,7 +136,7 @@ fun RecipeCard(
                     Text(
                         color = Color.Black,
                         text = ConvertRating(recipe.rating).toString(),
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.Normal,
                         fontSize = 12.sp,
                         modifier = Modifier
                             .padding(4.dp)
