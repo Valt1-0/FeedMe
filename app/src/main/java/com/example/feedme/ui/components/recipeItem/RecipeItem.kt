@@ -40,7 +40,7 @@ LazyColumn {
 
 
 @Composable
-fun recipeItemsList(recipes: List<Screen.RecipeDetails>, OnClick : (Int,Boolean) -> Unit){
+fun recipeItemsList(recipes: List<Screen.RecipeDetails>, OnClick : (Int, Boolean) -> Unit){
     val itemsList = listOf("ingrédient1", "ingédient2", "ingédient3", "ingédient4", "ingédient5")
 
     Column(
@@ -64,9 +64,9 @@ fun recipeItemsList(recipes: List<Screen.RecipeDetails>, OnClick : (Int,Boolean)
                 .size(width = 380.dp, height = 230.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ){
-            /*itemsListIndexed(recipes) {
+            itemsListIndexed(recipes) {
                 index, recipe -> RecipeCard(recipe, OnClick)
-            }*/
+            }
         }
     }
 }
