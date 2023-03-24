@@ -4,11 +4,11 @@ import com.example.feedme.database.FavoriteDao
 import com.example.feedme.domain.RecipeFavorite
 import com.example.feedme.domain.RecipeWithFavorite
 
-class FavoriteAction(private val favoriteDao: FavoriteDao) {
+class FavoriteAction(private val favoriteDao: FavoriteDao,private val query: String,private val page: Int,private val pageSize : Int) {
 
-    suspend fun searchFavorites(query: String?, page: Int,pageSize : Int): List<RecipeWithFavorite> {
+    suspend fun searchFavorites(): List<RecipeWithFavorite> {
 
-        return if (!query.isNullOrBlank())
+        return if (query.isNotBlank())
             favoriteDao.searchFavoritesWithQuery(query, page,pageSize)
         else
             favoriteDao.searchFavorites(page,pageSize)

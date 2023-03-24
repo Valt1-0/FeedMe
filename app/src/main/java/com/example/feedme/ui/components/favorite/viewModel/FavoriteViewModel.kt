@@ -36,7 +36,7 @@ class FavoriteViewModel @Inject constructor(
         try{
 
 
-            val resultDb = FavoriteAction(favoriteDao).searchFavorites(query.value,page.value,pageSize.value)
+            val resultDb = FavoriteAction(favoriteDao,query.value,page.value,pageSize.value).searchFavorites()
 
             if(!resultDb.isNullOrEmpty() )
             {
@@ -88,7 +88,7 @@ class FavoriteViewModel @Inject constructor(
     fun deleteFavorite(id: Int)= viewModelScope.launch {
 
         val recipeFavorite = RecipeFavorite(id)
-        FavoriteAction(favoriteDao).deleteFavorite(recipeFavorite)
+        FavoriteAction(favoriteDao,query.value,page.value,pageSize.value).deleteFavorite(recipeFavorite)
     }
 
     /* *** */
@@ -100,7 +100,7 @@ class FavoriteViewModel @Inject constructor(
         if(page.value > 1) {
             viewModelScope.launch {
                 try {
-                    val resultDb = FavoriteAction(favoriteDao).searchFavorites(query.value, page.value,pageSize.value)
+                    val resultDb = FavoriteAction(favoriteDao,query.value,page.value,pageSize.value).searchFavorites()
 
                     if (!resultDb.isNullOrEmpty())
                         MainState(error = "Aucun Favoris ?")

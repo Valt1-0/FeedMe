@@ -80,10 +80,10 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
             Column(modifier = Modifier.padding(innerPadding)) {
                 NavHost(navController, startDestination = "accueil") {
                     composable("accueil") {
-                        AccueilScreen()
+                        AccueilScreen(navController::navigate)
                     }
                     composable("parcourir") { ParcourirScreen() }
-                    composable("favoris") { ParcourirScreen() }
+                    composable("favoris") { FavoriteScreen() }
                 }
             }
         }
@@ -92,12 +92,12 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
 
     @OptIn(ExperimentalComposeUiApi::class)
     @Composable
-    fun AccueilScreen() {
+    fun AccueilScreen(navigateToFavoriteList: (String) -> Unit) {
         var query = viewModel.query.value
 
         val page = viewModel.page.value
-        var test = favoriteViewModel
 
+        val favorites : MutableState<MainState> = viewModel.favorite
         var recipes: MutableState<MainState> = viewModel.recipe
 
 
@@ -154,8 +154,9 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
 //                }
 //            }
                     FavoritesList(
-                        recipes = recipes.value.data.filter { it.favorite },
-                        viewModel::addOrDeleteToFavorite
+                        recipes = favorites.value.data,
+                        viewModel::addOrDeleteToFavorite,
+                        navigateToFavoriteList
                     )
                     Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
                 }
@@ -182,6 +183,11 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
     @Composable
     fun ParcourirScreen() {
         Text(text = "Parcourir")
+    }
+
+    @Composable
+    fun FavoriteScreen() {
+        Text(text = "Favoris")
     }
 
 }

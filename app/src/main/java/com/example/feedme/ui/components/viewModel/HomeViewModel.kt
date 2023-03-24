@@ -31,6 +31,7 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
     var recipeInDB : MutableState<Boolean> = mutableStateOf(false   )
     var recipe: MutableState<MainState> = mutableStateOf(MainState())
+    var favorite : MutableState<MainState> = mutableStateOf(MainState())
     val query: MutableState<String> = mutableStateOf("")
     //Valeur par défaut 1 (offset)
     val page:MutableState<Int> = mutableStateOf(1)
@@ -54,6 +55,7 @@ class HomeViewModel @Inject constructor(
                 recipeDao
             ).Search()
 
+            searchFavorite()
 
             if(!result.error.isNullOrBlank() )
             {
@@ -79,14 +81,17 @@ class HomeViewModel @Inject constructor(
         if (status)
             favoriteDao.insert(recipeFavorite)
         else
-            FavoriteAction(favoriteDao).deleteFavorite(recipeFavorite)
+            FavoriteAction(favoriteDao,query.value,1,10).deleteFavorite(recipeFavorite)
 
         recipe.value.data.find { it.id == id }?.favorite = status
         recipe.value = MainState(data = recipe.value.data, isLoading = false, error = recipe.value.error)
-
+        searchFavorite()
     }
 
-
+    fun searchFavorite()= viewModelScope.launch {
+       val resultdb = FavoriteAction(favoriteDao,query.value,1,10).searchFavorites()
+        favorite.value =  MainState(data = resultdb, isLoading = false)
+    }
 
      fun onEventTrigger(eventTrigger: EventTrigger)
     {
