@@ -6,12 +6,12 @@ import com.example.feedme.domain.RecipeWithFavorite
 
 class FavoriteAction(private val favoriteDao: FavoriteDao) {
 
-    suspend fun searchFavorites(query: String?, page: Int): List<RecipeWithFavorite> {
+    suspend fun searchFavorites(query: String?, page: Int,pageSize : Int): List<RecipeWithFavorite> {
 
         return if (!query.isNullOrBlank())
-            favoriteDao.searchFavoritesWithQuery(query, page)
+            favoriteDao.searchFavoritesWithQuery(query, page,pageSize)
         else
-            favoriteDao.searchFavorites(page)
+            favoriteDao.searchFavorites(page,pageSize)
     }
 
     suspend fun deleteFavorite(recipeFavorite : RecipeFavorite)
@@ -20,6 +20,11 @@ class FavoriteAction(private val favoriteDao: FavoriteDao) {
     }
     suspend fun  Count() : Int {
         return favoriteDao.countFavorite();
+    }
+
+    suspend fun getMaxFavorite(MaxFavorite: Int)
+    {
+
     }
 
 

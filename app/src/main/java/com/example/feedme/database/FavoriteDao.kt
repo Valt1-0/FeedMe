@@ -8,16 +8,16 @@ import com.example.feedme.domain.RecipeWithFavorite
 interface FavoriteDao {
     @Query("""SELECT recipes.*, CASE WHEN recipes_favorite.recipe_id IS NOT NULL THEN 1 ELSE 0 END AS favorite  FROM recipes_favorite 
                 INNER JOIN recipes ON recipes_favorite.recipe_id = recipes.id
-             ORDER BY recipes.id DESC LIMIT 20 OFFSET ((:page - 1) * 20)""")
-    suspend fun searchFavorites(page : Int): List<RecipeWithFavorite>
+             ORDER BY recipes.id DESC LIMIT :pageSize OFFSET ((:page - 1) * :pageSize)""")
+    suspend fun searchFavorites(page : Int,pageSize : Int): List<RecipeWithFavorite>
 
 
     @Query("""SELECT recipes.*, CASE WHEN recipes_favorite.recipe_id IS NOT NULL THEN 1 ELSE 0 END AS favorite  FROM recipes_favorite 
                 INNER JOIN recipes ON recipes_favorite.recipe_id = recipes.id
                  WHERE recipes.title LIKE '%' || :query || '%'
                     OR recipes.ingredients LIKE '%' || :query || '%'
-             ORDER BY recipes.id DESC LIMIT 20 OFFSET ((:page - 1) * 20)""")
-    suspend fun searchFavoritesWithQuery(query: String,page : Int): List<RecipeWithFavorite>
+             ORDER BY recipes.id DESC LIMIT :pageSize OFFSET ((:page - 1) * :pageSize)""")
+    suspend fun searchFavoritesWithQuery(query: String,page : Int,pageSize : Int): List<RecipeWithFavorite>
 
     @Query("SELECT COUNT(*) FROM recipes_favorite")
     suspend fun countFavorite(): Int

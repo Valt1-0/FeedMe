@@ -13,7 +13,7 @@ import com.example.feedme.domain.RecipeFavorite
 import com.example.feedme.domain.RecipeWithFavorite
 import com.example.feedme.network.CheckNetworkConnexion
 import com.example.feedme.ui.components.MainRepository
-import com.example.feedme.ui.components.favorite.FavoriteEventTrigger
+import com.example.feedme.ui.components.favorite.EventTrigger
 import com.example.feedme.ui.components.home.MainState
 import com.example.feedme.util.RecipeDtoMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,7 +29,7 @@ class HomeViewModel @Inject constructor(
     private val favoriteDao: FavoriteDao,
     private val CheckNetworkConnexion: CheckNetworkConnexion
 ) : ViewModel() {
-
+    var recipeInDB : MutableState<Boolean> = mutableStateOf(false   )
     var recipe: MutableState<MainState> = mutableStateOf(MainState())
     val query: MutableState<String> = mutableStateOf("")
     //Valeur par défaut 1 (offset)
@@ -42,12 +42,8 @@ class HomeViewModel @Inject constructor(
     private fun search()  = viewModelScope.launch {
         recipe.value = MainState(isLoading = true, data = recipe.value.data)
         try {
-          //  var current = ArrayList<RecipeWithFavorite>(recipe.value.data)
-
             println("recipe.value.data.size " + recipe.value.data.size.toString())
-        //    if (page == 1) {
-         //       current.removeAll(recipe.value.data.toSet())
-         //   }
+
 
             var result = SearchRecipes(
                 query.value,
@@ -61,6 +57,7 @@ class HomeViewModel @Inject constructor(
 
             if(!result.error.isNullOrBlank() )
             {
+                println("RESULT ERROR ")
                 MainState(error = result.error)
             }
             else
@@ -91,14 +88,14 @@ class HomeViewModel @Inject constructor(
 
 
 
-     fun onEventTrigger(eventTrigger: FavoriteEventTrigger)
+     fun onEventTrigger(eventTrigger: EventTrigger)
     {
         try {
             when (eventTrigger) {
-                is FavoriteEventTrigger.SearchEvent -> {
+                is EventTrigger.SearchEvent -> {
                     newSearch()
                 }
-                is FavoriteEventTrigger.NextPageEvent -> {
+                is EventTrigger.NextPageEvent -> {
                     nextPage()
                 }
             }
@@ -107,7 +104,7 @@ class HomeViewModel @Inject constructor(
             Log.d("TAG", "Erreur on EventTrigger Favorite")
         }
     }
-    private fun nextPage() {
+    private fun nextPage() = viewModelScope.launch {
         recipe.value = MainState(isLoading = true, data = recipe.value.data)
         setPage(page.value + 1)
         if(page.value > 1) {
@@ -116,18 +113,21 @@ class HomeViewModel @Inject constructor(
                     val resultDb = SearchRecipes(query= query.value,page=page.value, isConnectedToInternet = isNetworkAvailable(),recipeDtoMapper = recipeDtoMapper,mainRepository= mainRepository,recipeDao=recipeDao ).Search()
 
                     if (resultDb.data.isNullOrEmpty())
-                        MainState(error = "Aucun résultat")
+                        if (recipe.value.data.isEmpty())
+                            MainState(error = "Aucun résultat")
+                        else
+                            recipe.value = MainState(data = recipe.value.data, isLoading = false)
                     else
                         appendSearch(resultDb.data)
                 }catch (e: Exception) {
                     println("error" + e.message.toString())
-                    recipe.value = MainState(error = "Something went wrong")
+                    recipe.value = MainState(error = "Something went wrong",isLoading = false)
                 }
             }
         }
     }
 
-    private fun newSearch() {
+    private fun newSearch() = viewModelScope.launch  {
         recipe.value = MainState(isLoading = true)
         setPage(1)
         search()
@@ -144,10 +144,20 @@ class HomeViewModel @Inject constructor(
         this.page.value = page
     }
 
-    private fun appendSearch(recipes : List<RecipeWithFavorite>) {
-        var current = ArrayList<RecipeWithFavorite>(recipe.value.data)
-        current.addAll(recipes)
+   private fun appendSearch(recipes : List<RecipeWithFavorite>) {
+       var current = ArrayList<RecipeWithFavorite>(recipe.value.data)
+       println("RECIPE SIZE  : / "+ recipes.size.toString())
+       if (recipes.isNotEmpty())
+       {
+           current.addAll(recipes)
+       }
+
         this.recipe.value = MainState(data = current.toList(), isLoading = false)
+    }
+
+
+    fun recipeInDB()  = viewModelScope.launch  {
+        recipeInDB.value = recipeDao.recipeInDB()
     }
     fun searchRecipe(q: String, page: Int) = viewModelScope.launch {
 
