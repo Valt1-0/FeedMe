@@ -18,14 +18,10 @@ import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import coil.size.Size
-import com.example.feedme.ui.components.viewModel.HomeViewModel
 
 @Composable
-fun SplashScreen(viewModel: HomeViewModel) {
+fun SplashScreen() {
 
-//    LaunchedEffect(true) {
-//        viewModel.searchRecipe("beef",1)
-//    }
 
     val imageLoader = ImageLoader.Builder(LocalContext.current)
         .components {

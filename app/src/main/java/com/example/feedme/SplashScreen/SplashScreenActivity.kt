@@ -55,7 +55,7 @@ class SplashScreenActivity : ComponentActivity() {
 
                     }
                 } else {
-                    Snackbar { reloadActivity() }
+                  //  Snackbar { reloadActivity() }
                 }
             }
         }

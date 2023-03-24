@@ -12,29 +12,12 @@ import com.example.feedme.util.Constants.RECIPE_PER_PAGE
 @Dao
 interface RecipeDao {
 
-    //    @Insert
-//    suspend fun insertRecipe(recipe: Recipe): Long
-//
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRecipes(recipes: List<Recipe>)
 
-    ////    @Query("SELECT * FROM recipes WHERE id = :id")
-////    suspend fun getRecipeById(id: Int): Recipe?
-//
-//    @Query("DELETE FROM recipes WHERE id IN (:ids)")
-//    suspend fun deleteRecipes(ids: List<Int>): Int
-//
     @Query("DELETE FROM recipes")
     suspend fun deleteAllRecipes()
-//
-//    @Query("DELETE FROM recipes WHERE id = :primaryKey")
-//    suspend fun deleteRecipe(primaryKey: Int): Int
 
-    /**
-     * Retrieve recipes for a particular page.
-     * Ex: page = 2 retrieves recipes from 30-60.
-     * Ex: page = 3 retrieves recipes from 60-90
-     */
     @Query(
         """
         SELECT recipes.*, CASE WHEN recipes_favorite.recipe_id IS NOT NULL THEN 1 ELSE 0 END AS favorite FROM recipes 
@@ -62,6 +45,8 @@ interface RecipeDao {
         pageSize: Int = RECIPE_PER_PAGE,
     ): List<RecipeWithFavorite>
 
+    @Query("SELECT CASE WHEN EXISTS(SELECT * FROM recipes LIMIT 1) THEN 1 ELSE 0 END")
+   suspend  fun recipeInDB(): Boolean
 
     /**
      * Same as 'searchRecipesWithQuery' function, but no query.

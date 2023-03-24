@@ -67,10 +67,12 @@ class SearchRecipes( private val query: String,
         }
         else
         {
-            var dbResult =  SearchFromDatabase()
+            withContext(Dispatchers.IO) {
+                var dbResult = SearchFromDatabase()
 
-            // println("current.size "+current.size.toString())
-            recipe = MainState(data = dbResult.toList(), isLoading = false)
+                // println("current.size "+current.size.toString())
+                recipe = MainState(data = dbResult.toList(), isLoading = false)
+            }
         }
 
 
@@ -94,6 +96,7 @@ return recipe
                 pageSize = Constants.RECIPE_PER_PAGE
             )
         }
+
         return dbResult
 
     }

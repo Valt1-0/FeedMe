@@ -7,8 +7,9 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.HiltViewModelFactory
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -16,8 +17,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.feedme.SplashScreen.Snackbar
 import com.example.feedme.navigation.Screen
 import com.example.feedme.ui.components.OnBoarding
-import com.example.feedme.ui.components.favorite.FavoriteEventTrigger
-import com.example.feedme.ui.components.home.MainContent
+import com.example.feedme.ui.components.favorite.EventTrigger
+import com.example.feedme.ui.components.favorite.viewModel.FavoriteViewModel
+import com.example.feedme.ui.components.home.MainScreen
 import com.example.feedme.ui.components.viewModel.HomeViewModel
 import com.example.feedme.ui.theme.FeedMeTheme
 import com.example.feedme.ui.theme.MainTheme
@@ -35,74 +37,24 @@ class MainActivity : ComponentActivity() {
     @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        val appDatabase = AppDatabase.getInstance(this)
-//        val homeMVVMFactory = HomeMVVMFactory(appDatabase)
-//        viewModel = ViewModelProvider(
-//            this,
-//            homeMVVMFactory
-//        ).get(HomeViewModel(AppDatabase.getInstance(this@MainActivity))::class.java)
-//        viewModel.SearchRecipe("beef", 1, this@MainActivity)
+
 
         setContent {
 
             MainTheme  {
-                // A surface container using the 'background' color from the theme
-
                     MyApp {
-//                        val isLoading = remember { mutableStateOf(true) }
-//                        val isFirst = remember { mutableStateOf(true) }
-//                        val coroutineScope = rememberCoroutineScope()
-//                        if (isLoading.value && isFirst.value)
-//                        {
-//                            SplashScreen()
-//                            isFirst.value = false
-//                        LaunchedEffect(key1 = Unit)
-//                        {
-//                            coroutineScope.launch(Dispatchers.Main) {
-//                                delay(5000)
-//                                isLoading.value = false
-//                            }
-//                        }}
-//                        if (isLoading.value) {
-//                            // Affiche un splashscreen
-//                            Surface(color = Color.Black) {
-//                                // Ajoutez ici votre logo ou une image de chargement
-//                            }
-//                        } else {
-//                            MainContent()
-//                        }
                         MainActivityUI()
                     }
-//                    viewModel.observeSearchMeal().observe(this, Observer<List<Recipe>> { t ->
-//                        if (t == null) {
-//                            Toast.makeText(this, "No such a meal", Toast.LENGTH_SHORT).show()
-//                        } else {
-//                            MyScreen(viewModel,this)
-//                        }
-//                    })
-                //    val searchResults by viewModel.observeSearchMeal().observeAsState(emptyList())
-                   // RecipeListScreen()
-                    //   val recipesState by viewModel.observeSearchMeal().collectAsState(initial = emptyList())
-                    //  val recipes: List<Recipe> by  viewModel.SearchRecipeLiveData.observeAsState(initial = emptyList())
-
-
-                    //  RecipeListScreen(viewModel.SearchRecipeLiveData.observeAsState(initial = emptyList()).value, ::onChangeScrollPosition)
-
-
             }
         }
 
     }
 
+
     @Composable
     fun MainActivityUI() {
         val navController = rememberNavController()
         val viewModel: HomeViewModel = viewModel()
-//        LaunchedEffect(key1 = true) {
-//            delay(5000)
-//            navController.navigate(Screen.OnBoarding.route)
-//        }
-
 
 
         NavHost(
@@ -110,30 +62,30 @@ class MainActivity : ComponentActivity() {
             startDestination = Screen.SplashScreen.route
         ) {
             composable(Screen.SplashScreen.route) {
-//                val factory = HiltViewModelFactory(LocalContext.current, it)
-//                val viewModel: HomeViewModel = viewModel(factory = factory)
                 FeedMeTheme {
-                    SplashScreen(viewModel)
+                    SplashScreen()
                     if (viewModel.isNetworkAvailable()) {
-                        val coroutineScope = rememberCoroutineScope()
                         LaunchedEffect(key1 = Unit)
                         {
-                            viewModel.onEventTrigger(FavoriteEventTrigger.SearchEvent)
-                           // viewModel.searchRecipe("beef",1)
+                            viewModel.onEventTrigger(EventTrigger.SearchEvent)
                             delay(5000)
                             navController.navigate(Screen.OnBoarding.route)
                         }
                     } else {
-                        Snackbar { reloadActivity() }
+                        Snackbar(::reloadActivity, { viewModel.onEventTrigger(EventTrigger.SearchEvent)
+                            navController.navigate(Screen.OnBoarding.route)  }, viewModel)
+
+
                     }
 
                 }
             }
             composable(Screen.RecipeList.route) {
-//                val factory = HiltViewModelFactory(LocalContext.current, it)
-//                val viewModel: HomeViewModel = viewModel(factory = factory)
+                val factory = HiltViewModelFactory(LocalContext.current, it)
+                val favoriteViewModel: FavoriteViewModel = viewModel(factory = factory)
+             //   val favoriteviewModel: FavoriteViewModel = viewModel()
                     MainTheme() {
-                        MainContent(viewModel = viewModel)
+                       MainScreen(viewModel,favoriteViewModel).MainContent()
                     }
             }
 
@@ -157,6 +109,8 @@ class MainActivity : ComponentActivity() {
         startActivity(intent)
         finish()
     }
+
+
 //    @Composable
 //    fun MyScreen(viewModel: HomeViewModel, context: Context) {
 //      //  val searchResults by viewModel.observeSearchMeal().observeAsState(emptyList())
