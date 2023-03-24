@@ -44,10 +44,12 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
                 BottomNavigation {
                     BottomNavigationItem(
                         selected = navController.currentDestination?.route == "accueil",
-                        onClick = { navController.navigate("accueil") },
+                        onClick = {viewModel.onEventTrigger(EventTrigger.SearchEvent)
+                            navController.navigate("accueil") },
                         icon = { Icon(Icons.Default.Home, contentDescription = "Accueil") },
                         label = { Text("Accueil") },
                         unselectedContentColor = Color.White,
+
 
                         )
                     BottomNavigationItem(
@@ -64,7 +66,8 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
                     )
                     BottomNavigationItem(
                         selected = navController.currentDestination?.route == "favoris",
-                        onClick = { navController.navigate("favoris") },
+                        onClick = { favoriteViewModel.onEventTrigger(EventTrigger.SearchEvent)
+                                    navController.navigate("favoris") },
                         icon = {
                             Icon(
                                 Icons.Default.Favorite,
@@ -94,9 +97,7 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
     @Composable
     fun AccueilScreen(navigateToFavoriteList: (String) -> Unit) {
         var query = viewModel.query.value
-
         val page = viewModel.page.value
-
         val favorites : MutableState<MainState> = viewModel.favorite
         var recipes: MutableState<MainState> = viewModel.recipe
 
@@ -158,7 +159,6 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
                         viewModel::addOrDeleteToFavorite,
                         navigateToFavoriteList
                     )
-                    Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
                 }
 
                 itemsIndexed(items = recipes.value.data) { index, recipe ->
@@ -185,9 +185,59 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
         Text(text = "Parcourir")
     }
 
+    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     fun FavoriteScreen() {
-        Text(text = "Favoris")
+        var query = favoriteViewModel.query.value
+        val page = favoriteViewModel.page.value
+        var favorites : MutableState<MainState> = favoriteViewModel.favorite
+
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+
+            if (favorites.value.isLoading) {
+                Log.d("TAG", "MainContent: in the loading")
+                LinearProgressIndicator(
+                    Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colors.primary
+                )
+            }
+
+
+
+
+            SearchBar(
+                query = query, onSearch = { favoriteViewModel.onEventTrigger(EventTrigger.SearchEvent) },
+                onQueryChange = favoriteViewModel::onQueryChange
+            )
+
+            Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
+
+
+
+
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                item {
+                    Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
+                }
+
+                itemsIndexed(items = favorites.value.data) { index, recipe ->
+
+                    RecipeCard(
+                        recipe = recipe,
+                        OnFavoriteClick = favoriteViewModel::addOrDeleteToFavorite
+                    )
+                    if ((index + 1) >= (page * 30) && !favorites.value.isLoading) {
+                        favoriteViewModel.onEventTrigger(EventTrigger.NextPageEvent)
+                    }
+                }
+
+            }
+
+        }
     }
 
 }

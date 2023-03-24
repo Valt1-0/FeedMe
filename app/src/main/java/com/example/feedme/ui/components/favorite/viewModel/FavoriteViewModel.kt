@@ -3,7 +3,6 @@ package com.example.feedme.ui.components.favorite.viewModel
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.feedme.action.FavoriteAction
@@ -21,32 +20,31 @@ const val STATE_KEY_PAGE_FAVORITE = "favorite.state.key.pageNumber"
 
 @HiltViewModel
 class FavoriteViewModel @Inject constructor(
-    private val favoriteDao: FavoriteDao,
-    private val savedStateHandle: SavedStateHandle
+    private val favoriteDao: FavoriteDao
 ) : ViewModel() {
     var favorite: MutableState<MainState> = mutableStateOf(MainState())
     val query: MutableState<String> = mutableStateOf("")
-    //Valeur par défaut 1 (offset)
     val page:MutableState<Int> = mutableStateOf(1)
     val pageSize:MutableState<Int> = mutableStateOf(30)
+
+init {
+    newSearch()
+}
+
 
     private fun search() = viewModelScope.launch {
         favorite.value = MainState(isLoading = true, data = favorite.value.data)
 
         try{
-
-
             val resultDb = FavoriteAction(favoriteDao,query.value,page.value,pageSize.value).searchFavorites()
 
-            if(!resultDb.isNullOrEmpty() )
+            if(resultDb.isNullOrEmpty() )
             {
                 MainState(error = "Aucun Favoris ?")
             }
             else
             {
                 appendSearch(resultDb)
-//                current.addAll(resultDb)
-//                favorite.value = MainState(data = current.toList(), isLoading = false)
             }
 
         }catch (e: Exception) {
@@ -57,7 +55,7 @@ class FavoriteViewModel @Inject constructor(
     }
 
     /* TRIGGER */
-    private fun onEventTrigger(eventTrigger: EventTrigger)
+     fun onEventTrigger(eventTrigger: EventTrigger)
     {
         try {
             when (eventTrigger) {
@@ -74,7 +72,7 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
-    private fun onQueryChange(query:String) {
+     fun onQueryChange(query:String) {
         setQuery(query)
     }
 
@@ -93,7 +91,26 @@ class FavoriteViewModel @Inject constructor(
 
     /* *** */
 
+    fun addOrDeleteToFavorite(id: Int,status: Boolean) = viewModelScope.launch {
+        favorite.value = MainState(data = favorite.value.data, isLoading = true, error = favorite.value.error)
+        val recipeFavorite = RecipeFavorite(id)
 
+        if (!status)
+        {
+            FavoriteAction(favoriteDao,query.value,1,pageSize.value).deleteFavorite(recipeFavorite)
+           val favoriteListWithRemove =  favorite.value.data.filter { it.id != id }
+
+            if(favoriteListWithRemove.size != favorite.value.data.size)
+            {
+                favorite.value = MainState(data = favoriteListWithRemove, isLoading = false, error = favorite.value.error)
+            }
+        }
+
+
+        //favorite.value.data.find { it.id == id }?.favorite = status
+       // favorite.value = MainState(data = favorite.value.data, isLoading = false, error = favorite.value.error)
+
+    }
 
     private fun nextPage() {
         setPage(page.value + 1)
@@ -102,7 +119,7 @@ class FavoriteViewModel @Inject constructor(
                 try {
                     val resultDb = FavoriteAction(favoriteDao,query.value,page.value,pageSize.value).searchFavorites()
 
-                    if (!resultDb.isNullOrEmpty())
+                    if (resultDb.isNullOrEmpty())
                         MainState(error = "Aucun Favoris ?")
                     else
                         appendSearch(resultDb)
