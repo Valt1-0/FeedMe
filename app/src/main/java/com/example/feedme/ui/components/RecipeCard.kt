@@ -28,7 +28,8 @@ import java.util.*
 @Composable
 fun RecipeCard(
     recipe: RecipeWithFavorite,
-    OnFavoriteClick: (Int,Boolean) -> Unit
+    OnFavoriteClick: (Int,Boolean) -> Unit,
+    NavigateToRecipeDetails: (String) -> Unit
 ) {
 
     var favorite = recipe.favorite
@@ -49,6 +50,7 @@ fun RecipeCard(
             .padding(vertical = 4.dp, horizontal = 10.dp)
             .clickable(onClick = {
 
+                NavigateToRecipeDetails("recipeDetails/0")
                 // Onclick => Page Perso de la recette
 
 //                    val intent = Intent(context, DetailActivity::class.java)

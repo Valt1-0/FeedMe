@@ -1,6 +1,7 @@
 package com.example.feedme.ui.components.recipeItem
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
@@ -23,73 +24,56 @@ import java.text.SimpleDateFormat
 import java.util.*
 import com.example.feedme.domain.RecipeWithFavorite as RecipeWithFavorite
 
-/*fun listItem() {
-    val recipeItem = listOf("pomme", "banane", "boeuf")
-}*/
-/*
-import android.content.ClipData.Item
-import androidx.compose.runtime.Composable
-
-fun listItem(): List<Item> {
-    val client = HttpClient(Android) {
-
-    }
-    return client.get("https://example.com/api/ingredients")
-}
-@Composable
-
-val ingredients by remember { mutableStateOf(emptyList<Ingredient>()) }
-LaunchedEffect(Unit) {
-    ingredients = getIngredients()
-}
-LazyColumn {
-    items(ingredients) { ingredient ->
-        Text(ingredient.name)
-    }
-}*/
-
 fun convertIngredientStringToList(ingredientString: String):List<String>{
     return ingredientString.split(",")
 }
 
 @Composable
-fun recipeItemsList(
-    recipe: RecipeWithFavorite
+fun RecipeDetails(
+    recipeId: Int?
 ){
     val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-    val ingredientString = "pomme, myonnaise, boeuf, poisson"
+    val ingredientString = "pomme,myonnaise,boeuf,poisson"
     val itemsListString = convertIngredientStringToList(ingredientString)
+    val recipe = RecipeWithFavorite(id = 0,title = "recette test", publisher = "anonyme", featuredImage = "https://nyc3.digitaloceanspaces.com/food2fork/food2fork-static/featured_images/573/featured_image.png", rating = 50, sourceUrl = "", ingredients = "pomme, myonnaise, boeuf, poisson", dateAdded = Date (1606348867), dateUpdated = Date(1606348867),favorite = false )
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(7.dp)
     ){
-        Box(modifier = Modifier.fillMaxWidth()){
-            LoadImageFromUrl(LocalContext.current,recipe.featuredImage)
+        LazyColumn(modifier = Modifier.fillMaxSize()){
+            item {
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    LoadImageFromUrl(LocalContext.current, recipe.featuredImage)
+                }
+                Text(
+                    text = recipe.title + "-" + recipe.publisher,
+                    modifier = Modifier.padding(top = 5.dp),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
+                )
+                Text(
+                    text = sdf.format(recipe.dateUpdated),
+                    color = Color(0xFFAAAAAA),
+                    modifier = Modifier.padding(top = 5.dp),
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 14.sp
+                )
+            }
+            itemsIndexed(items = itemsListString){
+                index, recipe-> Row() {
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = recipe,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.ExtraBold
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+            }
+        }
 
-        Text(
-            text = recipe.title + "-" + recipe.publisher,
-            modifier = Modifier.padding(top = 5.dp),
-            fontWeight = FontWeight.Bold,
-            fontSize = 18.sp
-        )
 
-        Row (
-            modifier = Modifier
-                .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-        ){
-            Text(
-                text = sdf.format(recipe.dateUpdated),
-                color = Color(0xFFAAAAAA),
-                modifier = Modifier.padding(top = 5.dp),
-                fontWeight = FontWeight.Normal,
-                fontSize = 14.sp
-            )
-            Spacer(modifier = Modifier.width(4.dp))
-            Surface(
+           /* Surface(
                 modifier = Modifier.size(26.dp, 23.dp),
                 shape = CircleShape,
                 color = Color(0xFFEEEEEE)
@@ -107,11 +91,18 @@ fun recipeItemsList(
             Row() {
                 Text(
                     text = "Liste d'ingrédient :",
-                    fontSize = 20.sp,
+                    fontSize = 18.sp,
                     fontWeight = FontWeight.ExtraBold
                 )
             }
-        }
+            Row() {
+                Text(
+                    text = ingredientString,
+                    color = Color.DarkGray,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 16.sp
+                )
+            }*/
         }
     }
 }

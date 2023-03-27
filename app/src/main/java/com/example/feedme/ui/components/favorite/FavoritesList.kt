@@ -64,7 +64,7 @@ fun FavoritesList(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
                     itemsIndexed(recipes) { index, recipe ->
-                        RecipeCard(recipe, OnFavoriteClick)
+                        RecipeCard(recipe, OnFavoriteClick, navigateToFavoriteList)
                     }
                 }
             }
