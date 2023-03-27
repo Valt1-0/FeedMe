@@ -95,13 +95,4 @@ fun SearchBar(
             )
         }
     }
-
-//        LazyColumn {
-//            itemsIndexed(
-//                items = recipes
-//            ) { index, recipe ->
-//                RecipeCard(recipe = recipe, onClick = {})
-//            }
-//        }
-
 }

@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.feedme.Categories.CategoriesScreen
 import com.example.feedme.FavoritesList
 import com.example.feedme.ui.components.RecipeCard
 import com.example.feedme.ui.components.SearchBar
@@ -53,12 +54,12 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
 
                         )
                     BottomNavigationItem(
-                        selected = navController.currentDestination?.route == "parcourir",
-                        onClick = { navController.navigate("parcourir") },
+                        selected = navController.currentDestination?.route == "categories",
+                        onClick = { navController.navigate("categories") },
                         icon = {
                             Icon(
                                 Icons.Default.ManageSearch,
-                                contentDescription = "Parcourir"
+                                contentDescription = "Liste des Categories"
                             )
                         },
                         label = { Text("Parcourir") },
@@ -85,7 +86,7 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
                     composable("accueil") {
                         AccueilScreen(navController::navigate)
                     }
-                    composable("parcourir") { ParcourirScreen() }
+                    composable("categories") { CategoriesScreen(onClick = {viewModel.onEventTrigger(EventTrigger.SearchEvent)}) }
                     composable("favoris") { FavoriteScreen() }
                 }
             }
@@ -179,12 +180,6 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
 
     }
 
-
-    @Composable
-    fun ParcourirScreen() {
-        Text(text = "Parcourir")
-    }
-
     @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     fun FavoriteScreen() {
@@ -206,9 +201,6 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
                 )
             }
 
-
-
-
             SearchBar(
                 query = query, onSearch = { favoriteViewModel.onEventTrigger(EventTrigger.SearchEvent) },
                 onQueryChange = favoriteViewModel::onQueryChange
@@ -217,12 +209,7 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
             Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
 
 
-
-
             LazyColumn(modifier = Modifier.fillMaxSize()) {
-                item {
-                    Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
-                }
 
                 itemsIndexed(items = favorites.value.data) { index, recipe ->
 

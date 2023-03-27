@@ -44,7 +44,7 @@ fun RecipeCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .size(width = 380.dp, height = 230.dp)
+            .size(width = 380.dp, height = 240.dp)
             .background(Color.White)
             .padding(vertical = 4.dp, horizontal = 10.dp)
             .clickable(onClick = {
