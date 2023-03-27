@@ -1,11 +1,6 @@
 package com.example.feedme.Categories
 
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.graphics.Color
 import com.example.feedme.R
-import com.example.feedme.ui.theme.Primary
-
 
 
 data class CategoriesItem(

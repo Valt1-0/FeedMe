@@ -46,7 +46,7 @@ interface RecipeDao {
     ): List<RecipeWithFavorite>
 
     @Query("SELECT CASE WHEN EXISTS(SELECT * FROM recipes LIMIT 1) THEN 1 ELSE 0 END")
-   suspend  fun recipeInDB(): Boolean
+    suspend fun recipeInDB(): Boolean
 
     /**
      * Same as 'searchRecipesWithQuery' function, but no query.

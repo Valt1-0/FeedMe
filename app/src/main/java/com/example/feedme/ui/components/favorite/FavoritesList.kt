@@ -5,11 +5,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
@@ -24,7 +22,7 @@ import com.example.feedme.ui.components.RecipeCard
 fun FavoritesList(
     recipes: List<RecipeWithFavorite>,
     OnFavoriteClick: (Int, Boolean) -> Unit,
-    navigateToFavoriteList: (String) -> Unit
+    navigateToFavoriteList: (String) -> Unit,
 ) {
     val favorites = listOf("recette1", "recette2", "recette3", "recette4", "recette5")
 

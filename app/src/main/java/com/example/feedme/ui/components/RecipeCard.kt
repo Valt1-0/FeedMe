@@ -28,8 +28,8 @@ import java.util.*
 @Composable
 fun RecipeCard(
     recipe: RecipeWithFavorite,
-    OnFavoriteClick: (Int,Boolean) -> Unit,
-    NavigateToRecipeDetails: (String) -> Unit
+    OnFavoriteClick: (Int, Boolean) -> Unit,
+    NavigateToRecipeDetails: (String) -> Unit,
 ) {
 
     var favorite = recipe.favorite
@@ -66,7 +66,7 @@ fun RecipeCard(
                 .padding(7.dp)
         ) {
             Box(modifier = Modifier.fillMaxWidth()) {
-                LoadImageFromUrl(LocalContext.current,recipe.featuredImage)
+                LoadImageFromUrl(LocalContext.current, recipe.featuredImage)
 //                Image(
 //                    painter = // Set options for the image request, such as resizing or caching.
 //                    // For example:
@@ -100,8 +100,8 @@ fun RecipeCard(
 
                             favorite = !favorite
 
-                            OnFavoriteClick(recipe.id,favorite)
-                           // OnFavoriteClick(recipe.id, viewModel)
+                            OnFavoriteClick(recipe.id, favorite)
+                            // OnFavoriteClick(recipe.id, viewModel)
 
                         })
 

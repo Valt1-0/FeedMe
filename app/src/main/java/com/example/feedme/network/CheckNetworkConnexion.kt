@@ -4,8 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import java.io.IOException
-import java.net.InetAddress
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,7 +23,8 @@ constructor(
             val networkCapabilities = connectivityManager.getNetworkCapabilities(network)
             if (networkCapabilities != null &&
                 networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
-                networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
+                networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+            ) {
                 return true
             }
         } else {

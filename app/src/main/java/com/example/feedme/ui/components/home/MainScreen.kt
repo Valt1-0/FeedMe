@@ -17,26 +17,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.feedme.Categories.CategoriesScreen
 import androidx.navigation.navArgument
+import com.example.feedme.Categories.CategoriesScreen
 import com.example.feedme.FavoritesList
-import com.example.feedme.domain.RecipeWithFavorite
 import com.example.feedme.ui.components.RecipeCard
 import com.example.feedme.ui.components.SearchBar
 import com.example.feedme.ui.components.favorite.EventTrigger
 import com.example.feedme.ui.components.favorite.viewModel.FavoriteViewModel
-import com.example.feedme.ui.components.recipeItem.RecipeDetails
 import com.example.feedme.ui.components.recipe.CardWithShimmerEffect
+import com.example.feedme.ui.components.recipeItem.RecipeDetails
 import com.example.feedme.ui.components.viewModel.HomeViewModel
 import javax.inject.Inject
 
 
-class MainScreen @Inject constructor(private val viewModel: HomeViewModel, private val favoriteViewModel : FavoriteViewModel) {
+class MainScreen @Inject constructor(
+    private val viewModel: HomeViewModel,
+    private val favoriteViewModel: FavoriteViewModel,
+) {
 
 
     @OptIn(ExperimentalFoundationApi::class)
@@ -51,8 +52,10 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
                 BottomNavigation {
                     BottomNavigationItem(
                         selected = navController.currentDestination?.route == "accueil",
-                        onClick = {viewModel.onEventTrigger(EventTrigger.SearchEvent)
-                            navController.navigate("accueil") },
+                        onClick = {
+                            viewModel.onEventTrigger(EventTrigger.SearchEvent)
+                            navController.navigate("accueil")
+                        },
                         icon = { Icon(Icons.Default.Home, contentDescription = "Accueil") },
                         label = { Text("Accueil") },
                         unselectedContentColor = Color.White,
@@ -73,8 +76,10 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
                     )
                     BottomNavigationItem(
                         selected = navController.currentDestination?.route == "favoris",
-                        onClick = { favoriteViewModel.onEventTrigger(EventTrigger.SearchEvent)
-                                    navController.navigate("favoris") },
+                        onClick = {
+                            favoriteViewModel.onEventTrigger(EventTrigger.SearchEvent)
+                            navController.navigate("favoris")
+                        },
                         icon = {
                             Icon(
                                 Icons.Default.Favorite,
@@ -92,9 +97,18 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
                     composable("accueil") {
                         AccueilScreen(navController::navigate)
                     }
-                    composable("categories") { CategoriesScreen(onClick = {viewModel.onEventTrigger(EventTrigger.SearchEvent)}) }
+                    composable("categories") {
+                        CategoriesScreen(onClick = {
+                            viewModel.onEventTrigger(
+                                EventTrigger.SearchEvent
+                            )
+                        })
+                    }
                     composable("favoris") { FavoriteScreen(navController::navigate) }
-                    composable("recipeDetails/{recipeId}" , arguments = listOf(navArgument("recipeId") {type = NavType.IntType})) { RecipeDetails(it.arguments?.getInt("recipeId")) }
+                    composable(
+                        "recipeDetails/{recipeId}",
+                        arguments = listOf(navArgument("recipeId") { type = NavType.IntType })
+                    ) { RecipeDetails(it.arguments?.getInt("recipeId")) }
                 }
             }
         }
@@ -106,7 +120,7 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
     fun AccueilScreen(navigateToFavoriteList: (String) -> Unit) {
         var query = viewModel.query.value
         val page = viewModel.page.value
-        val favorites : MutableState<MainState> = viewModel.favorite
+        val favorites: MutableState<MainState> = viewModel.favorite
         var recipes: MutableState<MainState> = viewModel.recipe
 
 
@@ -168,8 +182,7 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
                         navigateToFavoriteList
                     )
 
-                    if(recipes.value.isLoading && recipes.value.data.isEmpty())
-                    {
+                    if (recipes.value.isLoading && recipes.value.data.isEmpty()) {
                         repeat(8) {
                             CardWithShimmerEffect(recipes.value.isLoading)
                         }
@@ -177,18 +190,18 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
                 }
 
 
-                if(!recipes.value.isLoading) {
+                if (!recipes.value.isLoading) {
                     itemsIndexed(items = recipes.value.data) { index, recipe ->
 
-                    RecipeCard(
-                        recipe = recipe,
-                        OnFavoriteClick = viewModel::addOrDeleteToFavorite,
-                        NavigateToRecipeDetails = navigateToFavoriteList
-                    )
-                    if ((index + 1) >= (page * 30) && !recipes.value.isLoading) {
-                        viewModel.onEventTrigger(EventTrigger.NextPageEvent)
+                        RecipeCard(
+                            recipe = recipe,
+                            OnFavoriteClick = viewModel::addOrDeleteToFavorite,
+                            NavigateToRecipeDetails = navigateToFavoriteList
+                        )
+                        if ((index + 1) >= (page * 30) && !recipes.value.isLoading) {
+                            viewModel.onEventTrigger(EventTrigger.NextPageEvent)
+                        }
                     }
-                }
 
 
                 }
@@ -204,7 +217,7 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
     fun FavoriteScreen(navigateToFavoriteList: (String) -> Unit) {
         var query = favoriteViewModel.query.value
         val page = favoriteViewModel.page.value
-        var favorites : MutableState<MainState> = favoriteViewModel.favorite
+        var favorites: MutableState<MainState> = favoriteViewModel.favorite
 
 
         Column(
@@ -221,7 +234,8 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
             }
 
             SearchBar(
-                query = query, onSearch = { favoriteViewModel.onEventTrigger(EventTrigger.SearchEvent) },
+                query = query,
+                onSearch = { favoriteViewModel.onEventTrigger(EventTrigger.SearchEvent) },
                 onQueryChange = favoriteViewModel::onQueryChange
             )
 

@@ -17,12 +17,16 @@ import androidx.compose.ui.unit.dp
 import com.example.feedme.ui.components.viewModel.HomeViewModel
 
 @Composable
-fun Snackbar(reloadActivity: () -> Unit, continuWithoutConnexion: () -> Unit?, viewModel: HomeViewModel) {
+fun Snackbar(
+    reloadActivity: () -> Unit,
+    continuWithoutConnexion: () -> Unit?,
+    viewModel: HomeViewModel,
+) {
     var recipeInDB = viewModel.recipeInDB.value
 
     LaunchedEffect(Unit) {
-             viewModel.recipeInDB()
-        }
+        viewModel.recipeInDB()
+    }
 
 
 
@@ -35,12 +39,13 @@ fun Snackbar(reloadActivity: () -> Unit, continuWithoutConnexion: () -> Unit?, v
     ) {
         Snackbar(
             action = {
-                if (recipeInDB ) {
-                Button(onClick = {
-                    continuWithoutConnexion.invoke()
-                } ) {
-                    Text(text = "Continue sans connexion")
-                }}
+                if (recipeInDB) {
+                    Button(onClick = {
+                        continuWithoutConnexion.invoke()
+                    }) {
+                        Text(text = "Continue sans connexion")
+                    }
+                }
                 Button(onClick = {
                     reloadActivity.invoke()
                 }) {

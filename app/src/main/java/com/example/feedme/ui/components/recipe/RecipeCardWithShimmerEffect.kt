@@ -60,31 +60,37 @@ fun CardWithShimmerEffect(isLoading: Boolean) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(7.dp)
-        ){
+        ) {
             Box(modifier = Modifier.fillMaxWidth()) {
-                Spacer(modifier = Modifier
-                    .fillMaxWidth()
-                    .background(brush)
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(brush)
 
-                    .height(150.dp)
+                        .height(150.dp)
                 )
             }
-            Spacer(modifier = Modifier
-                .height(20.dp).padding(top = 5.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .fillMaxWidth(fraction = 0.7f)
-                .background(brush)
+            Spacer(
+                modifier = Modifier
+                    .height(20.dp)
+                    .padding(top = 5.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .fillMaxWidth(fraction = 0.7f)
+                    .background(brush)
             )
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Spacer(modifier = Modifier
-                    .height(20.dp).padding(top = 5.dp)
-                    .clip(RoundedCornerShape(10.dp)).size(90.dp)
-                    // .fillMaxWidth(fraction = 0.2f)
-                    .background(brush)
+                Spacer(
+                    modifier = Modifier
+                        .height(20.dp)
+                        .padding(top = 5.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .size(90.dp)
+                        // .fillMaxWidth(fraction = 0.2f)
+                        .background(brush)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Surface(
@@ -92,12 +98,15 @@ fun CardWithShimmerEffect(isLoading: Boolean) {
                     shape = CircleShape,
                     color = Color(0xFFEEEEEE)
                 ) {
-                    Spacer(modifier = Modifier
-                        .height(20.dp).padding(4.dp)
-                        .weight(1f)
-                        .clip(RoundedCornerShape(10.dp)).size(50.dp)
-                        // .fillMaxWidth(fraction = 0.2f)
-                        .background(brush)
+                    Spacer(
+                        modifier = Modifier
+                            .height(20.dp)
+                            .padding(4.dp)
+                            .weight(1f)
+                            .clip(RoundedCornerShape(10.dp))
+                            .size(50.dp)
+                            // .fillMaxWidth(fraction = 0.2f)
+                            .background(brush)
                     )
                 }
             }

@@ -10,23 +10,21 @@ import com.example.feedme.util.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class SearchRecipes( private val query: String,
-                     private val page: Int,
-                     private val isConnectedToInternet : Boolean,
-                     private val recipeDtoMapper: RecipeDtoMapper,
-                     private val mainRepository: MainRepository,
-                     private val recipeDao: RecipeDao
-                     )  {
+class SearchRecipes(
+    private val query: String,
+    private val page: Int,
+    private val isConnectedToInternet: Boolean,
+    private val recipeDtoMapper: RecipeDtoMapper,
+    private val mainRepository: MainRepository,
+    private val recipeDao: RecipeDao,
+) {
 
 
-
-    suspend fun Search(): MainState
-    {
+    suspend fun Search(): MainState {
         var recipe = MainState()
 
-        if(isConnectedToInternet)
-        {
-            try{
+        if (isConnectedToInternet) {
+            try {
                 println("query : " + query + "page " + page.toString())
                 val result = mainRepository.getQueryItems(query, page)
                 println("result " + (result is Resource.Error).toString() + " ELSE " + (result is Resource.Success).toString())
@@ -45,9 +43,9 @@ class SearchRecipes( private val query: String,
                                 println("SIZE FETCH API " + recipeDtoMapper.toRecipeList(it).size)
                                 recipeDao.insertRecipes(recipeDtoMapper.toRecipeList(it))
 
-                               var dbResult =  SearchFromDatabase()
+                                var dbResult = SearchFromDatabase()
 
-                                println("current.size "+dbResult.size.toString())
+                                println("current.size " + dbResult.size.toString())
                                 recipe = MainState(data = dbResult.toList(), isLoading = false)
                             }
                         }
@@ -58,15 +56,11 @@ class SearchRecipes( private val query: String,
                 }
 
 
-
-
-            }catch (e: Exception) {
+            } catch (e: Exception) {
                 println("error" + e.message.toString())
                 recipe = MainState(error = "Something went wrong")
             }
-        }
-        else
-        {
+        } else {
             withContext(Dispatchers.IO) {
                 var dbResult = SearchFromDatabase()
 
@@ -76,12 +70,11 @@ class SearchRecipes( private val query: String,
         }
 
 
-return recipe
+        return recipe
 
     }
 
-    fun SearchFromDatabase( ): List<RecipeWithFavorite>
-    {
+    fun SearchFromDatabase(): List<RecipeWithFavorite> {
 
         //Recherche dans la base de données
         val dbResult = if (query.isBlank()) {
@@ -100,7 +93,6 @@ return recipe
         return dbResult
 
     }
-
 
 
 }

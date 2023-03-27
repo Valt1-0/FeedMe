@@ -16,4 +16,4 @@ data class RecipeWithFavorite(
     val dateAdded: Date?,
     val dateUpdated: Date?,
     var favorite: Boolean,
-):Parcelable
+) : Parcelable

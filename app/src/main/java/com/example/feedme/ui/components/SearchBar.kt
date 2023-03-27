@@ -26,7 +26,7 @@ import com.example.feedme.ui.theme.InputShape
 @ExperimentalComposeUiApi
 @Composable
 fun SearchBar(
-    query : String,
+    query: String,
     onQueryChange: (String) -> Unit,
     onSearch: () -> Unit,
 ) {
@@ -48,7 +48,7 @@ fun SearchBar(
                     .padding(horizontal = 15.dp)
                     .height(50.dp),
                 value = query,
-                onValueChange = { onQueryChange(it)},
+                onValueChange = { onQueryChange(it) },
                 placeholder = { Text(text = "Recettes ...") },
                 singleLine = true,
                 leadingIcon = {
@@ -60,8 +60,10 @@ fun SearchBar(
                     )
                 },
                 trailingIcon = {
-                    IconButton(onClick = { onQueryChange("")
-                        onSearch() }) {
+                    IconButton(onClick = {
+                        onQueryChange("")
+                        onSearch()
+                    }) {
                         Icon(
                             Icons.Default.Clear,
                             contentDescription = "Clear",

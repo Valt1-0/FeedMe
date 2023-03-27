@@ -20,34 +20,36 @@ const val STATE_KEY_PAGE_FAVORITE = "favorite.state.key.pageNumber"
 
 @HiltViewModel
 class FavoriteViewModel @Inject constructor(
-    private val favoriteDao: FavoriteDao
+    private val favoriteDao: FavoriteDao,
 ) : ViewModel() {
     var favorite: MutableState<MainState> = mutableStateOf(MainState())
     val query: MutableState<String> = mutableStateOf("")
-    val page:MutableState<Int> = mutableStateOf(1)
-    val pageSize:MutableState<Int> = mutableStateOf(30)
+    val page: MutableState<Int> = mutableStateOf(1)
+    val pageSize: MutableState<Int> = mutableStateOf(30)
 
-init {
-    newSearch()
-}
+    init {
+        newSearch()
+    }
 
 
     private fun search() = viewModelScope.launch {
         favorite.value = MainState(isLoading = true, data = favorite.value.data)
 
-        try{
-            val resultDb = FavoriteAction(favoriteDao,query.value,page.value,pageSize.value).searchFavorites()
+        try {
+            val resultDb = FavoriteAction(
+                favoriteDao,
+                query.value,
+                page.value,
+                pageSize.value
+            ).searchFavorites()
 
-            if(resultDb.isNullOrEmpty() )
-            {
-                favorite.value =   MainState(error = "Aucun Favoris ?")
-            }
-            else
-            {
+            if (resultDb.isNullOrEmpty()) {
+                favorite.value = MainState(error = "Aucun Favoris ?")
+            } else {
                 appendSearch(resultDb)
             }
 
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             println("error" + e.message.toString())
             favorite.value = MainState(error = "Something went wrong")
         }
@@ -55,8 +57,7 @@ init {
     }
 
     /* TRIGGER */
-     fun onEventTrigger(eventTrigger: EventTrigger)
-    {
+    fun onEventTrigger(eventTrigger: EventTrigger) {
         try {
             when (eventTrigger) {
                 is EventTrigger.SearchEvent -> {
@@ -66,13 +67,12 @@ init {
                     nextPage()
                 }
             }
-        }
-        catch (ex : Exception){
+        } catch (ex: Exception) {
             Log.d("TAG", "Erreur on EventTrigger Favorite")
         }
     }
 
-     fun onQueryChange(query:String) {
+    fun onQueryChange(query: String) {
         setQuery(query)
     }
 
@@ -83,56 +83,67 @@ init {
 
     }
 
-    fun deleteFavorite(id: Int)= viewModelScope.launch {
+    fun deleteFavorite(id: Int) = viewModelScope.launch {
 
         val recipeFavorite = RecipeFavorite(id)
-        FavoriteAction(favoriteDao,query.value,page.value,pageSize.value).deleteFavorite(recipeFavorite)
+        FavoriteAction(favoriteDao, query.value, page.value, pageSize.value).deleteFavorite(
+            recipeFavorite
+        )
     }
 
     /* *** */
 
-    fun addOrDeleteToFavorite(id: Int,status: Boolean) = viewModelScope.launch {
-        favorite.value = MainState(data = favorite.value.data, isLoading = true, error = favorite.value.error)
+    fun addOrDeleteToFavorite(id: Int, status: Boolean) = viewModelScope.launch {
+        favorite.value =
+            MainState(data = favorite.value.data, isLoading = true, error = favorite.value.error)
         val recipeFavorite = RecipeFavorite(id)
 
-        if (!status)
-        {
-            FavoriteAction(favoriteDao,query.value,1,pageSize.value).deleteFavorite(recipeFavorite)
-           val favoriteListWithRemove =  favorite.value.data.filter { it.id != id }
+        if (!status) {
+            FavoriteAction(favoriteDao, query.value, 1, pageSize.value).deleteFavorite(
+                recipeFavorite
+            )
+            val favoriteListWithRemove = favorite.value.data.filter { it.id != id }
 
-            if(favoriteListWithRemove.size != favorite.value.data.size)
-            {
-                favorite.value = MainState(data = favoriteListWithRemove, isLoading = false, error = favorite.value.error)
+            if (favoriteListWithRemove.size != favorite.value.data.size) {
+                favorite.value = MainState(
+                    data = favoriteListWithRemove,
+                    isLoading = false,
+                    error = favorite.value.error
+                )
             }
         }
 
 
         //favorite.value.data.find { it.id == id }?.favorite = status
-       // favorite.value = MainState(data = favorite.value.data, isLoading = false, error = favorite.value.error)
+        // favorite.value = MainState(data = favorite.value.data, isLoading = false, error = favorite.value.error)
 
     }
 
     private fun nextPage() {
         setPage(page.value + 1)
-        if(page.value > 1) {
+        if (page.value > 1) {
             viewModelScope.launch {
                 try {
-                    val resultDb = FavoriteAction(favoriteDao,query.value,page.value,pageSize.value).searchFavorites()
+                    val resultDb = FavoriteAction(
+                        favoriteDao,
+                        query.value,
+                        page.value,
+                        pageSize.value
+                    ).searchFavorites()
 
                     if (resultDb.isNullOrEmpty())
-                        favorite.value =   MainState(error = "Aucun Favoris ?", isLoading = false)
+                        favorite.value = MainState(error = "Aucun Favoris ?", isLoading = false)
                     else
                         appendSearch(resultDb)
-                  }catch (e: Exception) {
-                println("error" + e.message.toString())
-                favorite.value = MainState(error = "Something went wrong")
-            }
+                } catch (e: Exception) {
+                    println("error" + e.message.toString())
+                    favorite.value = MainState(error = "Something went wrong")
+                }
             }
         }
     }
 
-    private fun setPageSize(pageSize: Int)
-    {
+    private fun setPageSize(pageSize: Int) {
         this.pageSize.value = pageSize
     }
 
@@ -141,11 +152,12 @@ init {
     }
 
 
-    private fun appendSearch(favorites : List<RecipeWithFavorite>) {
+    private fun appendSearch(favorites: List<RecipeWithFavorite>) {
         var current = ArrayList<RecipeWithFavorite>(favorite.value.data)
         current.addAll(favorites)
         this.favorite.value = MainState(data = current.toList(), isLoading = false)
     }
+
     private fun newSearch() {
         favorite.value = MainState(isLoading = true)
         setPage(1)

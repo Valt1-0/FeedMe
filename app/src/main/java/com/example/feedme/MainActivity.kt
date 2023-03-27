@@ -41,10 +41,10 @@ class MainActivity : ComponentActivity() {
 
         setContent {
 
-            MainTheme  {
-                    MyApp {
-                        MainActivityUI()
-                    }
+            MainTheme {
+                MyApp {
+                    MainActivityUI()
+                }
             }
         }
 
@@ -72,8 +72,10 @@ class MainActivity : ComponentActivity() {
                             navController.navigate(Screen.OnBoarding.route)
                         }
                     } else {
-                        Snackbar(::reloadActivity, { viewModel.onEventTrigger(EventTrigger.SearchEvent)
-                            navController.navigate(Screen.OnBoarding.route)  }, viewModel)
+                        Snackbar(::reloadActivity, {
+                            viewModel.onEventTrigger(EventTrigger.SearchEvent)
+                            navController.navigate(Screen.OnBoarding.route)
+                        }, viewModel)
 
 
                     }
@@ -83,10 +85,10 @@ class MainActivity : ComponentActivity() {
             composable(Screen.RecipeList.route) {
                 val factory = HiltViewModelFactory(LocalContext.current, it)
                 val favoriteViewModel: FavoriteViewModel = viewModel(factory = factory)
-             //   val favoriteviewModel: FavoriteViewModel = viewModel()
-                    MainTheme() {
-                       MainScreen(viewModel,favoriteViewModel).MainContent()
-                    }
+                //   val favoriteviewModel: FavoriteViewModel = viewModel()
+                MainTheme() {
+                    MainScreen(viewModel, favoriteViewModel).MainContent()
+                }
             }
 
             composable(Screen.OnBoarding.route) {
@@ -98,8 +100,9 @@ class MainActivity : ComponentActivity() {
         }
 
     }
+
     @Composable
-    fun MyApp(content: @Composable ()->Unit) {
+    fun MyApp(content: @Composable () -> Unit) {
         content()
     }
 

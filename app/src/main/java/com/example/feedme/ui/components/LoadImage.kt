@@ -20,6 +20,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.feedme.R
+
 @Composable
 fun LoadImageFromUrl(context: Context, url: String, modifier: Modifier = Modifier) {
     var image by remember { mutableStateOf<Bitmap?>(null) }
@@ -58,7 +59,8 @@ fun LoadImageFromUrl(context: Context, url: String, modifier: Modifier = Modifie
 
                 override fun onLoadFailed(errorDrawable: Drawable?) {
                     Log.e("LoadImageFromUrl", "Failed to load image from cache: $url")
-                    image = BitmapFactory.decodeResource(context.resources, R.drawable.defaultcard).scale(300, 300)
+                    image = BitmapFactory.decodeResource(context.resources, R.drawable.defaultcard)
+                        .scale(300, 300)
                 }
             })
         }
@@ -68,7 +70,9 @@ fun LoadImageFromUrl(context: Context, url: String, modifier: Modifier = Modifie
         Image(
             bitmap = it.asImageBitmap(),
             contentDescription = null,
-            modifier = modifier.fillMaxWidth().height(150.dp),
+            modifier = modifier
+                .fillMaxWidth()
+                .height(150.dp),
             contentScale = ContentScale.Crop
         )
     }
