@@ -2,6 +2,7 @@ package com.example.feedme.ui.components.home
 
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,6 +26,7 @@ import com.example.feedme.ui.components.RecipeCard
 import com.example.feedme.ui.components.SearchBar
 import com.example.feedme.ui.components.favorite.EventTrigger
 import com.example.feedme.ui.components.favorite.viewModel.FavoriteViewModel
+import com.example.feedme.ui.components.recipe.CardWithShimmerEffect
 import com.example.feedme.ui.components.viewModel.HomeViewModel
 import javax.inject.Inject
 
@@ -159,19 +161,30 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
                         viewModel::addOrDeleteToFavorite,
                         navigateToFavoriteList
                     )
-                }
 
-                itemsIndexed(items = recipes.value.data) { index, recipe ->
-
-                    RecipeCard(
-                        recipe = recipe,
-                        OnFavoriteClick = viewModel::addOrDeleteToFavorite
-                    )
-                    if ((index + 1) >= (page * 30) && !recipes.value.isLoading) {
-                        viewModel.onEventTrigger(EventTrigger.NextPageEvent)
+                    if(recipes.value.isLoading && recipes.value.data.isEmpty())
+                    {
+                        repeat(8) {
+                            CardWithShimmerEffect(recipes.value.isLoading)
+                        }
                     }
                 }
 
+
+                if(!recipes.value.isLoading) {
+                    itemsIndexed(items = recipes.value.data) { index, recipe ->
+
+                        RecipeCard(
+                            recipe = recipe,
+                            OnFavoriteClick = viewModel::addOrDeleteToFavorite
+                        )
+                        if ((index + 1) >= (page * 30) && !recipes.value.isLoading) {
+                            viewModel.onEventTrigger(EventTrigger.NextPageEvent)
+                        }
+                    }
+
+
+                }
             }
 
         }
@@ -224,20 +237,30 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
                     Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
                 }
 
+
                 itemsIndexed(items = favorites.value.data) { index, recipe ->
 
-                    RecipeCard(
-                        recipe = recipe,
-                        OnFavoriteClick = favoriteViewModel::addOrDeleteToFavorite
-                    )
-                    if ((index + 1) >= (page * 30) && !favorites.value.isLoading) {
-                        favoriteViewModel.onEventTrigger(EventTrigger.NextPageEvent)
-                    }
+
+                            RecipeCard(
+                                recipe = recipe,
+                                OnFavoriteClick = favoriteViewModel::addOrDeleteToFavorite
+                            )
+
+                            if ((index + 1) >= (page * 30) && !favorites.value.isLoading) {
+                                favoriteViewModel.onEventTrigger(EventTrigger.NextPageEvent)
+                            }
+
                 }
 
             }
 
         }
     }
+
+
+
+
+
+
 
 }
