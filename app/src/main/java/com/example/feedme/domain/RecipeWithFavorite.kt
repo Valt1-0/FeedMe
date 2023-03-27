@@ -1,7 +1,10 @@
 package com.example.feedme.domain
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import java.util.*
 
+@Parcelize
 data class RecipeWithFavorite(
     val id: Int,
     val title: String,
@@ -13,4 +16,4 @@ data class RecipeWithFavorite(
     val dateAdded: Date?,
     val dateUpdated: Date?,
     var favorite: Boolean,
-)
+):Parcelable

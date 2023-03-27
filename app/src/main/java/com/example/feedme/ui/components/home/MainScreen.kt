@@ -17,14 +17,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.feedme.FavoritesList
+import com.example.feedme.domain.RecipeWithFavorite
 import com.example.feedme.ui.components.RecipeCard
 import com.example.feedme.ui.components.SearchBar
 import com.example.feedme.ui.components.favorite.EventTrigger
 import com.example.feedme.ui.components.favorite.viewModel.FavoriteViewModel
+import com.example.feedme.ui.components.recipeItem.RecipeDetails
 import com.example.feedme.ui.components.viewModel.HomeViewModel
 import javax.inject.Inject
 
@@ -86,7 +91,8 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
                         AccueilScreen(navController::navigate)
                     }
                     composable("parcourir") { ParcourirScreen() }
-                    composable("favoris") { FavoriteScreen() }
+                    composable("favoris") { FavoriteScreen(navController::navigate) }
+                    composable("recipeDetails/{recipeId}" , arguments = listOf(navArgument("recipeId") {type = NavType.IntType})) { RecipeDetails(it.arguments?.getInt("recipeId")) }
                 }
             }
         }
@@ -165,7 +171,8 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
 
                     RecipeCard(
                         recipe = recipe,
-                        OnFavoriteClick = viewModel::addOrDeleteToFavorite
+                        OnFavoriteClick = viewModel::addOrDeleteToFavorite,
+                        NavigateToRecipeDetails = navigateToFavoriteList
                     )
                     if ((index + 1) >= (page * 30) && !recipes.value.isLoading) {
                         viewModel.onEventTrigger(EventTrigger.NextPageEvent)
@@ -187,7 +194,7 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
 
     @OptIn(ExperimentalComposeUiApi::class)
     @Composable
-    fun FavoriteScreen() {
+    fun FavoriteScreen(navigateToFavoriteList: (String) -> Unit) {
         var query = favoriteViewModel.query.value
         val page = favoriteViewModel.page.value
         var favorites : MutableState<MainState> = favoriteViewModel.favorite
@@ -228,7 +235,8 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
 
                     RecipeCard(
                         recipe = recipe,
-                        OnFavoriteClick = favoriteViewModel::addOrDeleteToFavorite
+                        OnFavoriteClick = favoriteViewModel::addOrDeleteToFavorite,
+                        NavigateToRecipeDetails = navigateToFavoriteList
                     )
                     if ((index + 1) >= (page * 30) && !favorites.value.isLoading) {
                         favoriteViewModel.onEventTrigger(EventTrigger.NextPageEvent)
