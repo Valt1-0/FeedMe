@@ -30,6 +30,7 @@ import com.example.feedme.ui.components.SearchBar
 import com.example.feedme.ui.components.favorite.EventTrigger
 import com.example.feedme.ui.components.favorite.viewModel.FavoriteViewModel
 import com.example.feedme.ui.components.recipeItem.RecipeDetails
+import com.example.feedme.ui.components.recipe.CardWithShimmerEffect
 import com.example.feedme.ui.components.viewModel.HomeViewModel
 import javax.inject.Inject
 
@@ -165,9 +166,18 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
                         viewModel::addOrDeleteToFavorite,
                         navigateToFavoriteList
                     )
+
+                    if(recipes.value.isLoading && recipes.value.data.isEmpty())
+                    {
+                        repeat(8) {
+                            CardWithShimmerEffect(recipes.value.isLoading)
+                        }
+                    }
                 }
 
-                itemsIndexed(items = recipes.value.data) { index, recipe ->
+
+                if(!recipes.value.isLoading) {
+                    itemsIndexed(items = recipes.value.data) { index, recipe ->
 
                     RecipeCard(
                         recipe = recipe,
@@ -179,6 +189,8 @@ class MainScreen @Inject constructor(private val viewModel: HomeViewModel, priva
                     }
                 }
 
+
+                }
             }
 
         }

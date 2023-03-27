@@ -40,7 +40,7 @@ init {
 
             if(resultDb.isNullOrEmpty() )
             {
-                MainState(error = "Aucun Favoris ?")
+                favorite.value =   MainState(error = "Aucun Favoris ?")
             }
             else
             {
@@ -120,7 +120,7 @@ init {
                     val resultDb = FavoriteAction(favoriteDao,query.value,page.value,pageSize.value).searchFavorites()
 
                     if (resultDb.isNullOrEmpty())
-                        MainState(error = "Aucun Favoris ?")
+                        favorite.value =   MainState(error = "Aucun Favoris ?", isLoading = false)
                     else
                         appendSearch(resultDb)
                   }catch (e: Exception) {

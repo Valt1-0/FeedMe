@@ -60,7 +60,8 @@ fun SearchBar(
                     )
                 },
                 trailingIcon = {
-                    IconButton(onClick = { onQueryChange("") }) {
+                    IconButton(onClick = { onQueryChange("")
+                        onSearch() }) {
                         Icon(
                             Icons.Default.Clear,
                             contentDescription = "Clear",
