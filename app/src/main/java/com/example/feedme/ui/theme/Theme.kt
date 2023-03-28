@@ -123,10 +123,9 @@ fun OnBoardingTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Compos
 @SuppressLint("ConflictingOnColor")
 private val MainDarkColorPalette = darkColors(
     primary = Primary,
-    onPrimary = Black,
+    onPrimary = White,
     primaryVariant = Input2,
-
-    )
+)
 
 @SuppressLint("ConflictingOnColor")
 private val MainLightColorPalette = lightColors(

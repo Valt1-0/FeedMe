@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.feedme.ui.components.viewModel.HomeViewModel
 
 @Composable
@@ -28,49 +29,53 @@ fun Snackbar(
         viewModel.recipeInDB()
     }
 
-
-
-
     Column(
         modifier = Modifier.fillMaxSize(),
-
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Snackbar(
-            action = {
-                if (recipeInDB) {
-                    Button(onClick = {
-                        continuWithoutConnexion.invoke()
+            modifier = Modifier.padding(10.dp),
+            contentColor = Color(0xff333333),
+            backgroundColor = Color(0xff333333),
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally)
+            {
+                NoConnectionText()
+
+                Row(horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.CenterVertically) {
+                    if (recipeInDB) {
+                        Button(onClick = {
+                            continuWithoutConnexion.invoke()
+                        }) {
+                            Text(fontSize = 12.sp, text = "Continuer sans connexion")
+                        }
+                    }
+                    Button(modifier = Modifier, onClick = {
+                        reloadActivity.invoke()
                     }) {
-                        Text(text = "Continue sans connexion")
+                        Text(fontSize = 12.sp, text = "Réessayer")
                     }
                 }
-                Button(onClick = {
-                    reloadActivity.invoke()
-                }) {
-                    Text(text = "Réessayer")
-                }
-            },
-            modifier = Modifier.padding(10.dp)
-        ) {
-            Row {
-                Icon(
-                    modifier = Modifier.size(17.dp),
-                    imageVector = Icons.Default.Warning,
-                    contentDescription = null,
-                    tint = Color.White
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "Pas de connexion Internet",
-                    color = Color.White
-                )
             }
         }
     }
 }
+//
 
-
-
-
+@Composable
+fun NoConnectionText() {
+    Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+        Icon(
+            modifier = Modifier.size(25.dp),
+            imageVector = Icons.Default.Warning,
+            contentDescription = null,
+            tint = Color.White
+        )
+        Spacer(modifier = Modifier.width(10.dp))
+        Text(
+            text = "Pas de connexion Internet",
+            color = Color.White
+        )
+    }
+}
