@@ -49,15 +49,19 @@ fun SearchBar(
                     .height(50.dp),
                 value = query,
                 onValueChange = { onQueryChange(it) },
-                placeholder = { Text(text = "Recettes ...") },
+                placeholder = { Text(text = "Recettes ...", color = Color.Black) },
                 singleLine = true,
                 leadingIcon = {
-                    Icon(
-                        Icons.Default.Search,
-                        contentDescription = "Recherche",
-                        modifier = Modifier.size(33.dp),
-                        tint = Color.Black
-                    )
+                    IconButton(onClick = {
+                        onSearch()
+                    }) {
+                        Icon(
+                            Icons.Default.Search,
+                            contentDescription = "Recherche",
+                            modifier = Modifier.size(33.dp),
+                            tint = Color.Black
+                        )
+                    }
                 },
                 trailingIcon = {
                     IconButton(onClick = {
