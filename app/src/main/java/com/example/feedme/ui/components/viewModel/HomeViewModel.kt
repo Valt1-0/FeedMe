@@ -83,8 +83,7 @@ class HomeViewModel @Inject constructor(
             FavoriteAction(favoriteDao, query.value, 1, 10).deleteFavorite(recipeFavorite)
 
         recipe.value.data.find { it.id == id }?.favorite = status
-        recipe.value =
-            MainState(data = recipe.value.data, isLoading = false, error = recipe.value.error)
+        recipe.value = MainState(data = recipe.value.data, isLoading = false, error = recipe.value.error)
         searchFavorite()
     }
 

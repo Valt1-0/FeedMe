@@ -1,6 +1,7 @@
 package com.example.feedme.ui.components
 
 
+import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -13,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.twotone.Star
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,10 +39,16 @@ fun RecipeCard(
     println("DateRecipe : " + recipe.dateUpdated.toString())
     println("recipe.dateUpdated : " + sdf.format(recipe.dateUpdated))
     println("recipe.favorite" + recipe.favorite.toString())
-
+    val visibleState = remember {
+        MutableTransitionState(false).apply {
+            targetState = false // start the animation immediately
+        }
+    }
 
     val longDateAdded = recipe.dateAdded
     println("longDateAdded: $longDateAdded")
+
+   // RecipeDetails(visibleState,recipe)
 
     Card(
         modifier = Modifier
@@ -49,8 +57,8 @@ fun RecipeCard(
             .background(Color.White)
             .padding(vertical = 4.dp, horizontal = 10.dp)
             .clickable(onClick = {
-
-                NavigateToRecipeDetails("recipeDetails/0")
+                visibleState.targetState = !visibleState.targetState
+                NavigateToRecipeDetails("recipeDetails/${recipe.id}")
                 // Onclick => Page Perso de la recette
 
 //                    val intent = Intent(context, DetailActivity::class.java)

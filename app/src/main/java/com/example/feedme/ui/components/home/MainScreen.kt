@@ -2,6 +2,7 @@ package com.example.feedme.ui.components.home
 
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.animation.*
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -99,8 +100,7 @@ class MainScreen @Inject constructor(
                     }
                     composable("categories") {
                         CategoriesScreen(onClick = {
-                            viewModel.onEventTrigger(
-                                EventTrigger.SearchEvent
+                            viewModel.onEventTrigger(EventTrigger.SearchEvent
                             )
                         })
                     }
@@ -108,22 +108,23 @@ class MainScreen @Inject constructor(
                     composable(
                         "recipeDetails/{recipeId}",
                         arguments = listOf(navArgument("recipeId") { type = NavType.IntType })
-                    ) { RecipeDetails(it.arguments?.getInt("recipeId")) }
+                    ) { RecipeDetails(it.arguments?.getInt("recipeId"),onBack = { navController.popBackStack() }) }
                 }
             }
         }
     }
 
-
-    @OptIn(ExperimentalComposeUiApi::class)
+    @OptIn(ExperimentalMaterialApi::class, ExperimentalAnimationApi::class,
+        ExperimentalComposeUiApi::class
+    )
     @Composable
     fun AccueilScreen(navigateToFavoriteList: (String) -> Unit) {
+       // CategoryScreen(viewModel)
+   //     RecipeListScreen(viewModel,navigateToFavoriteList)
         var query = viewModel.query.value
         val page = viewModel.page.value
         val favorites: MutableState<MainState> = viewModel.favorite
         var recipes: MutableState<MainState> = viewModel.recipe
-
-
         //var currentPage: MutableState<Int> = remember { mutableStateOf(1) }
         val isNetworkAvailable = viewModel.isNetworkAvailable()
 
@@ -163,19 +164,6 @@ class MainScreen @Inject constructor(
 
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 item {
-                    //            LazyRow(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .background(Color.Transparent)
-//                    .padding(horizontal = 16.dp, vertical = 8.dp)
-//
-//
-//                //horizontalArrangement = Arrangement.spacedBy(16.dp),
-//            ) {
-//                itemsIndexed(items = recipes.value.data) { index, recipe ->
-//                    RecipeCard(recipe,::test ,viewModel)
-//                }
-//            }
                     FavoritesList(
                         recipes = favorites.value.data,
                         viewModel::addOrDeleteToFavorite,
@@ -190,7 +178,7 @@ class MainScreen @Inject constructor(
                 }
 
 
-                if (!recipes.value.isLoading) {
+                if (recipes.value.data.isNotEmpty()) {
                     itemsIndexed(items = recipes.value.data) { index, recipe ->
 
                         RecipeCard(
@@ -208,7 +196,6 @@ class MainScreen @Inject constructor(
             }
 
         }
-
 
     }
 
