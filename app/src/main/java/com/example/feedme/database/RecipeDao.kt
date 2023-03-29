@@ -48,6 +48,12 @@ interface RecipeDao {
     @Query("SELECT CASE WHEN EXISTS(SELECT * FROM recipes LIMIT 1) THEN 1 ELSE 0 END")
     suspend fun recipeInDB(): Boolean
 
+    @Query(""" SELECT recipes.*, CASE WHEN recipes_favorite.recipe_id IS NOT NULL THEN 1 ELSE 0 END AS favorite FROM recipes 
+         LEFT JOIN recipes_favorite ON recipes.id = recipes_favorite.recipe_id 
+         WHERE recipes.id = :id""")
+    fun searchById(id: Int) : RecipeWithFavorite
+
+
     /**
      * Same as 'searchRecipesWithQuery' function, but no query.
      */

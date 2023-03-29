@@ -1,7 +1,8 @@
 package com.example.feedme.ui.components.recipeItem
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.*
-import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -26,8 +27,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.feedme.domain.RecipeWithFavorite
 import com.example.feedme.ui.components.LoadImageFromUrl
+import com.example.feedme.ui.components.viewModel.HomeViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -40,11 +43,13 @@ fun convertIngredientStringToList(ingredientString: String): List<String> {
 
 
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun RecipeDetails(
     recipeId: Int?,
     onBack: () -> Unit
 ) {
+    val myViewModel: HomeViewModel = hiltViewModel()
     val visibleState = remember {
         MutableTransitionState(false).apply {
 
@@ -97,25 +102,25 @@ fun RecipeDetails(
         enter = fadeIn(
             animationSpec = tween(
                 durationMillis = 500,
-                easing = LinearOutSlowInEasing
+                easing = LinearEasing
             )
         ) + slideInHorizontally(
             initialOffsetX = { it },
             animationSpec = tween(
                 durationMillis = 500,
-                easing = LinearOutSlowInEasing
+                easing = LinearEasing
             )
         ),
         exit = fadeOut(
             animationSpec = tween(
                 durationMillis = 500,
-                easing = LinearOutSlowInEasing
+                easing = LinearEasing
             )
         ) + slideOutHorizontally(
             targetOffsetX = { -it },
             animationSpec = tween(
                 durationMillis = 500,
-                easing = LinearOutSlowInEasing
+                easing = LinearEasing
             )
         )
     )  {

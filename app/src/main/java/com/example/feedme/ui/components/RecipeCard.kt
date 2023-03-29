@@ -90,7 +90,7 @@ fun RecipeCard(
 
                             favorite = !favorite
 
-                            OnFavoriteClick(recipe.id, favorite)
+                            recipe.id?.let { OnFavoriteClick(it, favorite) }
                             // OnFavoriteClick(recipe.id, viewModel)
 
                         })
