@@ -33,7 +33,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun OnboardingScreen(
     onboardingItems: List<OnboardingItem>,
-    onboardingCompleteAction: () -> Unit,
+    onboardingCompleteAction: () -> Unit
 ) {
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
@@ -42,9 +42,7 @@ fun OnboardingScreen(
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             HorizontalPager(pageCount = onboardingItems.size, state = pagerState) { page ->
                 Column(
-                    modifier = Modifier
-                        .background(onboardingItems[page].backgroundColor)
-                        .fillMaxHeight(),
+                    modifier = Modifier.background(onboardingItems[page].backgroundColor).fillMaxHeight(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Top
                 ) {
@@ -135,10 +133,7 @@ fun OnboardingScreen(
                                     ),
                                     shape = RoundedCornerShape(50), // = 50% percent
                                     //or shape = CircleShape
-                                    colors = ButtonDefaults.outlinedButtonColors(
-                                        contentColor = colors.secondary,
-                                        backgroundColor = colors.secondary
-                                    ),
+                                    colors = ButtonDefaults.outlinedButtonColors(contentColor = colors.secondary, backgroundColor = colors.secondary),
                                     modifier = Modifier.size(65.dp)
                                 ) {
                                     Icon(
