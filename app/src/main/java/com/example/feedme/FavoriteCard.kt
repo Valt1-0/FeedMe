@@ -43,8 +43,6 @@ fun FavoriteCard(
     val longDateAdded = recipe.dateAdded
     println("longDateAdded: $longDateAdded")
 
-    // RecipeDetails(visibleState,recipe)
-
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -54,12 +52,6 @@ fun FavoriteCard(
             .clickable(onClick = {
                 visibleState.targetState = !visibleState.targetState
                 NavigateToRecipeDetails("recipeDetails/${recipe.id}")
-                // Onclick => Page Perso de la recette
-
-//                    val intent = Intent(context, DetailActivity::class.java)
-//                    intent.putExtra("itemId", itemId)
-//                    context.startActivity(intent)
-
             }),
         elevation = 0.dp,
     ) {
@@ -67,7 +59,7 @@ fun FavoriteCard(
             LoadImageFromUrl(
                 LocalContext.current,
                 recipe.featuredImage,
-                modifier = Modifier.size(100.dp)
+                modifier = Modifier.fillMaxSize()
             )
             Column(
                 horizontalAlignment = Alignment.Start,

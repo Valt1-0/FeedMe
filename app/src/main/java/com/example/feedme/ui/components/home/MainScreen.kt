@@ -29,7 +29,7 @@ import com.example.feedme.FavoritesList
 import com.example.feedme.ui.components.RecipeCard
 import com.example.feedme.ui.components.SearchBar
 import com.example.feedme.ui.components.favorite.EventTrigger
-import com.example.feedme.ui.components.viewModel.FavoriteViewModel
+import com.example.feedme.ui.components.favorite.viewModel.FavoriteViewModel
 import com.example.feedme.ui.components.recipe.CardWithShimmerEffect
 import com.example.feedme.ui.components.recipeItem.RecipeDetails
 import com.example.feedme.ui.components.viewModel.HomeViewModel
@@ -219,9 +219,7 @@ class MainScreen @Inject constructor(
 
             Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
 
-
             LazyColumn(modifier = Modifier.fillMaxSize()) {
-
                 itemsIndexed(items = favorites.value.data) { index, recipe ->
 
                     FavoriteCard(

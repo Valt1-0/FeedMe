@@ -55,7 +55,7 @@ fun CategoriesScreen(onClick: () -> Unit,navigateToFavoriteList: (String) -> Uni
                 modifier = Modifier
                     .padding()
                     .clickable(onClick = {
-                        viewModel.onQueryChange(categorie.name)
+                        viewModel.onQueryChange(categorie.query)
 
                         onClick()
                         navigateToFavoriteList("accueil")
