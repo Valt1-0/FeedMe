@@ -9,7 +9,7 @@ interface FavoriteDao {
     @Query(
         """SELECT recipes.*, CASE WHEN recipes_favorite.recipe_id IS NOT NULL THEN 1 ELSE 0 END AS favorite  FROM recipes_favorite 
                 INNER JOIN recipes ON recipes_favorite.recipe_id = recipes.id
-             ORDER BY recipes.id DESC LIMIT :pageSize OFFSET ((:page - 1) * :pageSize)"""
+             ORDER BY recipes.id ASC LIMIT :pageSize OFFSET ((:page - 1) * :pageSize)"""
     )
     suspend fun searchFavorites(page: Int, pageSize: Int): List<RecipeWithFavorite>
 
@@ -19,7 +19,7 @@ interface FavoriteDao {
                 INNER JOIN recipes ON recipes_favorite.recipe_id = recipes.id
                  WHERE recipes.title LIKE '%' || :query || '%'
                     OR recipes.ingredients LIKE '%' || :query || '%'
-             ORDER BY recipes.id DESC LIMIT :pageSize OFFSET ((:page - 1) * :pageSize)"""
+             ORDER BY recipes.id ASC LIMIT :pageSize OFFSET ((:page - 1) * :pageSize)"""
     )
     suspend fun searchFavoritesWithQuery(
         query: String,

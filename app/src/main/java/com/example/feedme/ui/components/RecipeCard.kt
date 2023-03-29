@@ -75,25 +75,7 @@ fun RecipeCard(
         ) {
             Box(modifier = Modifier.fillMaxWidth()) {
                 LoadImageFromUrl(LocalContext.current, recipe.featuredImage)
-//                Image(
-//                    painter = // Set options for the image request, such as resizing or caching.
-//                    // For example:
-//                    rememberAsyncImagePainter(
-//                        ImageRequest.Builder(LocalContext.current)
-//                            .data(data = recipe.featuredImage)
-//                            .apply(block = fun ImageRequest.Builder.() {
-//                                // Set options for the image request, such as resizing or caching.
-//                                // For example:
-//                                size(300, 300)
-//                                placeholder(R.drawable.jonathan)
-//                            }).build()
-//                    ),
-//                    contentDescription = "Image du restaurant",
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .height(150.dp),
-//                    contentScale = ContentScale.Crop
-//                )
+
                 Icon(
                     // isFavorite.value => Favoris value true/false Icon
                     imageVector = if (favorite) Icons.Filled.Star else Icons.TwoTone.Star,
