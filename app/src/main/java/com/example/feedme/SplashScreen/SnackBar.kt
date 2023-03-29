@@ -39,18 +39,19 @@ fun Snackbar(
             contentColor = Color(0xff333333),
             backgroundColor = Color(0xff333333),
         ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally)
+            Column()
             {
                 NoConnectionText()
 
-                Row(horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.CenterVertically) {
+                Row(modifier = Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.SpaceEvenly) {
                     if (recipeInDB) {
                         Button(onClick = {
                             continuWithoutConnexion.invoke()
                         }) {
-                            Text(fontSize = 12.sp, text = "Continuer sans connexion")
+                            Text(fontSize = 12.sp, text = "Continuer")
                         }
                     }
+
                     Button(modifier = Modifier, onClick = {
                         reloadActivity.invoke()
                     }) {
@@ -60,12 +61,12 @@ fun Snackbar(
             }
         }
     }
+
 }
-//
 
 @Composable
 fun NoConnectionText() {
-    Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
         Icon(
             modifier = Modifier.size(25.dp),
             imageVector = Icons.Default.Warning,
@@ -78,4 +79,5 @@ fun NoConnectionText() {
             color = Color.White
         )
     }
+
 }
