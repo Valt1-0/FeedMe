@@ -24,7 +24,7 @@ interface RecipeDao {
          LEFT JOIN recipes_favorite ON recipes.id = recipes_favorite.recipe_id
         WHERE recipes.title LIKE '%' || :query || '%'
         OR recipes.ingredients LIKE '%' || :query || '%' 
-        ORDER BY recipes.id DESC LIMIT :pageSize OFFSET ((:page - 1) * :pageSize)
+        ORDER BY recipes.id ASC LIMIT :pageSize OFFSET ((:page - 1) * :pageSize)
         """
     )
     fun searchRecipesWithQuery(
@@ -37,7 +37,7 @@ interface RecipeDao {
         """
         SELECT recipes.*, CASE WHEN recipes_favorite.recipe_id IS NOT NULL THEN 1 ELSE 0 END AS favorite FROM recipes 
          LEFT JOIN recipes_favorite ON recipes.id = recipes_favorite.recipe_id
-        ORDER BY recipes.id DESC LIMIT :pageSize OFFSET ((:page - 1) * :pageSize)
+        ORDER BY recipes.id ASC LIMIT :pageSize OFFSET ((:page - 1) * :pageSize)
         """
     )
     fun searchRecipes(
@@ -47,6 +47,12 @@ interface RecipeDao {
 
     @Query("SELECT CASE WHEN EXISTS(SELECT * FROM recipes LIMIT 1) THEN 1 ELSE 0 END")
     suspend fun recipeInDB(): Boolean
+
+    @Query(""" SELECT recipes.*, CASE WHEN recipes_favorite.recipe_id IS NOT NULL THEN 1 ELSE 0 END AS favorite FROM recipes 
+         LEFT JOIN recipes_favorite ON recipes.id = recipes_favorite.recipe_id 
+         WHERE recipes.id = :id""")
+    fun searchById(id: Int) : RecipeWithFavorite
+
 
     /**
      * Same as 'searchRecipesWithQuery' function, but no query.

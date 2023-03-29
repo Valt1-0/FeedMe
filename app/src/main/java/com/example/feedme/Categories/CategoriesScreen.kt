@@ -14,11 +14,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.feedme.ui.components.viewModel.HomeViewModel
 import com.example.feedme.ui.theme.CategoriesShape
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun CategoriesScreen(onClick: () -> Unit) {
+fun CategoriesScreen(onClick: () -> Unit,navigateToFavoriteList: (String) -> Unit, viewModel: HomeViewModel) {
+
+    val myViewModel: HomeViewModel = hiltViewModel()
+
 //    Scaffold(
 //        topBar = {
 //            TopAppBar(
@@ -50,7 +55,10 @@ fun CategoriesScreen(onClick: () -> Unit) {
                 modifier = Modifier
                     .padding()
                     .clickable(onClick = {
-                        onClick
+                        viewModel.onQueryChange(categorie.name)
+
+                        onClick()
+                        navigateToFavoriteList("accueil")
                     }),
                 elevation = 3.dp,
                 shape = CategoriesShape.medium

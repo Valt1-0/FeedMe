@@ -100,10 +100,12 @@ class MainScreen @Inject constructor(
                         AccueilScreen(navController::navigate)
                     }
                     composable("categories") {
+//                        val factory = HiltViewModelFactory(LocalContext.current, it)
+//                        val viewModel: HomeViewModel = viewModel("HomeViewModel", factory)
                         CategoriesScreen(onClick = {
-                            viewModel.onEventTrigger(EventTrigger.SearchEvent
-                            )
-                        })
+                            viewModel.onEventTrigger(EventTrigger.SearchEvent)
+
+                        },navController::navigate, viewModel)
                     }
                     composable("favoris") { FavoriteScreen(navController::navigate) }
                     composable(
