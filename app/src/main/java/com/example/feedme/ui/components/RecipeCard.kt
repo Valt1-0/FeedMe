@@ -103,7 +103,7 @@ fun RecipeCard(
                 text = recipe.title + " - " + recipe.publisher,
                 modifier = Modifier.padding(top = 5.dp),
                 fontWeight = FontWeight.Bold,
-                fontSize = 18.sp
+                fontSize = 16.sp
             )
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -113,7 +113,7 @@ fun RecipeCard(
                 Text(
                     // Date de mise à jour
 
-                    text = sdf.format(recipe.dateUpdated),
+                    text = "Mis à jour : " + sdf.format(recipe.dateUpdated),
                     color = Color(0xFFAAAAAA),
                     modifier = Modifier.padding(top = 5.dp),
                     fontWeight = FontWeight.Normal,
@@ -139,8 +139,6 @@ fun RecipeCard(
         }
     }
 }
-
-
 fun ConvertRating(rate: Int): Float {
     return (rate.toFloat() / 20.0f)
 }
