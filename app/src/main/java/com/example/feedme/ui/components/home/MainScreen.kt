@@ -24,11 +24,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.feedme.Categories.CategoriesScreen
+import com.example.feedme.FavoriteCard
 import com.example.feedme.FavoritesList
 import com.example.feedme.ui.components.RecipeCard
 import com.example.feedme.ui.components.SearchBar
 import com.example.feedme.ui.components.favorite.EventTrigger
-import com.example.feedme.ui.components.favorite.viewModel.FavoriteViewModel
+import com.example.feedme.ui.components.viewModel.FavoriteViewModel
 import com.example.feedme.ui.components.recipe.CardWithShimmerEffect
 import com.example.feedme.ui.components.recipeItem.RecipeDetails
 import com.example.feedme.ui.components.viewModel.HomeViewModel
@@ -132,8 +133,7 @@ class MainScreen @Inject constructor(
             // afficher le contenu de l'interface
         } else {
             // afficher un toast pour informer l'utilisateur qu'il n'y a pas de connexion
-            Toast.makeText(LocalContext.current, "Pas de connexion internet", Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(LocalContext.current, "Pas de connexion internet", Toast.LENGTH_SHORT).show()
         }
 
         Column(
@@ -149,18 +149,12 @@ class MainScreen @Inject constructor(
                 )
             }
 
-
-
-
             SearchBar(
                 query = query, onSearch = { viewModel.onEventTrigger(EventTrigger.SearchEvent) },
                 onQueryChange = viewModel::onQueryChange
             )
 
             Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
-
-
-
 
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 item {
@@ -177,7 +171,6 @@ class MainScreen @Inject constructor(
                     }
                 }
 
-
                 if (recipes.value.data.isNotEmpty()) {
                     itemsIndexed(items = recipes.value.data) { index, recipe ->
 
@@ -190,13 +183,9 @@ class MainScreen @Inject constructor(
                             viewModel.onEventTrigger(EventTrigger.NextPageEvent)
                         }
                     }
-
-
                 }
             }
-
         }
-
     }
 
     @OptIn(ExperimentalComposeUiApi::class)
@@ -233,7 +222,7 @@ class MainScreen @Inject constructor(
 
                 itemsIndexed(items = favorites.value.data) { index, recipe ->
 
-                    RecipeCard(
+                    FavoriteCard(
                         recipe = recipe,
                         OnFavoriteClick = favoriteViewModel::addOrDeleteToFavorite,
                         NavigateToRecipeDetails = navigateToFavoriteList
