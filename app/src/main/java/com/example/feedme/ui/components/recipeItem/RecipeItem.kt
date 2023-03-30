@@ -49,7 +49,6 @@ fun RecipeDetails(
         TODO("Show Invalid Recipe")
     } else {
         val onLoad = viewModel.onLoad.value
-        println("On Load : " + onLoad)
         LaunchedEffect(Unit)
         {
             if (!onLoad) {
@@ -58,9 +57,6 @@ fun RecipeDetails(
                 viewModel.onTriggerEvent(EventTrigger.GetRecipeEvent(recipeId))
             }
         }
-
-
-
 
         val recipe = viewModel.recipe.value
         val loading = viewModel.isLoading.value
