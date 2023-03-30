@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.example.feedme.Categories.CategoriesCard
@@ -109,7 +110,7 @@ class MainScreen @Inject constructor(
             Column(modifier = Modifier.padding(innerPadding)) {
                 AnimatedNavHost(navController, startDestination = "accueil") {
                     composable("accueil") {
-                        AccueilScreen(navController::navigate)
+                        AccueilScreen(navController)
                     }
                     composable("categories") {
 //                        val factory = HiltViewModelFactory(LocalContext.current, it)
@@ -169,11 +170,11 @@ class MainScreen @Inject constructor(
                         }
 
                     ) {
-                        var myViewModel: RecipeDetailsViewModel = hiltViewModel()
+                        var recipeDetailsViewModel: RecipeDetailsViewModel = hiltViewModel()
                         RecipeDetails(
                             it.arguments?.getInt("recipeId"),
                             onBack = { navController.popBackStack() },
-                            myViewModel
+                            recipeDetailsViewModel
                         )
                     }
                 }
@@ -186,23 +187,27 @@ class MainScreen @Inject constructor(
         ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class
     )
     @Composable
-    fun AccueilScreen(navigateToFavoriteList: (String) -> Unit) {
-        // CategoryScreen(viewModel)
-        //     RecipeListScreen(viewModel,navigateToFavoriteList)
+    fun AccueilScreen(navController: NavController) {
         var query = viewModel.query.value
         val page = viewModel.page.value
         val favorites: MutableState<MainState> = viewModel.favorite
         var recipes: MutableState<MainState> = viewModel.recipe
-        //var currentPage: MutableState<Int> = remember { mutableStateOf(1) }
         val isNetworkAvailable = viewModel.isNetworkAvailable()
         val listState = rememberLazyListState()
+        val context = LocalContext.current
 
-        if (isNetworkAvailable) {
-            // afficher le contenu de l'interface
-        } else {
-            // afficher un toast pour informer l'utilisateur qu'il n'y a pas de connexion
-            Toast.makeText(LocalContext.current, "Pas de connexion internet", Toast.LENGTH_SHORT)
-                .show()
+
+
+        LaunchedEffect(isNetworkAvailable)
+        {
+            if (isNetworkAvailable) {
+                // afficher le contenu de l'interface
+            } else {
+                // afficher un toast pour informer l'utilisateur qu'il n'y a pas de connexion
+                Toast.makeText(context, "Pas de connexion internet", Toast.LENGTH_SHORT)
+                    .show()
+            }
+
         }
 
         Column(
@@ -233,12 +238,6 @@ class MainScreen @Inject constructor(
 
             Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
 
-            LaunchedEffect(recipes.value.data) {
-                if (recipes.value.data.isNotEmpty() && page == 1) {
-                    listState.scrollToItem(0)
-                }
-            }
-
             LazyColumn(modifier = Modifier.fillMaxSize(), state = listState) {
                 item {
                     LazyRow(Modifier.fillMaxWidth()) {
@@ -247,7 +246,7 @@ class MainScreen @Inject constructor(
                                 categorie = categorie,
                                 onClick = { viewModel.onEventTrigger(EventTrigger.SearchEvent) },
                                 viewModel = viewModel,
-                                navigateToFavoriteList = navigateToFavoriteList,
+                                navigateToFavoriteList = navController::navigate,
                                 modifier = Modifier.size(160.dp).scale(0.85f)
                             )
                         }
@@ -258,7 +257,7 @@ class MainScreen @Inject constructor(
                     FavoritesList(
                         recipes = favorites.value.data,
                         viewModel::addOrDeleteToFavorite,
-                        navigateToFavoriteList
+                        navController::navigate
                     )
 
                     if (recipes.value.isLoading && recipes.value.data.isEmpty()) {
@@ -282,7 +281,7 @@ class MainScreen @Inject constructor(
                                     favorites.value.data
                                 )
                             },
-                            NavigateToRecipeDetails = navigateToFavoriteList,
+                            NavigateToRecipeDetails = navController::navigate,
                             modifier = Modifier
                         )
                         if ((index + 1) >= (page * 30) && !recipes.value.isLoading) {
