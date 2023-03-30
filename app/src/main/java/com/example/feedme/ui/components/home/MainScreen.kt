@@ -8,10 +8,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.*
 import androidx.compose.material.icons.filled.Favorite
@@ -21,13 +18,16 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import com.example.feedme.Categories.CategoriesCard
 import com.example.feedme.Categories.CategoriesScreen
+import com.example.feedme.Categories.categoriesItem
 import com.example.feedme.FavoriteCard
 import com.example.feedme.FavoritesList
 import com.example.feedme.domain.RecipeWithFavorite
@@ -241,6 +241,20 @@ class MainScreen @Inject constructor(
 
             LazyColumn(modifier = Modifier.fillMaxSize(), state = listState) {
                 item {
+                    LazyRow(Modifier.fillMaxWidth()) {
+                        items(categoriesItem) { categorie ->
+                            CategoriesCard(
+                                categorie = categorie,
+                                onClick = { viewModel.onEventTrigger(EventTrigger.SearchEvent) },
+                                viewModel = viewModel,
+                                navigateToFavoriteList = navigateToFavoriteList,
+                                modifier = Modifier.size(160.dp).scale(0.85f)
+                            )
+                        }
+                    }
+
+                    Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
+
                     FavoritesList(
                         recipes = favorites.value.data,
                         viewModel::addOrDeleteToFavorite,
@@ -268,7 +282,8 @@ class MainScreen @Inject constructor(
                                     favorites.value.data
                                 )
                             },
-                            NavigateToRecipeDetails = navigateToFavoriteList
+                            NavigateToRecipeDetails = navigateToFavoriteList,
+                            modifier = Modifier
                         )
                         if ((index + 1) >= (page * 30) && !recipes.value.isLoading) {
                             viewModel.onEventTrigger(EventTrigger.NextPageEvent)

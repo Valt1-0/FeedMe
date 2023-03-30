@@ -29,6 +29,7 @@ fun FavoriteCard(
     recipe: RecipeWithFavorite,
     OnFavoriteClick: (Int, Boolean) -> Unit,
     NavigateToRecipeDetails: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
 
     var favorite = recipe.favorite
@@ -46,7 +47,7 @@ fun FavoriteCard(
     println("longDateAdded: $longDateAdded")
 
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(100.dp)
             .background(Color.White)

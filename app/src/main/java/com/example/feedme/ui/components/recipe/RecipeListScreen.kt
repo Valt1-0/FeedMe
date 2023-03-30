@@ -106,7 +106,8 @@ fun RecipeListScreen(viewModel: HomeViewModel,navigateToFavoriteList : (String) 
                     RecipeCard(
                         recipe = recipe,
                         OnFavoriteClick = viewModel::addOrDeleteToFavorite,
-                        NavigateToRecipeDetails = navigateToFavoriteList
+                        NavigateToRecipeDetails = navigateToFavoriteList,
+                        modifier = Modifier
                     )
                     if ((index + 1) >= (page * 30) && !recipes.value.isLoading) {
                         viewModel.onEventTrigger(EventTrigger.NextPageEvent)

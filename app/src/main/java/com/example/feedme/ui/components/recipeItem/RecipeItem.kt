@@ -70,7 +70,7 @@ fun RecipeDetails(
         if (!loading && recipe?.id != 0) {
             Column(Modifier.fillMaxSize().background(Color.White)) {
                 LazyVerticalGrid(
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
+                    contentPadding = PaddingValues(horizontal = 6.dp, vertical = 6.dp),
                     columns = GridCells.Fixed(3),
                     modifier = Modifier
                         .background(Color.White),
@@ -185,7 +185,7 @@ fun RecipeDetails(
                                             modifier = Modifier
                                                 .fillMaxSize()
                                                 .aspectRatio(1f),
-                                            elevation = 8.dp
+                                            elevation = 6.dp
                                         ) {
                                             Column(
                                                 horizontalAlignment = Alignment.CenterHorizontally,

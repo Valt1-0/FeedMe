@@ -56,11 +56,16 @@ fun FavoritesList(
                 LazyRow(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .size(width = 380.dp, height = 230.dp),
+                        .size(width = 380.dp, height = 250.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
                     itemsIndexed(recipes) { index, recipe ->
-                        RecipeCard(recipe, OnFavoriteClick, navigateToFavoriteList)
+                        RecipeCard(
+                            recipe,
+                            OnFavoriteClick,
+                            navigateToFavoriteList,
+                            modifier = Modifier.size(280.dp,280.dp)
+                        )
                     }
                 }
             }

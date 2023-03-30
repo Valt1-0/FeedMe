@@ -32,6 +32,7 @@ fun RecipeCard(
     recipe: RecipeWithFavorite,
     OnFavoriteClick: (Int, Boolean) -> Unit,
     NavigateToRecipeDetails: (String) -> Unit,
+    modifier: Modifier
 ) {
 
     var favorite = recipe.favorite
@@ -51,7 +52,7 @@ fun RecipeCard(
     // RecipeDetails(visibleState,recipe)
 
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .size(width = 380.dp, height = 240.dp)
             .background(Color.White)
