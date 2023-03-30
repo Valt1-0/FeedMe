@@ -21,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.feedme.ConvertRating
 import com.example.feedme.ui.components.LoadImageFromUrl
 import com.example.feedme.ui.components.favorite.EventTrigger
 import java.text.SimpleDateFormat
@@ -74,10 +75,11 @@ fun RecipeDetails(
 
         if (!loading && recipe?.id != 0 ) {
 
-      //  LaunchedEffect(Unit) {
+            //  LaunchedEffect(Unit) {
 
-            visibleStateAnimation.targetState = true // Modifier la visibilité pour déclencher l'animation
-       // }
+            visibleStateAnimation.targetState =
+                true // Modifier la visibilité pour déclencher l'animation
+            // }
 
 
 ////Animation  !
@@ -120,134 +122,153 @@ fun RecipeDetails(
 //                    Icon(Icons.Default.ArrowBack, contentDescription = "Retour")
 //                }
 //            }
-
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(3),
-                modifier = Modifier
-                    .background(Color.White)
-                    .padding(start = 0.dp, end = 0.dp, top = 0.dp),
-                verticalArrangement = Arrangement.spacedBy(20.dp),
-                horizontalArrangement = Arrangement.spacedBy(20.dp),
-                content = {
-                    item(span = {
-                        GridItemSpan(maxLineSpan)
-                    }) {
-                        Box(modifier = Modifier.fillMaxWidth()) {
-                            if (recipe != null) {
-                                LoadImageFromUrl(LocalContext.current, recipe.featuredImage)
-
-                            }
-                            IconButton(
-                                onClick = {
-                                    onBack()
-                                },
-                                modifier = Modifier
-                                    .align(Alignment.TopStart)
-                                    .padding(16.dp)
-                                    .background(Color.White, CircleShape)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Close,
-                                    contentDescription = "Retour",
-                                    tint = Color.Black
-                                )
-                            }
-                        }
-                    }
-                    item(span = {
-                        GridItemSpan(maxLineSpan)
-                    }) {
-                        if (recipe != null) {
-                            Text(
-                                text = recipe.title + "-" + recipe.publisher,
-                                modifier = Modifier.padding(top = 5.dp),
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 20.sp
-                            )
-                        }
-                        if (recipe != null) {
-                            Text(
-                                text = sdf.format(recipe.dateUpdated),
-                                color = Color(0xFFAAAAAA),
-                                modifier = Modifier.padding(top = 5.dp),
-                                fontWeight = FontWeight.Normal,
-                                fontSize = 14.sp
-                            )
-                        }
-
-                    }
+            Column(Modifier.fillMaxSize().background(Color.White)) {
 
 
-
-                    item(span = {
-                        GridItemSpan(maxLineSpan)
-                    }) {
-                        Text(
-                            text = "List of ingredients : ",
-                            style = MaterialTheme.typography.h6,
-                            modifier = Modifier
-                                .padding(vertical = 16.dp)
-                                .fillMaxWidth()
-                        )
-                    }
-                    for (ingredient in itemsListString!!) {
-                        var instructions = ""
-                        val title = ingredient.startsWith("For ")
-                        val quantity =
-                            ingredient.takeWhile { it.isDigit() || it == '-' || it == '/' }
-                        val name = ingredient.substringAfter(quantity).trim()
-                        if (quantity.isNotEmpty() || name.isNotEmpty()) {
-                            if (title) {
-                                instructions = name
-                                item(span = {
-                                    GridItemSpan(maxLineSpan)
-                                }) {
-                                    Text(
-                                        text = instructions,
-                                        style = MaterialTheme.typography.h6,
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(3),
+                    modifier = Modifier
+                        .background(Color.White)
+                        .padding(start = 0.dp, end = 0.dp, top = 0.dp, bottom = 0.dp),
+                    verticalArrangement = Arrangement.spacedBy(20.dp),
+                    horizontalArrangement = Arrangement.spacedBy(20.dp),
+                    content = {
+                        item(span = {
+                            GridItemSpan(maxLineSpan)
+                        }) {
+                            Column(Modifier.fillMaxSize()) {
+                                Box(modifier = Modifier.fillMaxWidth()) {
+                                    if (recipe != null) {
+                                        LoadImageFromUrl(LocalContext.current, recipe.featuredImage)
+                                    }
+                                    IconButton(
+                                        onClick = {
+                                            onBack()
+                                        },
                                         modifier = Modifier
-                                            .padding(vertical = 16.dp)
-                                            .fillMaxWidth()
-                                    )
-                                }
-
-                            } else {
-                                item(span = {
-                                    GridItemSpan(1)
-                                }) {
-                                    Card(
-                                        modifier = Modifier
-                                            .padding(end = 16.dp)
-                                            .size(130.dp),
-                                        elevation = 8.dp
+                                            .align(Alignment.TopStart)
+                                            .padding(16.dp)
+                                            .background(Color.White, CircleShape)
                                     ) {
-                                        Column(
-                                            horizontalAlignment = Alignment.CenterHorizontally,
-                                            modifier = Modifier.padding(8.dp)
+                                        Icon(
+                                            imageVector = Icons.Default.Close,
+                                            contentDescription = "Retour",
+                                            tint = Color.Black
+                                        )
+                                    }
+                                }
+                                Row( modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically) {
+                                    if (recipe != null) {
+                                        Text(
+                                            text = recipe.title + "-" + recipe.publisher,
+                                            modifier = Modifier.padding(top = 5.dp),
+                                            fontWeight = FontWeight.Bold,
+                                            fontSize = 20.sp
+                                        )
+                                        Spacer(modifier = Modifier.width(4.dp))
+                                        Surface(
+                                            modifier = Modifier.size(26.dp, 23.dp),
+                                            shape = CircleShape,
+                                            color = Color(0xFFEEEEEE)
                                         ) {
                                             Text(
-                                                text = name,
-                                                style = MaterialTheme.typography.caption ,
-                                                textAlign = TextAlign.Center,
-                                                modifier = Modifier.weight(1f)
+                                                color = Color.Black,
+                                                text = ConvertRating(recipe.rating).toString(),
+                                                fontWeight = FontWeight.Normal,
+                                                fontSize = 12.sp,
+                                                modifier = Modifier
+                                                    .padding(4.dp)
+                                                    .weight(1f)
                                             )
-                                            if (quantity.isNotEmpty()) {
-                                                Text(
-                                                    text = quantity,
-                                                    style = MaterialTheme.typography.subtitle1,
-                                                    textAlign = TextAlign.Center,
-                                                    modifier = Modifier.weight(0.3f)
-                                                )
-                                            }
                                         }
                                     }
                                 }
+                                Row(Modifier.fillMaxWidth()) {
+                                    if (recipe != null) {
+                                        Text(
+                                            text = "Mis à jour : "+sdf.format(recipe.dateUpdated),
+                                            color = Color(0xFFAAAAAA),
+                                            modifier = Modifier.padding(top = 5.dp),
+                                            fontWeight = FontWeight.Normal,
+                                            fontSize = 14.sp
+                                        )
+                                    }
+                                }
+                            }
+                        }
 
+                        item(span = {
+                            GridItemSpan(maxLineSpan)
+                        }) {
+                            Text(
+                                text = "Liste des ingredients : ",
+                                style = MaterialTheme.typography.h6,
+                                modifier = Modifier
+                                    .padding(vertical = 16.dp)
+                                    .fillMaxWidth()
+                            )
+                        }
+                        for (ingredient in itemsListString!!) {
+                            var instructions = ""
+                            val title = ingredient.startsWith("For ")
+                            val quantity =
+                                ingredient.takeWhile { it.isDigit() || it == '-' || it == '/' }
+                            val name = ingredient.substringAfter(quantity).trim()
+                            if (quantity.isNotEmpty() || name.isNotEmpty()) {
+                                if (title) {
+                                    instructions = name
+                                    item(span = {
+                                        GridItemSpan(maxLineSpan)
+                                    }) {
+                                        Text(
+                                            text = instructions,
+                                            style = MaterialTheme.typography.h6,
+                                            modifier = Modifier
+                                                .padding(vertical = 16.dp)
+                                                .fillMaxWidth()
+                                        )
+                                    }
+
+                                } else {
+                                    item(span = {
+                                        GridItemSpan(1)
+                                    }) {
+                                        Card(
+                                            modifier = Modifier
+                                                .padding(end = 16.dp)
+                                                .size(130.dp),
+                                            elevation = 8.dp
+                                        ) {
+                                            Column(
+                                                horizontalAlignment = Alignment.CenterHorizontally,
+                                                modifier = Modifier.padding(8.dp)
+                                            ) {
+                                                Text(
+                                                    text = name,
+                                                    style = MaterialTheme.typography.caption,
+                                                    textAlign = TextAlign.Center,
+                                                    modifier = Modifier.weight(1f)
+                                                )
+                                                if (quantity.isNotEmpty()) {
+                                                    Text(
+                                                        text = quantity,
+                                                        style = MaterialTheme.typography.subtitle1,
+                                                        textAlign = TextAlign.Center,
+                                                        modifier = Modifier.weight(0.3f)
+                                                    )
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                }
                             }
                         }
                     }
-                }
-            )
+                )
+            }
         }
 
 
