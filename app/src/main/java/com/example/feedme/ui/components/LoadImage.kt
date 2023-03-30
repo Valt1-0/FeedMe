@@ -34,7 +34,7 @@ fun LoadImageFromUrl(context: Context, url: String, modifier: Modifier = Modifie
                 }).build()
         ),
         contentDescription = "Image du restaurant",
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(150.dp),
         contentScale = ContentScale.Crop

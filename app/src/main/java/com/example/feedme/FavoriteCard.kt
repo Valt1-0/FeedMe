@@ -59,7 +59,7 @@ fun FavoriteCard(
             LoadImageFromUrl(
                 LocalContext.current,
                 recipe.featuredImage,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.size(150.dp)
             )
             Column(
                 horizontalAlignment = Alignment.Start,
