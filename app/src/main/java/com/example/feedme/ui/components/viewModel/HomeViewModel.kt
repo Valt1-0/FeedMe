@@ -101,6 +101,7 @@ class HomeViewModel @Inject constructor(
                 is EventTrigger.NextPageEvent -> {
                     nextPage()
                 }
+                else -> {}
             }
         } catch (ex: Exception) {
             Log.d("TAG", "Erreur on EventTrigger Favorite")

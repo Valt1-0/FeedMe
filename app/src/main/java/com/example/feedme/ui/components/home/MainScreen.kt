@@ -3,35 +3,44 @@ package com.example.feedme.ui.components.home
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.icons.*
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.ManageSearch
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.feedme.Categories.CategoriesScreen
 import com.example.feedme.FavoritesList
+import com.example.feedme.domain.RecipeWithFavorite
 import com.example.feedme.ui.components.RecipeCard
 import com.example.feedme.ui.components.SearchBar
 import com.example.feedme.ui.components.favorite.EventTrigger
 import com.example.feedme.ui.components.favorite.viewModel.FavoriteViewModel
 import com.example.feedme.ui.components.recipe.CardWithShimmerEffect
 import com.example.feedme.ui.components.recipeItem.RecipeDetails
+import com.example.feedme.ui.components.recipeItem.RecipeDetailsViewModel
 import com.example.feedme.ui.components.viewModel.HomeViewModel
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import javax.inject.Inject
 
 
@@ -39,15 +48,19 @@ class MainScreen @Inject constructor(
     private val viewModel: HomeViewModel,
     private val favoriteViewModel: FavoriteViewModel,
 ) {
+    private val SaveMap = mutableMapOf<String, ScrollKeyParams>()
+    private data class ScrollKeyParams(
+        val value: Int
+    )
 
 
-    @OptIn(ExperimentalFoundationApi::class)
+    @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 
     @Composable
     fun MainContent() {
 //println("****** *** **** Size : " + viewModel.recipe.value.data.size)
         // viewModel.searchRecipe("beef",1)
-        val navController = rememberNavController()
+        val navController = rememberAnimatedNavController()
         Scaffold(
             bottomBar = {
                 BottomNavigation {
@@ -94,7 +107,7 @@ class MainScreen @Inject constructor(
             }
         ) { innerPadding ->
             Column(modifier = Modifier.padding(innerPadding)) {
-                NavHost(navController, startDestination = "accueil") {
+                AnimatedNavHost(navController, startDestination = "accueil") {
                     composable("accueil") {
                         AccueilScreen(navController::navigate)
                     }
@@ -107,17 +120,46 @@ class MainScreen @Inject constructor(
                         },navController::navigate, viewModel)
                     }
                     composable("favoris") { FavoriteScreen(navController::navigate) }
-                    composable(
-                        "recipeDetails/{recipeId}",
-                        arguments = listOf(navArgument("recipeId") { type = NavType.IntType })
-                    ) { RecipeDetails(it.arguments?.getInt("recipeId"),onBack = { navController.popBackStack() }) }
+                    composable("recipeDetails/{recipeId}",
+                        arguments = listOf(navArgument("recipeId") { type = NavType.IntType }),
+                        enterTransition = {
+                            when (initialState.destination.route) {
+                                "accueil" ->
+                                    slideIntoContainer(AnimatedContentScope.SlideDirection.Up, animationSpec = tween(700))
+                                "favoris" ->
+                                    slideIntoContainer(AnimatedContentScope.SlideDirection.Up, animationSpec = tween(700))
+                                else -> null
+                            }
+                        },
+                        exitTransition = {
+                            when (targetState.destination.route) {
+                                "accueil" ->
+                                    slideOutOfContainer(AnimatedContentScope.SlideDirection.Down, animationSpec = tween(700))
+                                "favoris" ->
+                                    slideOutOfContainer(AnimatedContentScope.SlideDirection.Down, animationSpec = tween(700))
+                                else -> null
+                            }
+                        },
+                        popExitTransition = {
+                            when (targetState.destination.route) {
+                                "accueil" ->
+                                    slideOutOfContainer(AnimatedContentScope.SlideDirection.Down, animationSpec = tween(700))
+                                "favoris" ->
+                                    slideOutOfContainer(AnimatedContentScope.SlideDirection.Down, animationSpec = tween(700))
+                                else -> null
+                            }
+                        }
+
+                    ) {
+                        var myViewModel: RecipeDetailsViewModel = hiltViewModel()
+                        RecipeDetails(it.arguments?.getInt("recipeId"),onBack = { navController.popBackStack() }, myViewModel) }
                 }
             }
         }
     }
 
     @OptIn(ExperimentalMaterialApi::class, ExperimentalAnimationApi::class,
-        ExperimentalComposeUiApi::class
+        ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class
     )
     @Composable
     fun AccueilScreen(navigateToFavoriteList: (String) -> Unit) {
@@ -129,6 +171,7 @@ class MainScreen @Inject constructor(
         var recipes: MutableState<MainState> = viewModel.recipe
         //var currentPage: MutableState<Int> = remember { mutableStateOf(1) }
         val isNetworkAvailable = viewModel.isNetworkAvailable()
+        val listState = rememberLazyListState()
 
         if (isNetworkAvailable) {
             // afficher le contenu de l'interface
@@ -141,6 +184,7 @@ class MainScreen @Inject constructor(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .background(Color.White)
         ) {
 
             if (recipes.value.isLoading) {
@@ -153,6 +197,13 @@ class MainScreen @Inject constructor(
 
 
 
+            LaunchedEffect(favorites.value.data) {
+                if (favorites.value.data.size == 1) {
+                    if (listState.firstVisibleItemIndex < 2)
+                        listState.scrollToItem(0)
+                }
+            }
+
 
             SearchBar(
                 query = query, onSearch = { viewModel.onEventTrigger(EventTrigger.SearchEvent) },
@@ -163,8 +214,13 @@ class MainScreen @Inject constructor(
 
 
 
+            LaunchedEffect(recipes.value.data) {
+                if (recipes.value.data.isNotEmpty() && page == 1) {
+                    listState.scrollToItem(0)
+                }
+            }
 
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
+            LazyColumn(modifier = Modifier.fillMaxSize(),state = listState) {
                 item {
                     FavoritesList(
                         recipes = favorites.value.data,
@@ -185,7 +241,7 @@ class MainScreen @Inject constructor(
 
                         RecipeCard(
                             recipe = recipe,
-                            OnFavoriteClick = viewModel::addOrDeleteToFavorite,
+                            OnFavoriteClick = {id, status ->    addOrDeleteFavorite(id,status,listState, favorites.value.data) } ,
                             NavigateToRecipeDetails = navigateToFavoriteList
                         )
                         if ((index + 1) >= (page * 30) && !recipes.value.isLoading) {
@@ -195,11 +251,48 @@ class MainScreen @Inject constructor(
 
 
                 }
+
             }
 
         }
 
+
+
     }
+    @Composable
+    fun rememberForeverScrollState(
+        key: String,
+        initial: Int = 0
+    ): ScrollState {
+        val scrollState = rememberSaveable(saver = ScrollState.Saver) {
+            val scrollValue: Int = SaveMap[key]?.value ?: initial
+            SaveMap[key] = ScrollKeyParams(scrollValue)
+            return@rememberSaveable ScrollState(scrollValue)
+        }
+        DisposableEffect(Unit) {
+            onDispose {
+                SaveMap[key] = ScrollKeyParams(scrollState.value)
+            }
+        }
+        return scrollState
+    }
+
+    private  fun addOrDeleteFavorite(id: Int, status: Boolean, listState: LazyListState, favorites:List<RecipeWithFavorite>) {
+        viewModel.addOrDeleteToFavorite(id,status)
+        println("Scroll position : "+listState.firstVisibleItemScrollOffset)
+        if (listState.firstVisibleItemIndex < 1000 && favorites.isEmpty()) {
+            println("Scroll to index 0 ")
+
+            SaveMap["history_screen"] = ScrollKeyParams(0)
+
+
+
+
+        }
+    }
+
+
+
 
     @OptIn(ExperimentalComposeUiApi::class)
     @Composable

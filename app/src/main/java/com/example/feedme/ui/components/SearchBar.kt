@@ -1,6 +1,7 @@
 package com.example.feedme.ui.components
 
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -34,7 +35,7 @@ fun SearchBar(
     val keyboardController = LocalSoftwareKeyboardController.current
     Column(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxWidth().background(Color.White)
     ) {
         Row(
             modifier = Modifier
