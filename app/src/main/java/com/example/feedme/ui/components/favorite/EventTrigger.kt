@@ -6,7 +6,7 @@ sealed class EventTrigger {
     object NextPageEvent : EventTrigger()
 
     data class GetRecipeEvent(
-        val id: Int
-    ): EventTrigger()
+        val id: Int,
+    ) : EventTrigger()
 
 }

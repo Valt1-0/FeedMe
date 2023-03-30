@@ -50,8 +50,9 @@ class MainScreen @Inject constructor(
     private val favoriteViewModel: FavoriteViewModel,
 ) {
     private val SaveMap = mutableMapOf<String, ScrollKeyParams>()
+
     private data class ScrollKeyParams(
-        val value: Int
+        val value: Int,
     )
 
 
@@ -59,8 +60,6 @@ class MainScreen @Inject constructor(
 
     @Composable
     fun MainContent() {
-//println("****** *** **** Size : " + viewModel.recipe.value.data.size)
-        // viewModel.searchRecipe("beef",1)
         val navController = rememberAnimatedNavController()
         Scaffold(
             bottomBar = {
@@ -118,7 +117,7 @@ class MainScreen @Inject constructor(
                         CategoriesScreen(onClick = {
                             viewModel.onEventTrigger(EventTrigger.SearchEvent)
 
-                        },navController::navigate, viewModel)
+                        }, navController::navigate, viewModel)
                     }
                     composable("favoris") { FavoriteScreen(navController::navigate) }
                     composable("recipeDetails/{recipeId}",
@@ -126,46 +125,70 @@ class MainScreen @Inject constructor(
                         enterTransition = {
                             when (initialState.destination.route) {
                                 "accueil" ->
-                                    slideIntoContainer(AnimatedContentScope.SlideDirection.Up, animationSpec = tween(700))
+                                    slideIntoContainer(
+                                        AnimatedContentScope.SlideDirection.Up,
+                                        animationSpec = tween(700)
+                                    )
                                 "favoris" ->
-                                    slideIntoContainer(AnimatedContentScope.SlideDirection.Up, animationSpec = tween(700))
+                                    slideIntoContainer(
+                                        AnimatedContentScope.SlideDirection.Up,
+                                        animationSpec = tween(700)
+                                    )
                                 else -> null
                             }
                         },
                         exitTransition = {
                             when (targetState.destination.route) {
                                 "accueil" ->
-                                    slideOutOfContainer(AnimatedContentScope.SlideDirection.Down, animationSpec = tween(700))
+                                    slideOutOfContainer(
+                                        AnimatedContentScope.SlideDirection.Down,
+                                        animationSpec = tween(700)
+                                    )
                                 "favoris" ->
-                                    slideOutOfContainer(AnimatedContentScope.SlideDirection.Down, animationSpec = tween(700))
+                                    slideOutOfContainer(
+                                        AnimatedContentScope.SlideDirection.Down,
+                                        animationSpec = tween(700)
+                                    )
                                 else -> null
                             }
                         },
                         popExitTransition = {
                             when (targetState.destination.route) {
                                 "accueil" ->
-                                    slideOutOfContainer(AnimatedContentScope.SlideDirection.Down, animationSpec = tween(700))
+                                    slideOutOfContainer(
+                                        AnimatedContentScope.SlideDirection.Down,
+                                        animationSpec = tween(700)
+                                    )
                                 "favoris" ->
-                                    slideOutOfContainer(AnimatedContentScope.SlideDirection.Down, animationSpec = tween(700))
+                                    slideOutOfContainer(
+                                        AnimatedContentScope.SlideDirection.Down,
+                                        animationSpec = tween(700)
+                                    )
                                 else -> null
                             }
                         }
 
                     ) {
                         var myViewModel: RecipeDetailsViewModel = hiltViewModel()
-                        RecipeDetails(it.arguments?.getInt("recipeId"),onBack = { navController.popBackStack() }, myViewModel) }
+                        RecipeDetails(
+                            it.arguments?.getInt("recipeId"),
+                            onBack = { navController.popBackStack() },
+                            myViewModel
+                        )
+                    }
                 }
             }
         }
     }
 
-    @OptIn(ExperimentalMaterialApi::class, ExperimentalAnimationApi::class,
+    @OptIn(
+        ExperimentalMaterialApi::class, ExperimentalAnimationApi::class,
         ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class
     )
     @Composable
     fun AccueilScreen(navigateToFavoriteList: (String) -> Unit) {
-       // CategoryScreen(viewModel)
-   //     RecipeListScreen(viewModel,navigateToFavoriteList)
+        // CategoryScreen(viewModel)
+        //     RecipeListScreen(viewModel,navigateToFavoriteList)
         var query = viewModel.query.value
         val page = viewModel.page.value
         val favorites: MutableState<MainState> = viewModel.favorite
@@ -178,7 +201,8 @@ class MainScreen @Inject constructor(
             // afficher le contenu de l'interface
         } else {
             // afficher un toast pour informer l'utilisateur qu'il n'y a pas de connexion
-            Toast.makeText(LocalContext.current, "Pas de connexion internet", Toast.LENGTH_SHORT).show()
+            Toast.makeText(LocalContext.current, "Pas de connexion internet", Toast.LENGTH_SHORT)
+                .show()
         }
 
         Column(
@@ -195,15 +219,12 @@ class MainScreen @Inject constructor(
                 )
             }
 
-
-
             LaunchedEffect(favorites.value.data) {
                 if (favorites.value.data.size == 1) {
                     if (listState.firstVisibleItemIndex < 2)
                         listState.scrollToItem(0)
                 }
             }
-
 
             SearchBar(
                 query = query, onSearch = { viewModel.onEventTrigger(EventTrigger.SearchEvent) },
@@ -212,15 +233,13 @@ class MainScreen @Inject constructor(
 
             Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
 
-
-
             LaunchedEffect(recipes.value.data) {
                 if (recipes.value.data.isNotEmpty() && page == 1) {
                     listState.scrollToItem(0)
                 }
             }
 
-            LazyColumn(modifier = Modifier.fillMaxSize(),state = listState) {
+            LazyColumn(modifier = Modifier.fillMaxSize(), state = listState) {
                 item {
                     FavoritesList(
                         recipes = favorites.value.data,
@@ -241,28 +260,29 @@ class MainScreen @Inject constructor(
 
                         RecipeCard(
                             recipe = recipe,
-                            OnFavoriteClick = {id, status ->    addOrDeleteFavorite(id,status,listState, favorites.value.data) } ,
+                            OnFavoriteClick = { id, status ->
+                                addOrDeleteFavorite(
+                                    id,
+                                    status,
+                                    listState,
+                                    favorites.value.data
+                                )
+                            },
                             NavigateToRecipeDetails = navigateToFavoriteList
                         )
                         if ((index + 1) >= (page * 30) && !recipes.value.isLoading) {
                             viewModel.onEventTrigger(EventTrigger.NextPageEvent)
                         }
                     }
-
-
                 }
-
             }
-
         }
-
-
-
     }
+
     @Composable
     fun rememberForeverScrollState(
         key: String,
-        initial: Int = 0
+        initial: Int = 0,
     ): ScrollState {
         val scrollState = rememberSaveable(saver = ScrollState.Saver) {
             val scrollValue: Int = SaveMap[key]?.value ?: initial
@@ -277,22 +297,22 @@ class MainScreen @Inject constructor(
         return scrollState
     }
 
-    private  fun addOrDeleteFavorite(id: Int, status: Boolean, listState: LazyListState, favorites:List<RecipeWithFavorite>) {
-        viewModel.addOrDeleteToFavorite(id,status)
-        println("Scroll position : "+listState.firstVisibleItemScrollOffset)
+    private fun addOrDeleteFavorite(
+        id: Int,
+        status: Boolean,
+        listState: LazyListState,
+        favorites: List<RecipeWithFavorite>,
+    ) {
+        viewModel.addOrDeleteToFavorite(id, status)
+        println("Scroll position : " + listState.firstVisibleItemScrollOffset)
         if (listState.firstVisibleItemIndex < 1000 && favorites.isEmpty()) {
             println("Scroll to index 0 ")
 
             SaveMap["history_screen"] = ScrollKeyParams(0)
 
 
-
-
         }
     }
-
-
-
 
     @OptIn(ExperimentalComposeUiApi::class)
     @Composable
@@ -335,9 +355,7 @@ class MainScreen @Inject constructor(
                         favoriteViewModel.onEventTrigger(EventTrigger.NextPageEvent)
                     }
                 }
-
             }
-
         }
     }
 

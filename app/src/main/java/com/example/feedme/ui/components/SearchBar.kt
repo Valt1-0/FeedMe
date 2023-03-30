@@ -35,7 +35,8 @@ fun SearchBar(
     val keyboardController = LocalSoftwareKeyboardController.current
     Column(
         modifier = Modifier
-            .fillMaxWidth().background(Color.White)
+            .fillMaxWidth()
+            .background(Color.White)
     ) {
         Row(
             modifier = Modifier
@@ -94,7 +95,6 @@ fun SearchBar(
                 keyboardActions = KeyboardActions(
                     onDone = {
                         onSearch()
-//              focusManager.clearFocus(forcedClear = true) // close keyboard
                         keyboardController?.hideSoftwareKeyboard() // another way to close keyboard
                     },
                 ),

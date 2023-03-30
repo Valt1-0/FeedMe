@@ -12,12 +12,10 @@ import com.example.feedme.navigation.Screen
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnBoarding(navigateToRecipeList: (String) -> Unit) {
-    var display = false
     val PREFS_NAME = "OnboardPREF"
     val PREF_KEY_ONBOARDING_COMPLETE = "onboardingComplete"
     val prefs = LocalContext.current.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     val onboardingComplete = prefs.getBoolean(PREF_KEY_ONBOARDING_COMPLETE, false)
-
 
     LaunchedEffect(onboardingComplete) {
         if (onboardingComplete) {
@@ -25,11 +23,6 @@ fun OnBoarding(navigateToRecipeList: (String) -> Unit) {
 
         }
     }
-
-
-
-
-
 
     OnboardingScreen(onboardingItems) {
         prefs.edit().putBoolean(PREF_KEY_ONBOARDING_COMPLETE, true).apply()

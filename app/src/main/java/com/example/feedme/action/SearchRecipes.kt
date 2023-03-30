@@ -18,8 +18,6 @@ class SearchRecipes(
     private val mainRepository: MainRepository,
     private val recipeDao: RecipeDao,
 ) {
-
-
     suspend fun Search(): MainState {
         var recipe = MainState()
 
@@ -68,10 +66,7 @@ class SearchRecipes(
                 recipe = MainState(data = dbResult.toList(), isLoading = false)
             }
         }
-
-
         return recipe
-
     }
 
     fun SearchFromDatabase(): List<RecipeWithFavorite> {
@@ -89,9 +84,7 @@ class SearchRecipes(
                 pageSize = Constants.RECIPE_PER_PAGE
             )
         }
-
         return dbResult
-
     }
 
 

@@ -61,12 +61,16 @@ fun FavoriteCard(
             LoadImageFromUrl(
                 LocalContext.current,
                 recipe.featuredImage,
-                modifier = Modifier.size(150.dp).clip(RoundedCornerShape(8.dp))
+                modifier = Modifier
+                    .size(150.dp)
+                    .clip(RoundedCornerShape(8.dp))
             )
             Column(
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.Center,
-                modifier = Modifier.padding(start = 5.dp).fillMaxHeight()
+                modifier = Modifier
+                    .padding(start = 5.dp)
+                    .fillMaxHeight()
             ) {
                 Text(text = recipe.title + " - " + recipe.publisher)
 
@@ -100,10 +104,7 @@ fun FavoriteCard(
                 }
             }
         }
-
-
     }
-
 }
 
 fun ConvertRating(rate: Int): Float {

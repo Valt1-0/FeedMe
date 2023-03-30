@@ -43,7 +43,10 @@ fun Snackbar(
             {
                 NoConnectionText()
 
-                Row(modifier = Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.SpaceEvenly) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
                     if (recipeInDB) {
                         Button(onClick = {
                             continuWithoutConnexion.invoke()
@@ -66,7 +69,11 @@ fun Snackbar(
 
 @Composable
 fun NoConnectionText() {
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Icon(
             modifier = Modifier.size(25.dp),
             imageVector = Icons.Default.Warning,
@@ -79,5 +86,4 @@ fun NoConnectionText() {
             color = Color.White
         )
     }
-
 }

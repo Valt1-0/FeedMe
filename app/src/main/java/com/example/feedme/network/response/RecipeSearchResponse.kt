@@ -6,6 +6,5 @@ data class RecipeSearchResponse(
 
     val count: Int,
 
-
     val results: List<RecipeDto>,
 )
