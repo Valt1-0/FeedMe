@@ -5,20 +5,15 @@ import android.widget.Toast
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.icons.*
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.ManageSearch
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,7 +24,6 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.example.feedme.Categories.CategoriesScreen
 import com.example.feedme.FavoritesList
-import com.example.feedme.domain.RecipeWithFavorite
 import com.example.feedme.ui.components.RecipeCard
 import com.example.feedme.ui.components.SearchBar
 import com.example.feedme.ui.components.favorite.EventTrigger
@@ -177,8 +171,7 @@ class MainScreen @Inject constructor(
             // afficher le contenu de l'interface
         } else {
             // afficher un toast pour informer l'utilisateur qu'il n'y a pas de connexion
-            Toast.makeText(LocalContext.current, "Pas de connexion internet", Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(LocalContext.current, "Pas de connexion internet", Toast.LENGTH_SHORT).show()
         }
 
         Column(
@@ -323,12 +316,10 @@ class MainScreen @Inject constructor(
 
             Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
 
-
             LazyColumn(modifier = Modifier.fillMaxSize()) {
-
                 itemsIndexed(items = favorites.value.data) { index, recipe ->
 
-                    RecipeCard(
+                    FavoriteCard(
                         recipe = recipe,
                         OnFavoriteClick = favoriteViewModel::addOrDeleteToFavorite,
                         NavigateToRecipeDetails = navigateToFavoriteList
