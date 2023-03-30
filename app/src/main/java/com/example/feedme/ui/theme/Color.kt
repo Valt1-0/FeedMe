@@ -8,5 +8,4 @@ val Primary = Color(0xFFBB7D3C)
 val Trans = Color(0xFF83572A)
 val LightBlack = Color(0xFF333333)
 
-val Input = Color(0xFFBBBBBB)
 val Input2 = Color(0xFFEEEEEE)

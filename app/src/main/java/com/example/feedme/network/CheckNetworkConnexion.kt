@@ -13,8 +13,6 @@ class CheckNetworkConnexion
 constructor(
     private val application: Application,
 ) {
-
-
     fun isConnectedToInternet(): Boolean {
         val connectivityManager =
             application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -43,5 +41,4 @@ constructor(
         }
         return false
     }
-
 }

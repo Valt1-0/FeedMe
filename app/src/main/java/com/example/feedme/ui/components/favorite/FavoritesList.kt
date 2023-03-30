@@ -24,8 +24,6 @@ fun FavoritesList(
     OnFavoriteClick: (Int, Boolean) -> Unit,
     navigateToFavoriteList: (String) -> Unit,
 ) {
-    val favorites = listOf("recette1", "recette2", "recette3", "recette4", "recette5")
-
 
     if (recipes.size > 0) {
         Column(
@@ -67,8 +65,6 @@ fun FavoritesList(
                 }
             }
         }
-
         Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
-
     }
 }

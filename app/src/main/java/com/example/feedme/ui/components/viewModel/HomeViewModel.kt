@@ -83,7 +83,8 @@ class HomeViewModel @Inject constructor(
             FavoriteAction(favoriteDao, query.value, 1, 10).deleteFavorite(recipeFavorite)
 
         recipe.value.data.find { it.id == id }?.favorite = status
-        recipe.value = MainState(data = recipe.value.data, isLoading = false, error = recipe.value.error)
+        recipe.value =
+            MainState(data = recipe.value.data, isLoading = false, error = recipe.value.error)
         searchFavorite()
     }
 
@@ -170,72 +171,6 @@ class HomeViewModel @Inject constructor(
 
     fun recipeInDB() = viewModelScope.launch {
         recipeInDB.value = recipeDao.recipeInDB()
-    }
-
-    fun searchRecipe(q: String, page: Int) = viewModelScope.launch {
-
-        //  search(q,page)
-//
-//        recipe.value = MainState(isLoading = true, data = recipe.value.data)
-//
-//        try {
-//            println("query : " + q + "page " + page.toString())
-//            val result = mainRepository.getQueryItems(q, page)
-//            println("result " + (result is Resource.Error).toString() + " ELSE " + (result is Resource.Success).toString())
-//            when (result) {
-//                is Resource.Error -> {
-//                    recipe.value = MainState(error = "Something went wrong")
-//                }
-//                is Resource.Success -> {
-//                    println(result.data?.results?.let {
-//                        recipeDtoMapper.toRecipeList(it).toString()
-//                    }.toString())
-//                    result.data?.results?.let {
-//                        var current = ArrayList<RecipeWithFavorite>(recipe.value.data)
-//
-//                        println("recipe.value.data.size " + recipe.value.data.size.toString())
-//                        if (page == 1) {
-//                            current.removeAll(recipe.value.data)
-//                        }
-//
-//
-//                        println("id" + recipeDtoMapper.toRecipeList(it)[0].id.toString())
-//                        //Insertion dans la base de données
-//                        withContext(Dispatchers.IO) {
-//                            //  recipeDao.deleteAllRecipes()
-//                            recipeDao.insertRecipes(recipeDtoMapper.toRecipeList(it))
-//
-//
-//                            //Recherche dans la base de données
-//                            val dbResult = if (q.isBlank()) {
-//                                recipeDao.searchRecipesWithQuery(
-//                                    query = q,
-//                                    page = page,
-//                                    pageSize = RECIPE_PER_PAGE
-//                                )
-//                            } else {
-//                                recipeDao.searchRecipesWithQuery(
-//                                    query = q,
-//                                    page = page,
-//                                    pageSize = RECIPE_PER_PAGE
-//                                )
-//                            }
-//
-//                            println("Size db : " + dbResult.size.toString())
-//                            current.addAll(dbResult)
-//                            // println("current.size "+current.size.toString())
-//                            recipe.value = MainState(data = current.toList(), isLoading = false)
-//                        }
-//                    }
-//                }
-//                else -> {}
-//            }
-//        } catch (e: Exception) {
-//            println("error" + e.message.toString())
-//            recipe.value = MainState(error = "Something went wrong")
-//        }
-
-
     }
 
 

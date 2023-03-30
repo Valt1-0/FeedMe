@@ -48,7 +48,7 @@ fun RecipeCard(
     val longDateAdded = recipe.dateAdded
     println("longDateAdded: $longDateAdded")
 
-   // RecipeDetails(visibleState,recipe)
+    // RecipeDetails(visibleState,recipe)
 
     Card(
         modifier = Modifier
@@ -59,12 +59,6 @@ fun RecipeCard(
             .clickable(onClick = {
                 visibleState.targetState = !visibleState.targetState
                 NavigateToRecipeDetails("recipeDetails/${recipe.id}")
-                // Onclick => Page Perso de la recette
-
-//                    val intent = Intent(context, DetailActivity::class.java)
-//                    intent.putExtra("itemId", itemId)
-//                    context.startActivity(intent)
-
             }),
         elevation = 0.dp,
     ) {
@@ -87,12 +81,9 @@ fun RecipeCard(
                         .align(Alignment.TopEnd)
                         .padding(top = 8.dp, end = 8.dp)
                         .clickable(onClick = {
-
                             favorite = !favorite
 
                             recipe.id?.let { OnFavoriteClick(it, favorite) }
-                            // OnFavoriteClick(recipe.id, viewModel)
-
                         })
 
 
@@ -139,6 +130,7 @@ fun RecipeCard(
         }
     }
 }
+
 fun ConvertRating(rate: Int): Float {
     return (rate.toFloat() / 20.0f)
 }

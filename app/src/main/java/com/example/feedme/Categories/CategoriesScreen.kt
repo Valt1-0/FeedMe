@@ -14,35 +14,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.feedme.ui.components.viewModel.HomeViewModel
 import com.example.feedme.ui.theme.CategoriesShape
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun CategoriesScreen(onClick: () -> Unit,navigateToFavoriteList: (String) -> Unit, viewModel: HomeViewModel) {
-
-    val myViewModel: HomeViewModel = hiltViewModel()
-
-//    Scaffold(
-//        topBar = {
-//            TopAppBar(
-//                title = { Text(text = "Catégories") },
-//                navigationIcon = {
-//                    IconButton(onClick = onClick) {
-//                        Icon(Icons.Filled.ArrowBack, contentDescription = "Retour")
-//                    }
-//                }
-//            )
-//        })
-//    { contentPadding ->
-//          modifier = Modifier.padding(contentPadding)
-//    }
-
-//    SearchBar(
-//        query = query, onSearch = { favoriteViewModel.onEventTrigger(EventTrigger.SearchEvent) },
-//        onQueryChange = favoriteViewModel::onQueryChange
-//    )
+fun CategoriesScreen(
+    onClick: () -> Unit,
+    navigateToFavoriteList: (String) -> Unit,
+    viewModel: HomeViewModel,
+) {
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),

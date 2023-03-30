@@ -6,7 +6,6 @@ import javax.inject.Inject
 class Favorite @Inject constructor(
     private val favoriteDao: FavoriteDao,
 ) {
-
     suspend fun Insert(
         id: Int,
     ) {
