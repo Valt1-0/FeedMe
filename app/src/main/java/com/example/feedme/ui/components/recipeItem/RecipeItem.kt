@@ -3,23 +3,16 @@ package com.example.feedme.ui.components.recipeItem
 import android.annotation.SuppressLint
 import androidx.compose.animation.*
 import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.feedme.ui.components.LoadImageFromUrl
 import com.example.feedme.ui.components.favorite.EventTrigger
 import java.text.SimpleDateFormat
 import java.util.*
@@ -113,59 +106,154 @@ fun RecipeDetails(
 //                    Icon(Icons.Default.ArrowBack, contentDescription = "Retour")
 //                }
 //            }
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
+
+
+
+
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(minSize = 128.dp),
+                // définit 4 cellules par ligne
+                modifier = Modifier.fillMaxSize()
             ) {
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    item {
-                        Box(modifier = Modifier.fillMaxWidth()) {
-                            if (recipe != null) {
-                                LoadImageFromUrl(LocalContext.current, recipe.featuredImage)
-                            }
-                            IconButton(
-                                onClick = {
-                                    onBack()
-                                },
-                                modifier = Modifier
-                                    .align(Alignment.TopStart)
-                                    .padding(16.dp)
-                                    .background(Color.White, CircleShape)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Close,
-                                    contentDescription = "Retour",
-                                    tint = Color.Black
-                                )
-                            }
-                        }
-                        Text(
-                            text = (recipe?.title ?: "") + "-" + (recipe?.publisher ?: ""),
-                            modifier = Modifier.padding(top = 5.dp),
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 20.sp
-                        )
-                        Text(
-                            text = "",
-                            color = Color(0xFFAAAAAA),
-                            modifier = Modifier.padding(top = 5.dp),
-                            fontWeight = FontWeight.Normal,
-                            fontSize = 14.sp
-                        )
-                    }
-                    itemsIndexed(items = itemsListString!!) { index, recipe ->
-                        Row() {
-                            Spacer(modifier = Modifier.width(4.dp))
+                var instructions = ""
+                itemsIndexed(itemsListString!!) { index, ingredient ->
+                    val title = ingredient.startsWith("For ")
+                    val quantity = ingredient.takeWhile { it.isDigit() || it == '-' || it == '/' }
+                    val name = ingredient.substringAfter(quantity).trim()
+                    if (title) {
+
+                        instructions = name
+                        Spacer(modifier = Modifier.fillMaxWidth())
                             Text(
-                                text = recipe,
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.ExtraBold
+                                text = instructions,
+                                style = MaterialTheme.typography.h6,
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .fillMaxWidth()
+
                             )
-                            Spacer(modifier = Modifier.width(4.dp))
+                        Spacer(modifier = Modifier.fillMaxWidth())
+                    } else {
+                        Card(
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .size(100.dp),
+                            elevation = 8.dp
+                        ) {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                modifier = Modifier.padding(8.dp)
+                            ) {
+                                Text(
+                                    text = name,
+                                    style = MaterialTheme.typography.subtitle1,
+                                    textAlign = TextAlign.Center,
+                                    modifier = Modifier.weight(1f)
+                                )
+                                if (quantity.isNotEmpty()) {
+                                    Text(
+                                        text = quantity,
+                                        style = MaterialTheme.typography.caption,
+                                        textAlign = TextAlign.Center,
+                                        modifier = Modifier.weight(1f)
+                                    )
+                                }
+                            }
                         }
                     }
                 }
             }
+
+
+
+
+
+
+
+//            Column(modifier = Modifier.padding(16.dp)) {
+//                for (item in itemsListString!!) {
+//                    val isInstruction = item.startsWith("For ")
+//                    Card(
+//                        modifier = Modifier.fillMaxWidth().padding(8.dp),
+//                        elevation = 8.dp
+//                    ) {
+//                        Column(modifier = Modifier.padding(8.dp)) {
+//                            Text(
+//                                text = item,
+//                                style = if (isInstruction) MaterialTheme.typography.h6 else MaterialTheme.typography.body1,
+//                                fontWeight = if (isInstruction) FontWeight.Bold else FontWeight.Normal,
+//                                textAlign = TextAlign.Center
+//                            )
+//                        }
+//                    }
+//                }
+//            }
+
+
+
+
+
+
+
+//            Column(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//            ) {
+//                LazyColumn(modifier = Modifier.fillMaxSize()) {
+//                    item {
+//                        Box(modifier = Modifier.fillMaxWidth()) {
+//                            if (recipe != null) {
+//                                LoadImageFromUrl(LocalContext.current, recipe.featuredImage)
+//                            }
+//                            IconButton(
+//                                onClick = {
+//                                    onBack()
+//                                },
+//                                modifier = Modifier
+//                                    .align(Alignment.TopStart)
+//                                    .padding(16.dp)
+//                                    .background(Color.White, CircleShape)
+//                            ) {
+//                                Icon(
+//                                    imageVector = Icons.Default.Close,
+//                                    contentDescription = "Retour",
+//                                    tint = Color.Black
+//                                )
+//                            }
+//                        }
+//                        Text(
+//                            text = (recipe?.title ?: "") + "-" + (recipe?.publisher ?: ""),
+//                            modifier = Modifier.padding(top = 5.dp),
+//                            fontWeight = FontWeight.Bold,
+//                            fontSize = 20.sp
+//                        )
+//                        Text(
+//                            text = "",
+//                            color = Color(0xFFAAAAAA),
+//                            modifier = Modifier.padding(top = 5.dp),
+//                            fontWeight = FontWeight.Normal,
+//                            fontSize = 14.sp
+//                        )
+//                    }
+//                    itemsIndexed(items = itemsListString!!) { index, recipe ->
+//                        Row() {
+//                            Spacer(modifier = Modifier.width(4.dp))
+//                            Text(
+//                                text = recipe,
+//                                fontSize = 18.sp,
+//                                fontWeight = FontWeight.ExtraBold
+//                            )
+//                            Spacer(modifier = Modifier.width(4.dp))
+//                        }
+//                    }
+//                }
+//            }
+
+
+
+
+
+
 //        if (this.transition.currentState == this.transition.targetState){
 //            println("End of anim ")
 //        }
