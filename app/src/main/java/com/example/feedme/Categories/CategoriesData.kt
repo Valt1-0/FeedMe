@@ -18,7 +18,7 @@ val categoriesItem = listOf(
     CategoriesItem(
         name = "Sandwichs",
         image = R.drawable.sandwichs,
-        query = "sandwichs"
+        query = "sandwich"
     ),
     CategoriesItem(
         name = "Tacos / Fajitas",
