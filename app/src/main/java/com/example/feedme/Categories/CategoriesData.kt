@@ -31,7 +31,7 @@ val categoriesItem = listOf(
         query = "beef"
     ),
     CategoriesItem(
-        name = "Pates",
+        name = "Pâtes",
         image = R.drawable.pates,
         query = "pasta"
     ),
