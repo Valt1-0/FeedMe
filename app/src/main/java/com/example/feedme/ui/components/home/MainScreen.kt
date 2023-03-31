@@ -263,7 +263,7 @@ class MainScreen @Inject constructor(
                         repeat(8) {
                             CardWithShimmerEffect(recipes.value.isLoading)
                         }
-                    }else if (!favorites.value.isLoading && favorites.value.data.isEmpty())
+                    }else if (!recipes.value.isLoading && recipes.value.data.isEmpty())
                     {
                             blankScreen(R.drawable.nosearchresult,"Aucune recette trouvée.")
                     }

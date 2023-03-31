@@ -1,6 +1,9 @@
 package com.example.feedme.ui.components
 
 
+import android.content.Context
+import android.os.IBinder
+import android.view.inputmethod.InputMethodManager
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
@@ -13,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -31,7 +33,6 @@ fun SearchBar(
     onQueryChange: (String) -> Unit,
     onSearch: () -> Unit,
 ) {
-    val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
     Column(
         modifier = Modifier
@@ -55,6 +56,7 @@ fun SearchBar(
                 singleLine = true,
                 leadingIcon = {
                     IconButton(onClick = {
+                        keyboardController?.hide()
                         onSearch()
                     }) {
                         Icon(
@@ -68,6 +70,7 @@ fun SearchBar(
                 trailingIcon = {
                     IconButton(onClick = {
                         onQueryChange("")
+                        keyboardController?.hide()
                         onSearch()
                     }) {
                         Icon(
@@ -103,4 +106,8 @@ fun SearchBar(
             )
         }
     }
+}
+fun hideKeyboard(context: Context, windowToken: IBinder) {
+    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(windowToken, 0)
 }
