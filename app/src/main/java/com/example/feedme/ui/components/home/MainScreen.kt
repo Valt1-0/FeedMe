@@ -3,7 +3,7 @@ package com.example.feedme.ui.components.home
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.*
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
@@ -31,7 +31,9 @@ import com.example.feedme.Categories.CategoriesScreen
 import com.example.feedme.Categories.categoriesItem
 import com.example.feedme.FavoriteCard
 import com.example.feedme.FavoritesList
+import com.example.feedme.R
 import com.example.feedme.domain.RecipeWithFavorite
+import com.example.feedme.ui.blankScreen
 import com.example.feedme.ui.components.RecipeCard
 import com.example.feedme.ui.components.SearchBar
 import com.example.feedme.ui.components.favorite.EventTrigger
@@ -200,14 +202,9 @@ class MainScreen @Inject constructor(
 
         LaunchedEffect(isNetworkAvailable)
         {
-            if (isNetworkAvailable) {
-                // afficher le contenu de l'interface
-            } else {
+            if (!isNetworkAvailable)
                 // afficher un toast pour informer l'utilisateur qu'il n'y a pas de connexion
-                Toast.makeText(context, "Pas de connexion internet", Toast.LENGTH_SHORT)
-                    .show()
-            }
-
+                Toast.makeText(context, "Pas de connexion internet", Toast.LENGTH_SHORT).show()
         }
 
         Column(
@@ -247,7 +244,9 @@ class MainScreen @Inject constructor(
                                 onClick = { viewModel.onEventTrigger(EventTrigger.SearchEvent) },
                                 viewModel = viewModel,
                                 navigateToFavoriteList = navController::navigate,
-                                modifier = Modifier.size(160.dp).scale(0.85f)
+                                modifier = Modifier
+                                    .size(160.dp)
+                                    .scale(0.85f)
                             )
                         }
                     }
@@ -264,7 +263,11 @@ class MainScreen @Inject constructor(
                         repeat(8) {
                             CardWithShimmerEffect(recipes.value.isLoading)
                         }
+                    }else if (!favorites.value.isLoading && favorites.value.data.isEmpty())
+                    {
+                            blankScreen(R.drawable.nosearchresult,"Aucune recette trouvée.")
                     }
+
                 }
 
 
@@ -349,13 +352,22 @@ class MainScreen @Inject constructor(
                 )
             }
 
-            SearchBar(
-                query = query,
-                onSearch = { favoriteViewModel.onEventTrigger(EventTrigger.SearchEvent) },
-                onQueryChange = favoriteViewModel::onQueryChange
-            )
+            if(favorites.value.data.isNotEmpty() || !query.isNullOrBlank()) {
+                SearchBar(
+                    query = query,
+                    onSearch = { favoriteViewModel.onEventTrigger(EventTrigger.SearchEvent) },
+                    onQueryChange = favoriteViewModel::onQueryChange
+                )
 
-            Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
+                Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
+            }
+            if (!favorites.value.isLoading && favorites.value.data.isEmpty())
+            {
+                if(!query.isNullOrBlank())
+                    blankScreen(R.drawable.nosearchresult,"Aucun favoris trouvé")
+                else
+                    blankScreen(R.drawable.nofavorite,"Vous n'avez pas encore de favoris.")
+            }
 
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 itemsIndexed(items = favorites.value.data) { index, recipe ->
@@ -372,5 +384,4 @@ class MainScreen @Inject constructor(
             }
         }
     }
-
 }

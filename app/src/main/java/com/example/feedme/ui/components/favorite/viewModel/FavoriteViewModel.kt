@@ -44,7 +44,7 @@ class FavoriteViewModel @Inject constructor(
             ).searchFavorites()
 
             if (resultDb.isNullOrEmpty()) {
-                favorite.value = MainState(error = "Aucun Favoris ?")
+                favorite.value = MainState(error = "NoResult")
             } else {
                 appendSearch(resultDb)
             }
@@ -133,7 +133,7 @@ class FavoriteViewModel @Inject constructor(
                     ).searchFavorites()
 
                     if (resultDb.isNullOrEmpty())
-                        favorite.value = MainState(error = "Aucun Favoris ?", isLoading = false)
+                        favorite.value = MainState(error = "NoResult", isLoading = false)
                     else
                         appendSearch(resultDb)
                 } catch (e: Exception) {
