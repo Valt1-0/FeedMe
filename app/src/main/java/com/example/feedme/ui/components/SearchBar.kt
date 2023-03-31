@@ -85,7 +85,7 @@ fun SearchBar(
                     unfocusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent,
                     disabledTextColor = Color.Transparent,
-
+                    textColor = Color.Black
                     ),
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.None,
