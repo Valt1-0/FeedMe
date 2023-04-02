@@ -1,4 +1,4 @@
-# FeedMe
+# Feed Me
 
 Cette application a été développée en utilisant Kotlin et Jetpack Compose. Elle permet de rechercher
 des recettes alimentaires à partir de l'API Food2Fork.
