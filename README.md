@@ -28,7 +28,7 @@ AUTH_TOKEN = "Token votre-clé-api"
 4. Ouvrir le projet dans Android Studio et exécuter l'application sur un émulateur ou un appareil
    Android
    
-##En cas de problèmes lors du Build du projet, faites une synchronisation du Gradle : 
+## En cas de problèmes lors du Build du projet, faites une synchronisation du Gradle : 
 
 **File -> Sync Project With Gradle Files**
    
