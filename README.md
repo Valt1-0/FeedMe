@@ -5,8 +5,7 @@ des recettes alimentaires à partir de l'API Food2Fork.
 
 ## Prérequis
 
-- Android Studio Arctic Fox ou version supérieure
-- Un compte Food2Fork pour obtenir une clé API
+- Android Studio
 
 ## Configuration
 
