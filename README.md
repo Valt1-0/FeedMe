@@ -30,7 +30,7 @@ AUTH_TOKEN = "Token votre-clé-api"
    
 En cas de problèmes lors du Build du projet, faites une synchronisation du Gradle : 
 
-** File -> Sync Project With Gradle Files **
+**File -> Sync Project With Gradle Files**
    
    
 
