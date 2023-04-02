@@ -29,8 +29,6 @@ constructor(
             val processBuilder = ProcessBuilder("/system/bin/ping", "-c", "1", "8.8.8.8")
             try {
                 val process = processBuilder.start()
-                val inputStream = process.inputStream
-                val output = inputStream.bufferedReader().readText()
                 val exitValue = process.waitFor()
                 if (exitValue == 0) {
                     return true

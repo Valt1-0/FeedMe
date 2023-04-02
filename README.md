@@ -3,12 +3,6 @@
 Cette application a été développée en utilisant Kotlin et Jetpack Compose. Elle permet de rechercher
 des recettes alimentaires à partir de l'API Food2Fork.
 
-## Fonctionnalités
-
-- Rechercher des recettes par ingrédient
-- Afficher les détails d'une recette
-- Ajouter une recette à ses favoris
-
 ## Prérequis
 
 - Android Studio Arctic Fox ou version supérieure
@@ -24,10 +18,11 @@ git clone https://github.com/Valt1-0/FeedMe.git
 
 2. Créer un compte Food2Fork et obtenir une clé API
 
-3. Ajouter votre clé API à l'emplacement suivant dans le fichier `gradle.properties` :
+3. Ajouter votre clé API à l'emplacement suivant dans le
+   fichier `FeedMe\app\src\main\java\com\example\feedme\util\Constants.kt` :
 
 ```
-FOOD_2_FORK_API_KEY="votre-clé-api"
+AUTH_TOKEN = "Token votre-clé-api"
 ```
 
 4. Ouvrir le projet dans Android Studio et exécuter l'application sur un émulateur ou un appareil
@@ -41,10 +36,8 @@ FOOD_2_FORK_API_KEY="votre-clé-api"
   l'application
 - [Jetpack Compose](https://developer.android.com/jetpack/compose) - Bibliothèque d'interface
   utilisateur pour Android
+- Room - ORM (Object-Relational Mapping) permettant de générer un schéma de base de données
 - [Retrofit](https://square.github.io/retrofit/) - Bibliothèque HTTP pour Android
-- [Glide](https://github.com/bumptech/glide) - Bibliothèque de chargement et de mise en cache
+- [Coil](https://coil-kt.github.io/coil/getting_started/) - Bibliothèque de chargement et de mise en
+  cache
   d'images pour Android
-
-## Licence
-
-Ce projet est sous licence MIT - voir le fichier `LICENSE` pour plus de détails.

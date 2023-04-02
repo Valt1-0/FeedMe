@@ -89,7 +89,7 @@ fun SearchBar(
                     disabledIndicatorColor = Color.Transparent,
                     disabledTextColor = Color.Transparent,
                     textColor = Color.Black
-                    ),
+                ),
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.None,
                     keyboardType = KeyboardType.Text,
@@ -107,6 +107,7 @@ fun SearchBar(
         }
     }
 }
+
 fun hideKeyboard(context: Context, windowToken: IBinder) {
     val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(windowToken, 0)

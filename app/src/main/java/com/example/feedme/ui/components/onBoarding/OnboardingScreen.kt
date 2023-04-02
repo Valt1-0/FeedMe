@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feedme.R
+import com.example.feedme.ui.components.onBoarding.OnboardingItem
 import com.example.feedme.ui.theme.BottomCardShape
 import com.example.feedme.ui.theme.Poppins
 import kotlinx.coroutines.launch
@@ -107,8 +108,6 @@ fun OnboardingScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-
-
                             if (pagerState.currentPage != 2) {
                                 // Skip Button
                                 TextButton(onClick = {
@@ -134,7 +133,6 @@ fun OnboardingScreen(
                                         onboardingItems[pagerState.currentPage].mainColor
                                     ),
                                     shape = RoundedCornerShape(50), // = 50% percent
-                                    //or shape = CircleShape
                                     colors = ButtonDefaults.outlinedButtonColors(
                                         contentColor = colors.secondary,
                                         backgroundColor = colors.secondary

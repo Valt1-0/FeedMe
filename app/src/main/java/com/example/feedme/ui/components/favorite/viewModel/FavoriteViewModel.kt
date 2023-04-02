@@ -15,9 +15,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-const val STATE_KEY_QUERY_FAVORITE = "favorite.state.key.query"
-const val STATE_KEY_PAGE_FAVORITE = "favorite.state.key.pageNumber"
-
 @HiltViewModel
 class FavoriteViewModel @Inject constructor(
     private val favoriteDao: FavoriteDao,
@@ -26,10 +23,6 @@ class FavoriteViewModel @Inject constructor(
     val query: MutableState<String> = mutableStateOf("")
     val page: MutableState<Int> = mutableStateOf(1)
     val pageSize: MutableState<Int> = mutableStateOf(30)
-
-    init {
-        newSearch()
-    }
 
 
     private fun search() = viewModelScope.launch {
@@ -50,10 +43,8 @@ class FavoriteViewModel @Inject constructor(
             }
 
         } catch (e: Exception) {
-            println("error" + e.message.toString())
             favorite.value = MainState(error = "Something went wrong")
         }
-
     }
 
     /* TRIGGER */
@@ -77,23 +68,6 @@ class FavoriteViewModel @Inject constructor(
         setQuery(query)
     }
 
-    fun addToFavorite(id: Int) = viewModelScope.launch {
-
-        val recipeFavorite = RecipeFavorite(id)
-        favoriteDao.insert(recipeFavorite)
-
-    }
-
-    fun deleteFavorite(id: Int) = viewModelScope.launch {
-
-        val recipeFavorite = RecipeFavorite(id)
-        FavoriteAction(favoriteDao, query.value, page.value, pageSize.value).deleteFavorite(
-            recipeFavorite
-        )
-    }
-
-    /* *** */
-
     fun addOrDeleteToFavorite(id: Int, status: Boolean) = viewModelScope.launch {
         favorite.value =
             MainState(data = favorite.value.data, isLoading = true, error = favorite.value.error)
@@ -113,11 +87,6 @@ class FavoriteViewModel @Inject constructor(
                 )
             }
         }
-
-
-        //favorite.value.data.find { it.id == id }?.favorite = status
-        // favorite.value = MainState(data = favorite.value.data, isLoading = false, error = favorite.value.error)
-
     }
 
     private fun nextPage() {
@@ -137,21 +106,15 @@ class FavoriteViewModel @Inject constructor(
                     else
                         appendSearch(resultDb)
                 } catch (e: Exception) {
-                    println("error" + e.message.toString())
                     favorite.value = MainState(error = "Something went wrong")
                 }
             }
         }
     }
 
-    private fun setPageSize(pageSize: Int) {
-        this.pageSize.value = pageSize
-    }
-
     private fun setQuery(query: String) {
         this.query.value = query
     }
-
 
     private fun appendSearch(favorites: List<RecipeWithFavorite>) {
         var current = ArrayList<RecipeWithFavorite>(favorite.value.data)
@@ -168,5 +131,4 @@ class FavoriteViewModel @Inject constructor(
     private fun setPage(page: Int) {
         this.page.value = page
     }
-
 }

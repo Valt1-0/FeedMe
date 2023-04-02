@@ -15,8 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun blankScreen(image : Int,text : String)
-{
+fun blankScreen(image: Int, text: String) {
     Box(
         modifier = Modifier
             .fillMaxSize()

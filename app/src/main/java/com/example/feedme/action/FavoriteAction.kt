@@ -10,9 +10,7 @@ class FavoriteAction(
     private val page: Int,
     private val pageSize: Int,
 ) {
-
     suspend fun searchFavorites(): List<RecipeWithFavorite> {
-
         return if (query.isNotBlank())
             favoriteDao.searchFavoritesWithQuery(query, page, pageSize)
         else
@@ -22,14 +20,5 @@ class FavoriteAction(
     suspend fun deleteFavorite(recipeFavorite: RecipeFavorite) {
         favoriteDao.delete(recipeFavorite)
     }
-
-    suspend fun Count(): Int {
-        return favoriteDao.countFavorite();
-    }
-
-    suspend fun getMaxFavorite(MaxFavorite: Int) {
-
-    }
-
 
 }

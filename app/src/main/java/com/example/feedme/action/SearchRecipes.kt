@@ -23,27 +23,17 @@ class SearchRecipes(
 
         if (isConnectedToInternet) {
             try {
-                println("query : " + query + "page " + page.toString())
                 val result = mainRepository.getQueryItems(query, page)
-                println("result " + (result is Resource.Error).toString() + " ELSE " + (result is Resource.Success).toString())
                 when (result) {
                     is Resource.Error -> {
                         recipe = MainState(error = "Something went wrong")
                     }
                     is Resource.Success -> {
-                        println(result.data?.results?.let {
-                            recipeDtoMapper.toRecipeList(it).toString()
-                        }.toString())
                         result.data?.results?.let {
-
                             withContext(Dispatchers.IO) {
-                                //  recipeDao.deleteAllRecipes()
-                                println("SIZE FETCH API " + recipeDtoMapper.toRecipeList(it).size)
                                 recipeDao.insertRecipes(recipeDtoMapper.toRecipeList(it))
-
                                 var dbResult = SearchFromDatabase()
 
-                                println("current.size " + dbResult.size.toString())
                                 recipe = MainState(data = dbResult.toList(), isLoading = false)
                             }
                         }
@@ -52,17 +42,12 @@ class SearchRecipes(
                         recipe = MainState(error = "Something went wrong")
                     }
                 }
-
-
             } catch (e: Exception) {
-                println("error" + e.message.toString())
                 recipe = MainState(error = "Something went wrong")
             }
         } else {
             withContext(Dispatchers.IO) {
                 var dbResult = SearchFromDatabase()
-
-                // println("current.size "+current.size.toString())
                 recipe = MainState(data = dbResult.toList(), isLoading = false)
             }
         }
@@ -86,6 +71,4 @@ class SearchRecipes(
         }
         return dbResult
     }
-
-
 }

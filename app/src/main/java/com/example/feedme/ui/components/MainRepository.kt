@@ -8,7 +8,6 @@ import javax.inject.Inject
 
 
 class MainRepository @Inject constructor(private val recipeService: RecipeService) {
-
     suspend fun getQueryItems(q: String, page: Int): Resource<RecipeSearchResponse> {
         return try {
             val result =

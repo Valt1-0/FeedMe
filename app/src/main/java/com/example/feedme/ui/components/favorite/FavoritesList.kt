@@ -51,7 +51,6 @@ fun FavoritesList(
                         }
                     )
                 }
-
             }
             Box(modifier = Modifier.fillMaxWidth()) {
                 LazyRow(
@@ -65,7 +64,7 @@ fun FavoritesList(
                             recipe,
                             OnFavoriteClick,
                             navigateToFavoriteList,
-                            modifier = Modifier.size(280.dp,280.dp)
+                            modifier = Modifier.size(280.dp, 280.dp)
                         )
                     }
                 }

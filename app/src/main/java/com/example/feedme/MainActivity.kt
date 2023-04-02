@@ -37,8 +37,6 @@ class MainActivity : ComponentActivity() {
     @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
         setContent {
 
             MainTheme {
@@ -47,15 +45,12 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-
     }
-
 
     @Composable
     fun MainActivityUI() {
         val navController = rememberNavController()
         val viewModel: HomeViewModel = viewModel()
-
 
         NavHost(
             navController = navController,
@@ -82,7 +77,6 @@ class MainActivity : ComponentActivity() {
             composable(Screen.RecipeList.route) {
                 val factory = HiltViewModelFactory(LocalContext.current, it)
                 val favoriteViewModel: FavoriteViewModel = viewModel(factory = factory)
-                //   val favoriteviewModel: FavoriteViewModel = viewModel()
                 MainTheme() {
                     MainScreen(viewModel, favoriteViewModel).MainContent()
                 }
@@ -94,7 +88,6 @@ class MainActivity : ComponentActivity() {
             }
             // Ajouter d'autres destinations de navigation ici
         }
-
     }
 
     @Composable

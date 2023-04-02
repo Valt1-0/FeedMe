@@ -44,8 +44,6 @@ class HomeViewModel @Inject constructor(
     private fun search() = viewModelScope.launch {
         recipe.value = MainState(isLoading = true, data = recipe.value.data)
         try {
-            println("recipe.value.data.size " + recipe.value.data.size.toString())
-
 
             var result = SearchRecipes(
                 query.value,
@@ -59,15 +57,12 @@ class HomeViewModel @Inject constructor(
             searchFavorite()
 
             if (!result.error.isNullOrBlank()) {
-                println("RESULT ERROR ")
                 MainState(error = result.error)
             } else {
                 appendSearch(result.data)
-                // current.addAll(result.data)
-                //  recipe.value = MainState(data = current.toList(), isLoading = false)
+
             }
         } catch (e: Exception) {
-            println("error" + e.message.toString())
             recipe.value = MainState(error = "Something went wrong")
         }
     }
@@ -132,7 +127,6 @@ class HomeViewModel @Inject constructor(
                     else
                         appendSearch(resultDb.data)
                 } catch (e: Exception) {
-                    println("error" + e.message.toString())
                     recipe.value = MainState(error = "Something went wrong", isLoading = false)
                 }
             }
@@ -144,7 +138,6 @@ class HomeViewModel @Inject constructor(
         setPage(1)
         search()
     }
-
 
     fun onQueryChange(query: String) {
         setQuery(query)
@@ -160,7 +153,6 @@ class HomeViewModel @Inject constructor(
 
     private fun appendSearch(recipes: List<RecipeWithFavorite>) {
         var current = ArrayList<RecipeWithFavorite>(recipe.value.data)
-        println("RECIPE SIZE  : / " + recipes.size.toString())
         if (recipes.isNotEmpty()) {
             current.addAll(recipes)
         }
@@ -168,10 +160,7 @@ class HomeViewModel @Inject constructor(
         this.recipe.value = MainState(data = current.toList(), isLoading = false)
     }
 
-
     fun recipeInDB() = viewModelScope.launch {
         recipeInDB.value = recipeDao.recipeInDB()
     }
-
-
 }

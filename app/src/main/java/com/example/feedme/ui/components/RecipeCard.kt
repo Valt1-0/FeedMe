@@ -18,7 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -32,24 +31,16 @@ fun RecipeCard(
     recipe: RecipeWithFavorite,
     OnFavoriteClick: (Int, Boolean) -> Unit,
     NavigateToRecipeDetails: (String) -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
 ) {
 
     var favorite = recipe.favorite
     val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-    println("DateRecipe : " + recipe.dateUpdated.toString())
-    println("recipe.dateUpdated : " + sdf.format(recipe.dateUpdated))
-    println("recipe.favorite" + recipe.favorite.toString())
     val visibleState = remember {
         MutableTransitionState(false).apply {
             targetState = false // start the animation immediately
         }
     }
-
-    val longDateAdded = recipe.dateAdded
-    println("longDateAdded: $longDateAdded")
-
-    // RecipeDetails(visibleState,recipe)
 
     Card(
         modifier = modifier
@@ -69,7 +60,7 @@ fun RecipeCard(
                 .padding(7.dp)
         ) {
             Box(modifier = Modifier.fillMaxWidth()) {
-                LoadImageFromUrl(LocalContext.current, recipe.featuredImage)
+                LoadImageFromUrl(recipe.featuredImage)
 
                 Icon(
                     // isFavorite.value => Favoris value true/false Icon
@@ -83,11 +74,8 @@ fun RecipeCard(
                         .padding(top = 8.dp, end = 8.dp)
                         .clickable(onClick = {
                             favorite = !favorite
-
                             recipe.id?.let { OnFavoriteClick(it, favorite) }
                         })
-
-
                 )
             }
             Text(
@@ -104,7 +92,6 @@ fun RecipeCard(
             ) {
                 Text(
                     // Date de mise à jour
-
                     text = "Mis à jour : " + sdf.format(recipe.dateUpdated),
                     color = Color(0xFFAAAAAA),
                     modifier = Modifier.padding(top = 5.dp),

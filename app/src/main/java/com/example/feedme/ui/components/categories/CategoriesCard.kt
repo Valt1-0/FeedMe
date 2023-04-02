@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.feedme.ui.components.categories.CategoriesItem
 import com.example.feedme.ui.components.viewModel.HomeViewModel
 import com.example.feedme.ui.theme.CategoriesShape
 
@@ -21,7 +22,7 @@ fun CategoriesCard(
     navigateToFavoriteList: (String) -> Unit,
     viewModel: HomeViewModel,
     categorie: CategoriesItem,
-    modifier: Modifier
+    modifier: Modifier,
 ) {
     Card(
         modifier = modifier
@@ -53,6 +54,5 @@ fun CategoriesCard(
                 )
             }
         }
-
     }
 }

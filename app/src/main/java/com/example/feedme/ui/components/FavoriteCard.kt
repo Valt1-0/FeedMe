@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -27,24 +26,16 @@ import java.util.*
 @Composable
 fun FavoriteCard(
     recipe: RecipeWithFavorite,
-    OnFavoriteClick: (Int, Boolean) -> Unit,
     NavigateToRecipeDetails: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
 
-    var favorite = recipe.favorite
     val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-    println("DateRecipe : " + recipe.dateUpdated.toString())
-    println("recipe.dateUpdated : " + sdf.format(recipe.dateUpdated))
-    println("recipe.favorite" + recipe.favorite.toString())
     val visibleState = remember {
         MutableTransitionState(false).apply {
             targetState = false // start the animation immediately
         }
     }
-
-    val longDateAdded = recipe.dateAdded
-    println("longDateAdded: $longDateAdded")
 
     Card(
         modifier = modifier
@@ -60,7 +51,6 @@ fun FavoriteCard(
     ) {
         Row(modifier = Modifier.fillMaxSize()) {
             LoadImageFromUrl(
-                LocalContext.current,
                 recipe.featuredImage,
                 modifier = Modifier
                     .size(150.dp)

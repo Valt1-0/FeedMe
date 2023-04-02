@@ -26,11 +26,7 @@ class RecipeDetailsViewModel @Inject constructor(private val recipeDao: RecipeDa
             try {
                 when (event) {
                     is EventTrigger.GetRecipeEvent -> {
-                        println("recipeID  : " + event.id)
-                        println("Recipe Value ID " + recipe.value?.id)
-
                         if (recipe.value?.id == 0) {
-                            println("getRecipe with " + event.id)
                             getRecipe(event.id)
                         }
                     }
@@ -55,5 +51,4 @@ class RecipeDetailsViewModel @Inject constructor(private val recipeDao: RecipeDa
             println("ERROR " + e.message.toString())
         }
     }
-
 }

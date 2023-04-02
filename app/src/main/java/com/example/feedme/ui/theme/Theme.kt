@@ -37,7 +37,6 @@ fun FeedMeTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable
     }
 
     val systemUiController = rememberSystemUiController()
-//    val useDarkIcons = !isSystemInDarkTheme()
 
     systemUiController.setNavigationBarColor(
         color = colors.primary,
@@ -91,7 +90,6 @@ fun OnBoardingTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Compos
     }
 
     val systemUiController = rememberSystemUiController()
-//    val useDarkIcons = !isSystemInDarkTheme()
 
     systemUiController.setStatusBarColor(
         color = Color.Black,
@@ -143,7 +141,6 @@ fun MainTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable (
     }
 
     val systemUiController = rememberSystemUiController()
-//    val useDarkIcons = !isSystemInDarkTheme()
 
     systemUiController.setStatusBarColor(
         color = Color.Black,
@@ -167,6 +164,5 @@ fun MainTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable (
         CompositionLocalProvider(LocalContentColor provides textColor) {
             content()
         }
-
     }
 }

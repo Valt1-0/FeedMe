@@ -1,7 +1,6 @@
-package com.example.feedme.Categories
+package com.example.feedme.ui.components.categories
 
 import com.example.feedme.R
-
 
 data class CategoriesItem(
     val name: String,

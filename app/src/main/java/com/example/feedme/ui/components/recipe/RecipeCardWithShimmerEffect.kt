@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun CardWithShimmerEffect(isLoading: Boolean) {
+fun CardWithShimmerEffect() {
 
     // create a gradient brush for the shimmer effect
     val gradient = listOf(
@@ -89,7 +89,6 @@ fun CardWithShimmerEffect(isLoading: Boolean) {
                         .padding(top = 5.dp)
                         .clip(RoundedCornerShape(10.dp))
                         .size(90.dp)
-                        // .fillMaxWidth(fraction = 0.2f)
                         .background(brush)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
@@ -105,7 +104,6 @@ fun CardWithShimmerEffect(isLoading: Boolean) {
                             .weight(1f)
                             .clip(RoundedCornerShape(10.dp))
                             .size(50.dp)
-                            // .fillMaxWidth(fraction = 0.2f)
                             .background(brush)
                     )
                 }

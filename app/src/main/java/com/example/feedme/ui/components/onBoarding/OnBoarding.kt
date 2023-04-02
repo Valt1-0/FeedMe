@@ -6,8 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import com.example.feedme.Onboarding.OnboardingScreen
-import com.example.feedme.Onboarding.onboardingItems
 import com.example.feedme.navigation.Screen
+import com.example.feedme.ui.components.onBoarding.onboardingItems
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -29,5 +29,4 @@ fun OnBoarding(navigateToRecipeList: (String) -> Unit) {
         navigateToRecipeList(Screen.RecipeList.route)
 
     }
-
 }

@@ -15,7 +15,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -27,7 +26,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 fun convertIngredientStringToList(ingredientString: String): List<String> {
-   var resultIngredient = ingredientString
+    var resultIngredient = ingredientString
     if (resultIngredient.endsWith(",")) {
         resultIngredient.substring(0, resultIngredient.length - 1)
     }
@@ -35,15 +34,12 @@ fun convertIngredientStringToList(ingredientString: String): List<String> {
     return resultIngredient.split(",")
 }
 
-
-
-@OptIn(ExperimentalAnimationApi::class)
 @SuppressLint("SuspiciousIndentation")
 @Composable
 fun RecipeDetails(
     recipeId: Int?,
     onBack: () -> Unit,
-    viewModel: RecipeDetailsViewModel
+    viewModel: RecipeDetailsViewModel,
 ) {
     if (recipeId == null) {
         TODO("Show Invalid Recipe")
@@ -53,7 +49,6 @@ fun RecipeDetails(
         {
             if (!onLoad) {
                 viewModel.isLoading.value = true
-                println("recipeID  : $recipeId")
                 viewModel.onTriggerEvent(EventTrigger.GetRecipeEvent(recipeId))
             }
         }
@@ -64,7 +59,11 @@ fun RecipeDetails(
         val itemsListString = recipe?.let { convertIngredientStringToList(it.ingredients) }
 
         if (!loading && recipe?.id != 0) {
-            Column(Modifier.fillMaxSize().background(Color.White)) {
+            Column(
+                Modifier
+                    .fillMaxSize()
+                    .background(Color.White)
+            ) {
                 LazyVerticalGrid(
                     contentPadding = PaddingValues(horizontal = 6.dp, vertical = 6.dp),
                     columns = GridCells.Fixed(3),
@@ -79,7 +78,7 @@ fun RecipeDetails(
                             Column(Modifier.fillMaxSize()) {
                                 Box(modifier = Modifier.fillMaxWidth()) {
                                     if (recipe != null) {
-                                        LoadImageFromUrl(LocalContext.current, recipe.featuredImage)
+                                        LoadImageFromUrl(recipe.featuredImage)
                                     }
                                     IconButton(
                                         onClick = {
@@ -155,7 +154,7 @@ fun RecipeDetails(
                             )
                         }
                         for (ingredient in itemsListString!!) {
-                            var instructions = ""
+                            var instructions: String
                             val title = ingredient.startsWith("For ")
                             val quantity =
                                 ingredient.takeWhile { it.isDigit() || it == '-' || it == '/' }

@@ -15,7 +15,6 @@ import javax.inject.Singleton
 @Module
 object
 RecipeModules {
-
     @Singleton
     @Provides
     fun provideApiService(): RecipeService {

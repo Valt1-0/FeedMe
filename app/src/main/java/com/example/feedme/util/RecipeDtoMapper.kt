@@ -14,27 +14,11 @@ class RecipeDtoMapper : EntityMapper<RecipeDto, Recipe> {
             featuredImage = entity.featuredImage,
             rating = entity.rating,
             sourceUrl = entity.sourceUrl,
-            // description = entity.description,
-            //  cookingInstructions = entity.cookingInstructions,
             ingredients = convertIngredientListToString(entity.ingredients),
             dateAdded = convertLongToDate(entity.longDateAdded),
             dateUpdated = convertLongToDate(entity.longDateUpdated)
         )
     }
-
-//    override fun mapToEntity(domainModel: Recipe): RecipeDto {
-//        return RecipeDto(
-//            pk = domainModel.id,
-//            title = domainModel.title,
-//            publisher = domainModel.publisher,
-//            featuredImage = domainModel.featuredImage,
-//            rating = domainModel.rating,
-//            sourceUrl = domainModel.sourceUrl
-//         //   description = domainModel.description,
-//          //  cookingInstructions = domainModel.cookingInstructions,
-//           // ingredients = domainModel.ingredients
-//        )
-//    }
 
     private fun convertIngredientListToString(ingredients: List<String>): String {
         val ingredientsString = StringBuilder()
@@ -44,7 +28,6 @@ class RecipeDtoMapper : EntityMapper<RecipeDto, Recipe> {
         return ingredientsString.toString()
     }
 
-
     private fun convertLongToDate(longDate: Long?): Date? {
         return longDate?.let { Date(it) }
     }
@@ -52,8 +35,4 @@ class RecipeDtoMapper : EntityMapper<RecipeDto, Recipe> {
     fun toRecipeList(initial: List<RecipeDto>): List<Recipe> {
         return initial.map { mapFromEntity(it) }
     }
-
-//    fun fromDomainList(initial: List<Recipe>): List<RecipeDto> {
-//        return initial.map { mapToEntity(it) }
-//    }
 }

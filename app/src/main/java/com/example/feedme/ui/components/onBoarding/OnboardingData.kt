@@ -1,4 +1,4 @@
-package com.example.feedme.Onboarding
+package com.example.feedme.ui.components.onBoarding
 
 import androidx.compose.ui.graphics.Color
 import com.example.feedme.R
@@ -9,7 +9,7 @@ data class OnboardingItem(
     val desc: String,
     val backgroundColor: Color,
     val image: Int,
-    val mainColor: Color = Primary
+    val mainColor: Color = Primary,
 )
 
 val onboardingItems = listOf(

@@ -33,5 +33,4 @@ data class RecipeDto(
     @SerializedName("long_date_updated")
     var longDateUpdated: Long?,
 
-
     )

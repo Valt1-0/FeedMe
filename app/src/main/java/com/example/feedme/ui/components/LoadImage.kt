@@ -1,6 +1,5 @@
 package com.example.feedme.ui.components
 
-import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,7 +14,7 @@ import coil.request.ImageRequest
 import com.example.feedme.R
 
 @Composable
-fun LoadImageFromUrl(context: Context, url: String, modifier: Modifier = Modifier) {
+fun LoadImageFromUrl(url: String, modifier: Modifier = Modifier) {
 
     Image(
         painter = // Set options for the image request, such as resizing or caching.

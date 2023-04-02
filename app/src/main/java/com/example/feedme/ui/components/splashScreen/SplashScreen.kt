@@ -22,7 +22,6 @@ import coil.size.Size
 @Composable
 fun SplashScreen() {
 
-
     val imageLoader = ImageLoader.Builder(LocalContext.current)
         .components {
             if (Build.VERSION.SDK_INT >= 28) {
@@ -32,7 +31,6 @@ fun SplashScreen() {
             }
         }
         .build()
-
     Content(imageLoader)
 }
 
@@ -45,7 +43,6 @@ fun Content(imageLoader: ImageLoader) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
             Image(
                 painter = rememberAsyncImagePainter(
                     ImageRequest.Builder(LocalContext.current)
@@ -61,5 +58,4 @@ fun Content(imageLoader: ImageLoader) {
             )
         }
     }
-
 }

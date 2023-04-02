@@ -33,12 +33,9 @@ object DBModule {
         return db.recipeDao()
     }
 
-
     @Singleton
     @Provides
     fun provideRecipeFavoriteDao(db: AppDatabase): FavoriteDao {
         return db.favoriteDao()
     }
-
-
 }
