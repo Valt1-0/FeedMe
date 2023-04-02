@@ -39,7 +39,6 @@ fun blankScreen(image : Int,text : String)
                         )
                     )
                 )
-
             Image(
                 painter = painterResource(id = image),
                 contentDescription = null,
@@ -54,8 +53,9 @@ fun blankScreen(image : Int,text : String)
             Text(
                 text = text,
                 style = MaterialTheme.typography.h5,
-                color = MaterialTheme.colors.onSurface
-            )
+                color = Color.Black,
+
+                )
         }
     }
 }

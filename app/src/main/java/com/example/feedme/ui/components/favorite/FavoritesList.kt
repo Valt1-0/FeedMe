@@ -39,7 +39,8 @@ fun FavoritesList(
                 Text(
                     text = "Vos Favoris",
                     fontSize = 35.sp,
-                    fontWeight = FontWeight.ExtraBold
+                    fontWeight = FontWeight.ExtraBold,
+                    color = Color.Black
                 )
                 if (recipes.size > 9) {
                     ClickableText(

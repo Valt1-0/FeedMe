@@ -26,6 +26,7 @@ fun CategoriesScreen(
 ) {
 
     LazyVerticalGrid(
+        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 7.dp),
         columns = GridCells.Fixed(2),
         modifier = Modifier.padding(start = 10.dp, end = 10.dp, top = 10.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),

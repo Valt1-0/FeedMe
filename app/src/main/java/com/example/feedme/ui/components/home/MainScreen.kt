@@ -10,12 +10,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.*
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.ManageSearch
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -203,7 +206,7 @@ class MainScreen @Inject constructor(
         LaunchedEffect(isNetworkAvailable)
         {
             if (!isNetworkAvailable)
-                // afficher un toast pour informer l'utilisateur qu'il n'y a pas de connexion
+            // afficher un toast pour informer l'utilisateur qu'il n'y a pas de connexion
                 Toast.makeText(context, "Pas de connexion internet", Toast.LENGTH_SHORT).show()
         }
 
@@ -263,9 +266,8 @@ class MainScreen @Inject constructor(
                         repeat(8) {
                             CardWithShimmerEffect(recipes.value.isLoading)
                         }
-                    }else if (!recipes.value.isLoading && recipes.value.data.isEmpty())
-                    {
-                            blankScreen(R.drawable.nosearchresult,"Aucune recette trouvée.")
+                    } else if (!recipes.value.isLoading && recipes.value.data.isEmpty()) {
+                        blankScreen(R.drawable.nosearchresult, "Aucune recette trouvée.")
                     }
 
                 }
@@ -331,17 +333,18 @@ class MainScreen @Inject constructor(
         }
     }
 
-    @OptIn(ExperimentalComposeUiApi::class)
+    @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
     @Composable
     fun FavoriteScreen(navigateToFavoriteList: (String) -> Unit) {
         var query = favoriteViewModel.query.value
         val page = favoriteViewModel.page.value
-        var favorites: MutableState<MainState> = favoriteViewModel.favorite
+        var favorites =  favoriteViewModel.favorite
 
 
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .background(color = colors.onPrimary)
         ) {
 
             if (favorites.value.isLoading) {
@@ -352,7 +355,7 @@ class MainScreen @Inject constructor(
                 )
             }
 
-            if(favorites.value.data.isNotEmpty() || !query.isNullOrBlank()) {
+            if (favorites.value.data.isNotEmpty() || !query.isNullOrBlank()) {
                 SearchBar(
                     query = query,
                     onSearch = { favoriteViewModel.onEventTrigger(EventTrigger.SearchEvent) },
@@ -361,25 +364,65 @@ class MainScreen @Inject constructor(
 
                 Divider(modifier = Modifier.height(7.dp), color = Color(0xFFEEEEEE))
             }
-            if (!favorites.value.isLoading && favorites.value.data.isEmpty())
-            {
-                if(!query.isNullOrBlank())
-                    blankScreen(R.drawable.nosearchresult,"Aucun favoris trouvé")
+            if (!favorites.value.isLoading && favorites.value.data.isEmpty()) {
+                if (!query.isNullOrBlank())
+                    blankScreen(R.drawable.nosearchresult, "Aucun favoris trouvé")
                 else
-                    blankScreen(R.drawable.nofavorite,"Vous n'avez pas encore de favoris.")
+                    blankScreen(R.drawable.nofavorite, "Vous n'avez pas encore de favoris.")
             }
 
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 itemsIndexed(items = favorites.value.data) { index, recipe ->
 
-                    FavoriteCard(
-                        recipe = recipe,
-                        OnFavoriteClick = favoriteViewModel::addOrDeleteToFavorite,
-                        NavigateToRecipeDetails = navigateToFavoriteList
-                    )
-                    if ((index + 1) >= (page * 30) && !favorites.value.isLoading) {
-                        favoriteViewModel.onEventTrigger(EventTrigger.NextPageEvent)
+                    val dismissState= rememberDismissState(DismissValue.Default)
+                    var isDismissed = dismissState.isDismissed(DismissDirection.EndToStart)
+
+                    if(isDismissed)
+                    {
+                        LaunchedEffect(isDismissed) {
+                            favoriteViewModel.addOrDeleteToFavorite(recipe.id, false)
+                            dismissState.reset()
+                        }
                     }
+
+                    SwipeToDismiss(
+                        state = dismissState,
+                        background = {
+                            val color = when (dismissState.dismissDirection) {
+                                DismissDirection.StartToEnd -> Color.Transparent
+                                DismissDirection.EndToStart -> Color(0xFFCC0000)
+                                null -> Color.Transparent
+                            }
+
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(color)
+                                    .padding(8.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = null,
+                                    tint = Color.White,
+                                    modifier = Modifier.align(Alignment.CenterEnd)
+                                )
+                            }
+
+                        },
+                        dismissContent = {
+                            FavoriteCard(
+                                recipe = recipe,
+                                OnFavoriteClick = favoriteViewModel::addOrDeleteToFavorite,
+                                NavigateToRecipeDetails = navigateToFavoriteList
+                            )
+                            if ((index + 1) >= (page * 30) && !favorites.value.isLoading) {
+                                favoriteViewModel.onEventTrigger(EventTrigger.NextPageEvent)
+                            }
+
+                        },
+                        directions = setOf(DismissDirection.EndToStart)
+                    )
+
                 }
             }
         }

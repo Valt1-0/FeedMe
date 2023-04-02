@@ -106,6 +106,7 @@ fun RecipeDetails(
                                         Text(
                                             text = recipe.title + "-" + recipe.publisher,
                                             modifier = Modifier.padding(top = 5.dp),
+                                            color = Color.Black,
                                             fontWeight = FontWeight.Bold,
                                             fontSize = 20.sp
                                         )
@@ -147,6 +148,7 @@ fun RecipeDetails(
                             Text(
                                 text = "Liste des ingredients : ",
                                 style = MaterialTheme.typography.h6,
+                                color = Color.Black,
                                 modifier = Modifier
                                     .padding(vertical = 16.dp)
                                     .fillMaxWidth()
@@ -167,6 +169,7 @@ fun RecipeDetails(
                                         Text(
                                             text = instructions,
                                             style = MaterialTheme.typography.h6,
+                                            color = Color.Black,
                                             modifier = Modifier
                                                 .padding(vertical = 16.dp)
                                                 .fillMaxWidth()
