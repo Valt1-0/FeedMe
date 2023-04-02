@@ -16,16 +16,7 @@ des recettes alimentaires à partir de l'API Food2Fork.
 git clone https://github.com/Valt1-0/FeedMe.git
 ```
 
-2. Créer un compte Food2Fork et obtenir une clé API
-
-3. Ajouter votre clé API à l'emplacement suivant dans le
-   fichier `FeedMe\app\src\main\java\com\example\feedme\util\Constants.kt` :
-
-```
-AUTH_TOKEN = "Token votre-clé-api"
-```
-
-4. Ouvrir le projet dans Android Studio et exécuter l'application sur un émulateur ou un appareil
+2. Ouvrir le projet dans Android Studio et exécuter l'application sur un émulateur ou un appareil
    Android
    
 ## En cas de problèmes lors du Build du projet, faites une synchronisation du Gradle : 
